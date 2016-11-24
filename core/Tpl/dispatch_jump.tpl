@@ -85,7 +85,7 @@
 <body>
 
 <div class="container">
-    <h1 class="page-header">
+    <h1 class="page-header" style="font-size:24px;">
       跳转提示
     </h1>
     <?php if(isset($message)) {?>
