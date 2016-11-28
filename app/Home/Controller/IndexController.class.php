@@ -7,18 +7,18 @@ class IndexController extends Controller
 {
     //首页列表
     public function index(){
-       $news = D('News');
-       $where = array();
-       $where['status'] = 1;
-       $limit = 20;
-       $count = $news->where($where)->count();
-       $page = new \Think\Page1($count,$limit);
-       $show = $page->show();
-       $list = $news->where($where)->order('id asc')->limit($page->firstRows.','.$page->listRows)->select();
-       $this->assign('list',$list);
-       $this->assign('page',$show);
-       $this->assign('count',$count);
-       $this->display();
+        $news = D('News');
+        $where = array();
+        $where['status'] = 1;
+        $limit = 20;
+        $count = $news->where($where)->count();
+        $page = new \Think\Page1($count,$limit);
+        $show = $page->show();
+        $list = $news->where($where)->order('id asc')->limit($page->firstRows.','.$page->listRows)->select();
+        $this->assign('list',$list);
+        $this->assign('page',$show);
+        $this->assign('count',$count);
+        $this->display();
     }
 
     //查询
