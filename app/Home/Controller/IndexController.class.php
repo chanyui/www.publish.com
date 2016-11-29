@@ -5,6 +5,13 @@ use Think\Controller;
 
 class IndexController extends Controller
 {
+    public function _initialize()
+    {
+        if (!method_exists($this, ACTION_NAME) || !method_exists($this, strtolower(ACTION_NAME))) {
+            $this->redirect('index/index');
+        }
+    }
+
     //首页列表
     public function index(){
         $news = D('News');
