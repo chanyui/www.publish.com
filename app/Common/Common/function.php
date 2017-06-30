@@ -184,6 +184,35 @@ function encrypt($password,$salt)
 }
 
 /**
+ * 加密（可逆）
+ * Function:wotu_crypt
+ * @return string
+ */
+function wotu_crypt($str, $op='enc' , $key='wotu') {
+    $from = array('/' , '=' , '+');
+    $to   = array('-' , '_' , '.');
+    if($op == 'enc'){
+        $prep_code = serialize($str);
+        $block = mcrypt_get_block_size('des', 'ecb');
+        if (($pad = $block - (strlen($prep_code) % $block)) < $block) {
+            $prep_code .= str_repeat(chr($pad), $pad);
+        }
+        $encrypt = mcrypt_encrypt(MCRYPT_DES, $key, $prep_code, MCRYPT_MODE_ECB);
+        return str_replace( $from , $to , base64_encode($encrypt));
+    }else if($op == 'dec'){
+        $str = str_replace( $to , $from , $str);
+        $str = base64_decode($str);
+        $str = mcrypt_decrypt(MCRYPT_DES, $key, $str, MCRYPT_MODE_ECB);
+        $block = mcrypt_get_block_size('des', 'ecb');
+        $pad = ord($str[($len = strlen($str)) - 1]);
+        if ($pad && $pad < $block && preg_match('/' . chr($pad) . '{' . $pad . '}$/', $str)) {
+            $str = substr($str, 0, strlen($str) - $pad);
+        }
+        return unserialize($str);
+    }
+}
+
+/**
  * 生成密码
  * Function:get_password
  * @return string
@@ -797,3 +826,87 @@ function bubble_sort($arr)
     }
     return $arr;
 }
+
+/**
++----------------------------------------------------------
+ * 二维数组根据某个字段排序
++----------------------------------------------------------
+ * @param  array $multi_array 排序数组
++----------------------------------------------------------
+ * @param  string $sort_key 排序字段
++----------------------------------------------------------
+ * @param  string $sort 排序顺序标志 SORT_DESC 降序；SORT_ASC 升序
++----------------------------------------------------------
+ */
+function multi_array_sort($multi_array,$sort_key,$sort=SORT_ASC){
+    if(is_array($multi_array)){
+        foreach ($multi_array as $row_array){
+            if(is_array($row_array)){
+                $key_array[] = $row_array[$sort_key];
+            }else{
+                return false;
+            }
+        }
+    }else{
+        return false;
+    }
+    array_multisort($key_array,$sort,$multi_array);
+    return $multi_array;
+}
+
+/**
+ * 生成二维码
+ * @param $url
+ */
+function generateQRCode($url){
+    include_once ROOT_PATH."/vendor/phpQrCode/phpqrcode.php";
+
+    $QRcode = new \QRcode();
+    ob_start();
+    $QRcode->png($url,false,'L',4);
+    $imageString = base64_encode(ob_get_contents());
+    ob_end_clean();
+    return $imageString;
+}
+
+/**
+ * 获取视频信息
+ * @param $file string 视频文件
+ * @return array 视频信息
+ */
+function getVideoInfo($file) {
+
+    $command = sprintf(FFMPEG_PATH, $file);
+
+    ob_start();
+    passthru($command);
+    $info = ob_get_contents();
+    ob_end_clean();
+
+    $data = array();
+    if (preg_match("/Duration: (.*?), start: (.*?), bitrate: (\d*) kb\/s/", $info, $match)) {
+        $data['duration'] = $match[1]; //播放时间
+        $arr_duration = explode(':', $match[1]);
+        $data['seconds'] = $arr_duration[0] * 3600 + $arr_duration[1] * 60 + $arr_duration[2]; //转换播放时间为秒数
+        $data['start'] = $match[2]; //开始时间
+        $data['bitrate'] = $match[3]; //码率(kb)
+    }
+    if (preg_match("/Video: (.*?), (.*?), (.*?)[,\s]/", $info, $match)) {
+        $data['vcodec'] = $match[1]; //视频编码格式
+        $data['vformat'] = $match[2]; //视频格式
+        $data['resolution'] = $match[3]; //视频分辨率
+        $arr_resolution = explode('x', $match[3]);
+        $data['width'] = $arr_resolution[0];
+        $data['height'] = $arr_resolution[1];
+    }
+    if (preg_match("/Audio: (\w*), (\d*) Hz/", $info, $match)) {
+        $data['acodec'] = $match[1]; //音频编码
+        $data['asamplerate'] = $match[2]; //音频采样频率
+    }
+    if (isset($data['seconds']) && isset($data['start'])) {
+        $data['play_time'] = $data['seconds'] + $data['start']; //实际播放时间
+    }
+    $data['size'] = filesize($file); //文件大小
+    return $data;
+}
+
