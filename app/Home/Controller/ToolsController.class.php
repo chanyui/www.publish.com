@@ -6,9 +6,73 @@ use Think\Controller;
 
 import('Vendor.tcpdf.tcpdf'); //引入pdf类
 import('Vendor.PHPExcel.PHPExcel'); //引入PHPExcel类
+include_once ROOT_PATH.'/core/Vendor/phpQrCode/phpqrcode.php'; //引入phpqrcode类
 
 class ToolsController extends Controller
 {
+    /**
+     * jquery-qrcode二维码
+     * +------------------------------------------------------------------
+     * @functionName : deskQrcode
+     * +------------------------------------------------------------------
+     * @author yucheng
+     * +------------------------------------------------------------------
+     */
+    public function deskQrcode()
+    {
+        $this->display();
+    }
+
+    /**
+     * 生成二维码图片
+     * +------------------------------------------------------------------
+     * @functionName : qrcode
+     * +------------------------------------------------------------------
+     * @return array
+     * +------------------------------------------------------------------
+     * @author yucheng
+     * +------------------------------------------------------------------
+     */
+    public function qrcode()
+    {
+        $qrcode = new \QRcode();
+        //方式一、直接输出
+        $url = 'https://github.com/chanyui/jquery-qrcode';
+        $errorCorrectionLevel = "L"; //纠错级别：L、M、Q、H
+        $matrixPointSize = "4";      //点的大小：1到10
+        $qrcode->png($url, false, $errorCorrectionLevel, $matrixPointSize); //$qrcode::png($url, false, $errorCorrectionLevel, $matrixPointSize);
+
+        //方式二、图片文件输出
+        $data = 'http://www.useryx.com';
+        $filename = 'qrcode/useryc.png'; //生成的文件名
+        $errorCorrectionLevel = 'L';     //纠错级别：L、M、Q、H
+        $matrixPointSize = 4;            //点的大小：1到10
+        $qrcode::png($data, $filename, $errorCorrectionLevel, $matrixPointSize, 2);
+
+        //方式三、生成中间带logo的二维码
+        $value='http://www.useryx.com';
+        $logo = ROOT_PATH."/Public/css/img/logo1.png"; //中间的logo
+        $QR = "qrcode/base.png";                       //自定义生成的。结束后可以删除
+        $last = "qrcode/last.png";                     //最终生成的图片
+        $errorCorrectionLevel = 'L';
+        $matrixPointSize = 10;
+        $qrcode::png($value, $QR, $errorCorrectionLevel, $matrixPointSize, 2);
+        if($logo !== FALSE){
+            $QR = imagecreatefromstring(file_get_contents($QR));
+            $logo = imagecreatefromstring(file_get_contents($logo));
+            $QR_width = imagesx($QR);
+            $QR_height = imagesy($QR);
+            $logo_width = imagesx($logo);
+            $logo_height = imagesy($logo);
+            $logo_qr_width = $QR_width / 5;
+            $scale = $logo_width / $logo_qr_width;
+            $logo_qr_height = $logo_height / $scale;
+            $from_width = ($QR_width - $logo_qr_width) / 2;
+            imagecopyresampled($QR, $logo, $from_width, $from_width, 0, 0, $logo_qr_width, $logo_qr_height, $logo_width, $logo_height);
+        }
+        imagepng($QR,$last); // 生成最终的文件
+    }
+
     /**
      * 导出pdf文件
      * +------------------------------------------------------------------
@@ -175,4 +239,5 @@ class ToolsController extends Controller
         $objWriter->save('php://output');
         exit();
     }
+
 }

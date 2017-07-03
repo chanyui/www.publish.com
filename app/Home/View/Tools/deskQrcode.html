@@ -1,0 +1,60 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>juqery-qrcode</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+</head>
+<body>
+
+<!-- <div class="header">
+
+    <div class="dl-title">
+        <img src="/chinapost/Public/assets/img/top.png">
+    </div>
+
+    <div class="dl-log">欢迎您，<span class="dl-log-user">{$_SESSION['name']}</span><a href="{:U('admin/index/logout')}" title="退出系统" class="dl-log-quit">[退出]</a>
+    </div>
+</div> -->
+
+<div class="content">
+    <label for="qrcode">扫描查看内容</label>
+    <div id="qrcode" title="使用jquery-qrcode生成的二维码"></div>
+</div>
+<script type="text/javascript" src="__PUBLIC__/js/jquery-1.9.0.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jquery-qrcode/src/qrcode.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jquery-qrcode/jquery.qrcode.min.js"></script>
+
+<script>
+    $(function () {
+        //juqery-qrcode生成二维码
+        $chText = toUtf8('魑魅魍魉，饕餮盛宴');
+        $('#qrcode').qrcode({
+            width:200,  //二维码宽度
+            height:200, //二维码搞度
+            text:$chText  //二维码内容
+        });
+    });
+    //转换中文
+    function toUtf8(str) {
+        var out, i, len, c;
+        out = "";
+        len = str.length;
+        for(i = 0; i < len; i++) {
+            c = str.charCodeAt(i);
+            if ((c >= 0x0001) && (c <= 0x007F)) {
+                out += str.charAt(i);
+            } else if (c > 0x07FF) {
+                out += String.fromCharCode(0xE0 | ((c >> 12) & 0x0F));
+                out += String.fromCharCode(0x80 | ((c >>  6) & 0x3F));
+                out += String.fromCharCode(0x80 | ((c >>  0) & 0x3F));
+            } else {
+                out += String.fromCharCode(0xC0 | ((c >>  6) & 0x1F));
+                out += String.fromCharCode(0x80 | ((c >>  0) & 0x3F));
+            }
+        }
+        return out;
+    }
+</script>
+</body>
+</html>

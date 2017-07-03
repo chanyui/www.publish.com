@@ -14,9 +14,6 @@ class IndexController extends Controller
 
     //首页列表
     public function index(){
-        $url = 'http://www.baidu.com';
-        $test = generateQRCode($url);
-        dump($test);die;
         $news = D('News');
         $where = array();
         $where['status'] = 1;
