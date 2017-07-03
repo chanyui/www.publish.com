@@ -469,6 +469,7 @@ function subtext($text, $length)
 }
 
 /**
+ * 时间转换成秒、分、小时、天
  * @Name:formatTime
  * @Description:
  * @HideInMenu:0
@@ -490,6 +491,7 @@ function formatTime($time)
 }
 
 /**
+ * 获取性别
  * @Name:getSexStr
  * @Description:
  * @HideInMenu:0
@@ -545,6 +547,7 @@ function getRoleStr($rid)
 }
 
 /**
+ * 获取用户状态
  * @Name:getLockedStr
  * @Description:
  * @HideInMenu:0
@@ -562,6 +565,7 @@ function getStatusStr($locked)
 
 
 /**
+ * 根据用户id获取用户信息
  * @Name:getUserInfoByUid
  * @Description:
  * @HideInMenu:0
@@ -650,6 +654,7 @@ function userLogin($data)
 }
 
 /**
+ * 根据用户id获取用户权限
  * @Name:get_power_by_uid
  * @Description:
  * @HideInMenu:0
@@ -859,8 +864,7 @@ function multi_array_sort($multi_array,$sort_key,$sort=SORT_ASC){
  * @param $url
  */
 function generateQRCode($url){
-    include_once ROOT_PATH."/vendor/phpQrCode/phpqrcode.php";
-
+    include_once ROOT_PATH."/core/Vendor/phpQrCode/phpqrcode.php";
     $QRcode = new \QRcode();
     ob_start();
     $QRcode->png($url,false,'L',4);
