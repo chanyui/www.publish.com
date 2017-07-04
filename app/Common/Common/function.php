@@ -864,7 +864,7 @@ function multi_array_sort($multi_array,$sort_key,$sort=SORT_ASC){
  * @param $url
  */
 function generateQRCode($url){
-    include_once ROOT_PATH."/core/Vendor/phpQrCode/phpqrcode.php";
+    include_once ROOT_PATH."/Vendor/phpQrCode/phpqrcode.php";
     $QRcode = new \QRcode();
     ob_start();
     $QRcode->png($url,false,'L',4);
