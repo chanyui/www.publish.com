@@ -12,7 +12,14 @@ class IndexController extends Controller
         }
     }
 
-    //首页列表
+    /**
+     * 首页列表
+     * +-----------------------------------------------------------
+     * @functionName : index
+     * +-----------------------------------------------------------
+     * @author yc
+     * +-----------------------------------------------------------
+     */
     public function index(){
         $news = D('News');
         $where = array();
@@ -28,7 +35,14 @@ class IndexController extends Controller
         $this->display();
     }
 
-    //查询
+    /**
+     * 查询
+     * +-----------------------------------------------------------
+     * @functionName : search
+     * +-----------------------------------------------------------
+     * @author yc
+     * +-----------------------------------------------------------
+     */
     public function search(){
         $keyword = I('get.title');
         if(!$keyword || $keyword == ''){
@@ -47,5 +61,25 @@ class IndexController extends Controller
         $this->assign('title',$keyword);
         $this->assign('list',$list);
         $this->display('index');
+    }
+
+    /**
+     * SQL中case when用法
+     * +-----------------------------------------------------------
+     * @functionName : caseWhen
+     * +-----------------------------------------------------------
+     * @author yc
+     * +-----------------------------------------------------------
+     */
+    public function caseWhen()
+    {
+        $db = D('News');
+        $field = '';
+        $field .= 'id,title,';
+        $field .= "(case when status=0 then title when status=1 then id else 0 end) as res";
+        $sql = "select " . $field . " from " . $db->getTableName()." order by create_time asc";
+        $result1 = $db->query($sql);
+        echo $db->_sql();
+        dump($result1);
     }
 }

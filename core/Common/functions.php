@@ -729,7 +729,19 @@ function A($name, $layer = '', $level = 0)
         $_action[$name . $layer] = $action;
         return $action;
     } else {
-        return false;
+        //自动加载公共模块下面的模型(自己添加)
+        if (!C('APP_USE_NAMESPACE')) {
+            import('Common/' . $layer . '/' . $class);
+        } else {
+            $class = '\\Common\\' . $layer . '\\' . $name . $layer;
+        }
+        if (class_exists($class)) {
+            $action = new $class();
+            $_action[$name . $layer] = $action;
+            return $action;
+        } else {
+            return false;
+        }
     }
 }
 
