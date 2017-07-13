@@ -12,7 +12,7 @@
 namespace Think;
 
 class Page1 {
-
+    
     // 分页栏每页显示的页数 [1] [2] ... [5] 页码数
     public $rollPage = 5;
     // 页数跳转时要带的参数
@@ -141,7 +141,7 @@ class Page1 {
                 }
             }else{
                 if($this->totalPages != 1){
-                    // 当前页
+					// 当前页
                     $linkPage .= '<li class="active"><a href="javascript:;">'.$page.'</a>';
                 }
             }
