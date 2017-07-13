@@ -9,4 +9,6 @@ return array(
     'DB_PWD' => 'root',
     'DB_PORT' => '3306',
     'DB_PREFIX' => 'pb_',// 数据表前缀
+
+    'QRCODE_DIR' => ROOT_PATH.'/qrcode',
 );

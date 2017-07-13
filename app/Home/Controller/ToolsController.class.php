@@ -52,6 +52,11 @@ class ToolsController extends Controller
         //方式三、生成中间带logo的二维码
         $value='http://www.useryx.com';
         $logo = ROOT_PATH."/Public/css/img/logo1.png"; //中间的logo
+        if (!is_dir(C('QRCODE_DIR'))) {
+            if (!mkdir(C('QRCODE_DIR'), 0755)) {
+                E("路径'" . C('QRCODE_DIR') . "'创建失败！");
+            }
+        }
         $QR = "qrcode/base.png";                       //自定义生成的。结束后可以删除
         $last = "qrcode/last.png";                     //最终生成的图片
         $errorCorrectionLevel = 'L';
