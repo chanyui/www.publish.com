@@ -1,0 +1,77 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>使用uploadfy插件上传文件</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/common/uploadify/uploadify.css" />
+</head>
+<body>
+
+<!-- <div class="header">
+
+    <div class="dl-title">
+        <img src="/chinapost/Public/assets/img/top.png">
+    </div>
+
+    <div class="dl-log">欢迎您，<span class="dl-log-user">{$_SESSION['name']}</span><a href="{:U('admin/index/logout')}" title="退出系统" class="dl-log-quit">[退出]</a>
+    </div>
+</div> -->
+
+<div class="content">
+    <label for="upload">使用uploadify插件上传文件</label>
+    <p><input class="uploadify" type="file" id="upload" name="upload"></p>
+    <input type="hidden" id="imgPath" name="imgPath">
+</div>
+
+<div class="">
+    <label for="upload">ajax上传图片</label>
+    <p><input type="file" id="uploadFile" name="uploadFile"></p>
+    <input type="hidden" id="img_path" name="img_path">
+</div>
+
+
+</body>
+<script type="text/javascript" src="__PUBLIC__/js/jquery-1.9.0.min.js"></script>
+<script src="__PUBLIC__/common/uploadify/jquery.uploadify.min.js"></script>
+
+<script type="text/javascript">
+    jQuery(function () {
+        //使用uploadfy插件上传文件
+        var config = {
+            'queueSizeLimit' : 20,   //队列里的最大文件数
+            'removeTimeout'  : 0.5,   //上传成功后清空队列的延迟时间，比如值为10，上传成功10秒后清空队列
+            'uploadLimit'    : 12,   //允许上传的文件数
+            'preventCaching' : true, //如果为true，则每次上传文件时自动加上一串随机字符串参数，防止URL缓存影响上传结果
+            'multi'          : true,       // true多文件上传，false单文件上传
+            'swf'            : '__PUBLIC__/common/uploadify/uploadify.swf',  //uploadify.swf文件的路径
+            'uploader'       : '{:U("Utils/Upload/upload?type=local")}',                 //服务器端上传文件的方法路径
+            'buttonText'     : '<img src="__PUBLIC__/common/uploadify/add.png">',  //按钮的文字
+            'fileTypeExts'   : '*.jpg; *.png; *.gif;',                             //允许上传的文件类型，所有文件('*.*')，只能是jpg,png,gif('*.jpg; *.png; *.gif')
+            'onUploadSuccess': function(file, data, response){                    //队列每个文件上传成功时触发，参数file:文件对象，data:服务器端返回的数据，response
+                data = JSON.parse(data);
+                if (data.code == 0){
+                    $('#imgPath').val(data.data);
+                }
+            }
+        };
+        $('#upload').uploadify(config);
+
+        //ajax上传文件
+        $('#uploadFile').on('change', function () {
+            var data = new FormData(), file = $('#uploadFile')[0].files[0];
+            data.append('type', 'qiniu');
+            data.append('file', file);
+            $.ajax({
+                url: '{:U("Utils/Upload/image")}',
+                type: 'POST',
+                data: data,
+                processData: false,
+                contentType: false,
+                success: function (e) {
+
+                }
+            });
+        });
+    });
+</script>
+</html>
