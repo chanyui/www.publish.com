@@ -53,9 +53,9 @@ class UploadController extends Controller
                 $upload = new \Think\Upload($config);
                 $info = $upload->upload();
                 if (!$info) {
-                    $res = array('code' => -4, 'data' => $upload->getError());
+                    $res = array('code' => -4, 'msg' => $upload->getError());
                 } else {
-                    $res = array('code' => 0, 'data' => $info['file']['savepath'] . $info['file']['savename']);
+                    $res = array('code' => 0, 'msg' => $info['file']['savepath'] . $info['file']['savename']);
                 }
             } elseif ($type == 'qiniu') {
                 $upload = new \Think\Upload(C('UPLOAD_SITEIMG_QINIU'));

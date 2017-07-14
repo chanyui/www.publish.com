@@ -20,13 +20,15 @@
 <div class="content">
     <label for="upload">使用uploadify插件上传文件</label>
     <p><input class="uploadify" type="file" id="upload" name="upload"></p>
-    <input type="hidden" id="imgPath" name="imgPath">
+    <input type="hidden" id="imgPath" name="imgPath" value="">
+    <img id="img_upload" src="" alt="">
 </div>
 
 <div class="">
     <label for="upload">ajax上传图片</label>
     <p><input type="file" id="uploadFile" name="uploadFile"></p>
-    <input type="hidden" id="img_path" name="img_path">
+    <input type="hidden" id="img_path" name="img_path" value="">
+    <img id="img_pre" src="" alt="">
 </div>
 
 
@@ -51,6 +53,9 @@
                 data = JSON.parse(data);
                 if (data.code == 0){
                     $('#imgPath').val(data.data);
+                    $('#img_upload').attr('src','__ROOT__/Uploads/'+data.data).css({width: "100px",height: "100px"});
+                }else {
+
                 }
             }
         };
@@ -59,7 +64,7 @@
         //ajax上传文件
         $('#uploadFile').on('change', function () {
             var data = new FormData(), file = $('#uploadFile')[0].files[0];
-            data.append('type', 'qiniu');
+            data.append('type', 'local');
             data.append('file', file);
             $.ajax({
                 url: '{:U("Utils/Upload/image")}',
@@ -68,7 +73,12 @@
                 processData: false,
                 contentType: false,
                 success: function (e) {
+                    if(e.code == 0){
+                        $('#img_path').val(e.msg);
+                        $('#img_pre').attr('src','__ROOT__/Uploads/'+e.msg).css({width: "100px",height: "100px"});
+                    } else {
 
+                    }
                 }
             });
         });
