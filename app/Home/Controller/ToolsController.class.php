@@ -30,7 +30,7 @@ class ToolsController extends Controller
      * +------------------------------------------------------------------
      * @return array
      * +------------------------------------------------------------------
-     * @author yucheng
+     * @author yc
      * +------------------------------------------------------------------
      */
     public function qrcode()
@@ -85,7 +85,7 @@ class ToolsController extends Controller
      * +------------------------------------------------------------------
      * @return array
      * +------------------------------------------------------------------
-     * @author yucheng
+     * @author yc
      * +------------------------------------------------------------------
      */
     public function exportPdf()
@@ -100,7 +100,7 @@ class ToolsController extends Controller
         $pdf->SetKeywords('胜天, PDF, PHP');
 
         // 设置页眉和页脚信息
-        $pdf->SetHeaderData('', 70, '', '胜天半子欢迎您', array(0, 64, 255), array(0, 64, 128));
+        $pdf->SetHeaderData('', 70, '', '胜天半子', array(0, 0, 255), array(0, 64, 128));
         $pdf->setFooterData(array(0, 64, 0), array(0, 64, 128));
 
         // 设置页眉和页脚字体
@@ -162,7 +162,7 @@ class ToolsController extends Controller
      * +------------------------------------------------------------------
      * @return array
      * +------------------------------------------------------------------
-     * @author yucheng
+     * @author yc
      * +------------------------------------------------------------------
      */
     public function exportExcel()
