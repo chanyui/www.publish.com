@@ -1,0 +1,35 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>原生ajax提交</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+</head>
+<body>
+
+<div><a id="ajax" href="javascript:void(0);">原生ajax提交</a></div>
+<div><p class="append"></p></div>
+
+</body>
+<script type="text/javascript" src="__PUBLIC__/js/jquery-1.9.0.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/common/echarts/echarts.min.js"></script>
+<script type="text/javascript">
+    jQuery(function () {
+        $('#ajax').click(function () {
+            var data = 'name=yc';
+            var xhr = new XMLHttpRequest();  //创建一个ajax对象
+            xhr.open('POST', '{:U("index/ajax")}', true);
+            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+                    if (xhr.status == 200) {
+                        $data = JSON.parse(xhr.responseText);
+                        $('.append').html($data.name);
+                    }
+                }
+            };
+            xhr.send(data);
+        });
+
+    });
+</script>
+</html>

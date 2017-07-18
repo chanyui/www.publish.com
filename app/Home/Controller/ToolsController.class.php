@@ -6,7 +6,7 @@ use Think\Controller;
 
 import('Vendor.tcpdf.tcpdf'); //引入pdf类
 import('Vendor.PHPExcel.PHPExcel'); //引入PHPExcel类
-include_once ROOT_PATH.'/Vendor/phpQrCode/phpqrcode.php'; //引入phpqrcode类
+include_once ROOT_PATH . '/Vendor/phpQrCode/phpqrcode.php'; //引入phpqrcode类
 
 class ToolsController extends Controller
 {
@@ -50,8 +50,8 @@ class ToolsController extends Controller
         $qrcode::png($data, $filename, $errorCorrectionLevel, $matrixPointSize, 2);
 
         //方式三、生成中间带logo的二维码
-        $value='http://www.useryx.com';
-        $logo = ROOT_PATH."/Public/css/img/logo1.png"; //中间的logo
+        $value = 'http://www.useryx.com';
+        $logo = ROOT_PATH . "/Public/css/img/logo1.png"; //中间的logo
         if (!is_dir(C('QRCODE_DIR'))) {
             if (!mkdir(C('QRCODE_DIR'), 0755)) {
                 E("路径'" . C('QRCODE_DIR') . "'创建失败！");
@@ -62,7 +62,7 @@ class ToolsController extends Controller
         $errorCorrectionLevel = 'L';
         $matrixPointSize = 10;
         $qrcode::png($value, $QR, $errorCorrectionLevel, $matrixPointSize, 2);
-        if($logo !== FALSE){
+        if ($logo !== FALSE) {
             $QR = imagecreatefromstring(file_get_contents($QR));
             $logo = imagecreatefromstring(file_get_contents($logo));
             $QR_width = imagesx($QR);
@@ -75,7 +75,7 @@ class ToolsController extends Controller
             $from_width = ($QR_width - $logo_qr_width) / 2;
             imagecopyresampled($QR, $logo, $from_width, $from_width, 0, 0, $logo_qr_width, $logo_qr_height, $logo_width, $logo_height);
         }
-        imagepng($QR,$last); // 生成最终的文件
+        imagepng($QR, $last); // 生成最终的文件
     }
 
     /**
@@ -243,6 +243,19 @@ class ToolsController extends Controller
 
         $objWriter->save('php://output');
         exit();
+    }
+
+    /**
+     * 百度图表
+     * +-----------------------------------------------------------
+     * @functionName : echarts
+     * +-----------------------------------------------------------
+     * @author yc
+     * +-----------------------------------------------------------
+     */
+    public function echarts()
+    {
+        $this->display();
     }
 
 }

@@ -10,6 +10,70 @@
     <link href="__PUBLIC__/css/bootstrap-responsive.css" rel="stylesheet" type="text/css"/>
     <link href="__PUBLIC__/css/style.css" rel="stylesheet" type="text/css"/>
     <link href="__PUBLIC__/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+        }
+
+        a, img {
+            border: 0;
+        }
+
+        body {
+            font-family: "helvetica neue", arial, sans-serif;
+            font-size: 12px;
+            color: #211922;
+        }
+
+        .btnimg {
+            cursor: pointer;
+            border: 0;
+            margin: 0;
+            padding: 0;
+        }
+
+        #ScrollToTop {
+            position: fixed;
+            _position: absolute;
+            z-index: 4;
+            right: 15px;
+            bottom: -10px;
+            width: 50px;
+            padding: 20px 10px 30px;
+            display: block;
+            font-size: 12px;
+            font-weight: 800;
+            text-align: center;
+            border-width: 1px 1px 0 1px;
+            border-style: solid;
+            box-shadow: 0 0 #fff, 0 1px 3px rgba(34, 25, 25, 0.5);
+            -moz-box-shadow: 0 0 #fff, 0 1px 3px rgba(34, 25, 25, 0.5);
+            -webkit-box-shadow: 0 0 #fff, 0 1px 3px rgba(34, 25, 25, 0.5);
+            -moz-transition: bottom 250ms ease-in-out;
+            -webkit-transition: bottom 250ms ease-in-out;
+        }
+
+        #ScrollToTop.Offscreen {
+            bottom: -100px;
+            -moz-transition-duration: 250ms;
+            -webkit-transition-duration: 250ms;
+        }
+
+        /* White Button */
+        .Button2.WhiteButton {
+            background-color: #f0eded;
+            background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fdfafb), to(#f0eded), color-stop(.5, #f9f7f7), color-stop(.5, #f6f3f4));
+            background-image: -moz-linear-gradient(top, #fdfafb, #f9f7f7 50%, #f6f3f4 50%, #f0eded);
+            background-image: -o-linear-gradient(top, #fdfafb, #f9f7f7 50%, #f6f3f4 50%, #f0eded);
+            background-image: -webkit-linear-gradient(top, #fdfafb, #f9f7f7 50%, #f6f3f4 50%, #f0eded);
+            border-color: #bbb;
+            color: #524d4d;
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fdfafb', endColorstr='#f0eded');
+            text-shadow: 0 1px rgba(255, 255, 255, 0.9);
+        }
+    </style>
 </head>
 <body>
 
@@ -83,7 +147,8 @@
         </div>
     </div>
 </div>
-
+<button id="ScrollToTop" class="btnimg Button2 WhiteButton Offscreen" type="button">返回<br/>顶部</button>
+</body>
 
 <script type="text/javascript" src="__PUBLIC__/assets/js/jquery-1.8.1.min.js"></script>
 <script type="text/javascript" src="__PUBLIC__/assets/js/bui-min.js"></script>
@@ -102,92 +167,21 @@
     });
 </script>
 
-<style type="text/css">
-    * {
-        margin: 0;
-        padding: 0;
-        list-style-type: none;
-    }
-
-    a, img {
-        border: 0;
-    }
-
-    body {
-        font-family: "helvetica neue", arial, sans-serif;
-        font-size: 12px;
-        color: #211922;
-    }
-
-    .btnimg {
-        cursor: pointer;
-        border: 0;
-        margin: 0;
-        padding: 0;
-    }
-
-    #ScrollToTop {
-        position: fixed;
-        _position: absolute;
-        z-index: 4;
-        right: 15px;
-        bottom: -10px;
-        width: 50px;
-        padding: 20px 10px 30px;
-        display: block;
-        font-size: 12px;
-        font-weight: 800;
-        text-align: center;
-        border-width: 1px 1px 0 1px;
-        border-style: solid;
-        box-shadow: 0 0 #fff, 0 1px 3px rgba(34, 25, 25, 0.5);
-        -moz-box-shadow: 0 0 #fff, 0 1px 3px rgba(34, 25, 25, 0.5);
-        -webkit-box-shadow: 0 0 #fff, 0 1px 3px rgba(34, 25, 25, 0.5);
-        -moz-transition: bottom 250ms ease-in-out;
-        -webkit-transition: bottom 250ms ease-in-out;
-    }
-
-    #ScrollToTop.Offscreen {
-        bottom: -100px;
-        -moz-transition-duration: 250ms;
-        -webkit-transition-duration: 250ms;
-    }
-
-    /* White Button */
-    .Button2.WhiteButton {
-        background-color: #f0eded;
-        background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fdfafb), to(#f0eded), color-stop(.5, #f9f7f7), color-stop(.5, #f6f3f4));
-        background-image: -moz-linear-gradient(top, #fdfafb, #f9f7f7 50%, #f6f3f4 50%, #f0eded);
-        background-image: -o-linear-gradient(top, #fdfafb, #f9f7f7 50%, #f6f3f4 50%, #f0eded);
-        background-image: -webkit-linear-gradient(top, #fdfafb, #f9f7f7 50%, #f6f3f4 50%, #f0eded);
-        border-color: #bbb;
-        color: #524d4d;
-        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fdfafb', endColorstr='#f0eded');
-        text-shadow: 0 1px rgba(255, 255, 255, 0.9);
-    }
-</style>
-
-<button id="ScrollToTop" class="btnimg Button2 WhiteButton Offscreen" type="button">返回<br/>顶部</button>
-
 <script type="text/javascript">
     $(document).ready(function () {
         var ScrollToTop = ScrollToTop || {
-                    setup: function () {
-
-                        var a = $(window).height() / 2;
-
-                        $(window).scroll(function () {
-                            (window.innerWidth ? window.pageYOffset : document.documentElement.scrollTop) >= a ? $("#ScrollToTop").removeClass("Offscreen") : $("#ScrollToTop").addClass("Offscreen")
-                        });
-                        $("#ScrollToTop").click(function () {
-                            $("html, body").animate({scrollTop: "0px"}, 400);
-                            return false
-                        })
-                    }
-                };
-        ScrollToTop.setup();
+            setup: function () {
+                var a = $(window).height() / 2;
+                $(window).scroll(function () {
+                    (window.innerWidth ? window.pageYOffset : document.documentElement.scrollTop) >= a ? $("#ScrollToTop").removeClass("Offscreen") : $("#ScrollToTop").addClass("Offscreen")
+                });
+                $("#ScrollToTop").click(function () {
+                    $("html, body").animate({scrollTop: "0px"}, 400);
+                    return false
+                })
+            }
+        };
+    ScrollToTop.setup();
     });
 </script>
-
-</body>
 </html>
