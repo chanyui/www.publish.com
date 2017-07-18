@@ -6,7 +6,7 @@ use Think\Controller;
 
 import('Vendor.tcpdf.tcpdf'); //引入pdf类
 import('Vendor.PHPExcel.PHPExcel'); //引入PHPExcel类
-include_once ROOT_PATH . '/Vendor/phpQrCode/phpqrcode.php'; //引入phpqrcode类
+vendor('phpQrCode.phpqrcode'); //引入phpqrcode类
 
 class ToolsController extends Controller
 {

@@ -911,7 +911,7 @@ function getFirstCharter($str)
  * @param $url
  */
 function generateQRCode($url){
-    include_once ROOT_PATH."/Vendor/phpQrCode/phpqrcode.php";
+    vendor('phpQrCode.phpqrcode'); //引入phpqrcode类
     $QRcode = new \QRcode();
     ob_start();
     $QRcode->png($url,false,'L',4);
