@@ -3,7 +3,7 @@
  * cURL功能（post）
  * Function:xcurl
  * @return mixed
- * @param $url 地址
+ * @param string $url 地址
  * @param null $ref 包含一个”referer”头的字符串
  * @param array $post 参数
  * @param string $ua
@@ -46,7 +46,7 @@ function xcurl($url,$ref=null,$post=array(),$ua="Mozilla/5.0 (X11; Linux x86_64;
  * cURL功能（get）
  * Function:gcurl
  * @return mixed
- * @param $url 地址
+ * @param string $url 地址
  * @param array $header 请求头
  * @param array $get
  * @param string $ua
@@ -88,7 +88,7 @@ function gcurl($url,$header=array(),$get=array(),$ua="Mozilla/5.0 (X11; Linux x8
  * 获取随机码
  * Function:random
  * @return string
- * @param $length 随机码的长度
+ * @param int $length 随机码的长度
  * @param int $numeric 0是字母和数字混合码，不为0是数字码
  */
 function random($length, $numeric = 0) {
@@ -107,7 +107,7 @@ function random($length, $numeric = 0) {
  * 加密解密（可逆）
  * Function:authcode
  * @return string
- * @param $string 加密的字符串
+ * @param string $string 加密的字符串
  * @param string $operation DECODE表示解密,其它表示加密
  * @param string $key  密钥
  * @param int $expiry 密文有效期
@@ -166,8 +166,8 @@ function authcode($string, $operation = 'DECODE', $key = '', $expiry = 0)
  * 加密（不可逆）
  * Function:encrypt
  * @return string
- * @param $password 原始密码
- * @param $salt 密钥
+ * @param string $password 原始密码
+ * @param string $salt 密钥
  */
 function encrypt($password,$salt)
 {
@@ -216,8 +216,8 @@ function wotu_crypt($str, $op='enc' , $key='wotu') {
  * 生成密码
  * Function:get_password
  * @return string
- * @param $password 原始密码
- * @param $salt 密钥
+ * @param string $password 原始密码
+ * @param string $salt 密钥
  */
 function get_password($password,$salt)
 {
@@ -228,9 +228,9 @@ function get_password($password,$salt)
  * 验证密码
  * Function:check_password
  * @return bool
- * @param $password 原始密码
- * @param $salt 密钥
- * @param $pwd 加密后密码
+ * @param string $password 原始密码
+ * @param string $salt 密钥
+ * @param string $pwd 加密后密码
  */
 function check_password($password,$salt,$pwd)
 {
@@ -245,8 +245,8 @@ function check_password($password,$salt,$pwd)
  * 手机发送验证码
  * Function:send_by_phone
  * @return bool
- * @param $phone 手机号码
- * @param $message 模板id为0是发送信息，模板id不为0是者模板值
+ * @param int $phone 手机号码
+ * @param string $message 模板id为0是发送信息，模板id不为0是者模板值
  * @param int $tpl_id 模板id
  */
 function send_by_phone($phone,$message,$tpl_id=0)
@@ -280,8 +280,8 @@ function send_by_phone($phone,$message,$tpl_id=0)
  * 创建session
  * Function:set_session
  * @return bool
- * @param $session session的数组
- * @param $name session存储的名称
+ * @param array $session session的数组
+ * @param string $name session存储的名称
  */
 function set_session($session,$name)
 {
@@ -297,7 +297,7 @@ function set_session($session,$name)
  * 获得session
  * Function:get_session
  * @return array|bool
- * @param $name session存储的名称
+ * @param string $name session存储的名称
  */
 function get_session($name)
 {
@@ -363,7 +363,7 @@ function check_online($uid)
 
 /**
  * Function:chenge_session_table
- * @param $uid 要操作的用户id
+ * @param int $uid 要操作的用户id
  * @param string $act 操作选项 KILL 删除在线表里的uid记录 LIVE更新存活时间
  */
 function change_session_table($uid,$act = 'LIVE')
@@ -420,8 +420,8 @@ function get_sys_logs($module_name='',$condition)
  * 七牛上传图片加裁切缩放
  * Function:QiNiuUpload
  * @return mixed
- * @param $file 为要上传的文件
- * @param $data 裁切参数 $data['x'] 起点x轴  $data['y'] 起点y轴 $data['w'] $data['h'] 图片预裁切宽高 $data['targetW'] $data['targetH']图片尺寸
+ * @param array $file 为要上传的文件
+ * @param array $data 裁切参数 $data['x'] 起点x轴  $data['y'] 起点y轴 $data['w'] $data['h'] 图片预裁切宽高 $data['targetW'] $data['targetH']图片尺寸
  */
 function QiNiuUpload($file,$data)
 {
@@ -444,7 +444,7 @@ function QiNiuUpload($file,$data)
  * 七牛上传附件
  * Function:QiNiuUploadFile
  * @return array|bool
- * @param $file 为要上传的文件
+ * @param array $file 为要上传的文件
  */
 function QiNiuUploadFile($file)
 {
@@ -458,8 +458,8 @@ function QiNiuUploadFile($file)
  * 字符串截取
  * Function:subtext
  * @return string
- * @param $text 需要截取的字符串
- * @param $length 截取长度
+ * @param string $text 需要截取的字符串
+ * @param int $length 截取长度
  */
 function subtext($text, $length)
 {
@@ -474,7 +474,7 @@ function subtext($text, $length)
  * @Description:
  * @HideInMenu:0
  * @param $time
- * @return str
+ * @return string str
  */
 function formatTime($time)
 {
@@ -496,7 +496,7 @@ function formatTime($time)
  * @Description:
  * @HideInMenu:0
  * @param $sex
- * @return str
+ * @return string str
  */
 function getSexStr($sex)
 {
@@ -522,7 +522,7 @@ function getSexStr($sex)
  * @Description:
  * @HideInMenu:0
  * @param $rid
- * @return str
+ * @return string str
  */
 function getRoleStr($rid)
 {
@@ -552,7 +552,7 @@ function getRoleStr($rid)
  * @Description:
  * @HideInMenu:0
  * @param $locked
- * @return str
+ * @return string str
  */
 function getStatusStr($locked)
 {
