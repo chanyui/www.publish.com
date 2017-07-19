@@ -112,4 +112,92 @@ class IndexController extends Controller
         $post['name'] = $_POST['name'];
         $this->ajaxReturn($post);
     }
+
+    /**
+     * 验证码
+     * +-----------------------------------------------------------
+     * @functionName : authimg
+     * +-----------------------------------------------------------
+     * @author yc
+     * +-----------------------------------------------------------
+     */
+    public function authimg()
+    {
+        header("Content-Type:text/html; charset=utf-8");
+        $this->createCode(80, 42, 15, 30, 50, 4, "createCode", "255,255,113", '92,189,170');
+    }
+
+    /**
+     * GD库生成验证码
+     * +-----------------------------------------------------------
+     * @functionName : createCode
+     * +-----------------------------------------------------------
+     * @param int $width 图像宽度
+     * @param int $height 图像高度
+     * @param int $leftX 距离图像X坐标
+     * @param int $fontSize 字体大小
+     * @param int $pointNum 像素点数量
+     * @param int $length 字符串长度
+     * @param string $sname 名称
+     * @param string $fontColor 字体颜色
+     * @param string $bgColor 背景颜色
+     * +-----------------------------------------------------------
+     * @author yc
+     * +-----------------------------------------------------------
+     */
+    private function createCode($width, $height, $leftX, $fontSize, $pointNum, $length, $sname = "", $fontColor = "255,255,255", $bgColor = "255,255,255")
+    {
+        $left = 3;
+        $move = 2;
+        $str = "9823456789ABCDEFGHIJKLMNZPQRSTUVWXYZ";
+        $authStr = "";
+        while (strlen($authStr) < $length) {
+            $authStr .= substr($str, rand(0, strlen($str)), 1);
+        }
+        if ($sname != "") {
+            session('authimg', $authStr);
+        }
+        $image = imagecreate($width, $height);
+        $fontColor = explode(',', $fontColor);
+        $fontColor = imagecolorallocate($image, $fontColor[0], $fontColor[1], $fontColor[2]);
+        $bgColor = explode(',', $bgColor);
+        $bgColor = imagecolorallocate($image, $bgColor[0], $bgColor[1], $bgColor[2]);
+        imagefill($image, 0, 0, $bgColor);
+        for ($i = 0; $i < strlen($authStr); $i++) {
+            $y = ($height - imagefontheight($fontSize)) / 2 - $move + rand(0, $move * 2);
+            imagestring($image, $fontSize, $leftX * $i + $left, $y, substr($authStr, $i, 1), $fontColor);
+        }
+        for ($i = 1; $i <= $pointNum; $i++) {
+            imagesetpixel($image, rand(0, $width), rand(0, $height), $bgColor);
+        }
+        header("Content-type: image/PNG");
+        imagepng($image);
+        imagedestroy($image);
+    }
+
+    /**
+     * tp验证类生成验证码
+     * +-----------------------------------------------------------
+     * @functionName : verifyCode
+     * +-----------------------------------------------------------
+     * @author yc
+     * +-----------------------------------------------------------
+     */
+    public function verifyCode()
+    {
+        $config = array(
+            'useImgBg' => false,                // 使用背景图片
+            'fontSize' => 15,                   // 验证码字体大小(px)
+            'useCurve' => true,                 // 是否画混淆曲线
+            'useNoise' => false,                // 是否添加杂点
+            'imageW'   => 120,                  // 验证码图片宽度
+            'imageH'   => 40,                   // 验证码图片高度
+            'length'   => 4,                    // 验证码位数
+            'fontttf'  => '',                   // 验证码字体，不设置随机获取
+            'bg'       => array(243, 251, 254), // 背景颜色
+            'reset'    => false,                // 验证成功后是否重置
+        );
+        $verify = new \Think\Verify($config);
+        $verify->entry();
+    }
 }

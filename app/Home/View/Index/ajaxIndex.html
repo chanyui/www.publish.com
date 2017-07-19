@@ -9,6 +9,11 @@
 <div><a id="ajax" href="javascript:void(0);">原生ajax提交</a></div>
 <div><p class="append"></p></div>
 
+<p>
+    <input type="text" name="verify" placeholder="输入验证码">
+    <img src="{:U('home/index/verifyCode')}" alt="验证码" title="点击刷新" style="cursor: pointer" onclick="this.src+='';">
+</p>
+
 </body>
 <script type="text/javascript" src="__PUBLIC__/common/js/jquery-1.9.0.min.js"></script>
 <script type="text/javascript" src="__PUBLIC__/common/echarts/echarts.min.js"></script>
