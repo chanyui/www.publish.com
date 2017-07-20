@@ -2,15 +2,13 @@
 
 namespace Home\Controller;
 
-use Think\Controller;
+use Home\Controller\ActionController;
 
-class IndexController extends Controller
+class IndexController extends ActionController
 {
     public function _initialize()
     {
-        if (!method_exists($this, ACTION_NAME) || !method_exists($this, strtolower(ACTION_NAME))) {
-            $this->redirect('index/index');
-        }
+        parent::_initialize();
     }
 
     /**

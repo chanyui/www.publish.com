@@ -2,14 +2,19 @@
 
 namespace Home\Controller;
 
-use Think\Controller;
+use Home\Controller\ActionController;
 
 import('Vendor.tcpdf.tcpdf'); //引入pdf类
 import('Vendor.PHPExcel.PHPExcel'); //引入PHPExcel类
 vendor('phpQrCode.phpqrcode'); //引入phpqrcode类
 
-class ToolsController extends Controller
+class ToolsController extends ActionController
 {
+    public function _initialize()
+    {
+        parent::_initialize();
+    }
+
     /**
      * jquery-qrcode二维码
      * +------------------------------------------------------------------

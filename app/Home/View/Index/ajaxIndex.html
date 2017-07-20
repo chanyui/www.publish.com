@@ -20,10 +20,18 @@
 <script type="text/javascript">
     jQuery(function () {
         $('#ajax').click(function () {
-            var data = 'name=yc';
-            var xhr = new XMLHttpRequest();  //创建一个ajax对象
-            xhr.open('POST', '{:U("index/ajax")}', true);
-            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            var data = 'name=yc';               //提交数据
+            var xhr;
+            if (window.XMLHttpRequest) {
+                xhr = new XMLHttpRequest();     //非IE内核，创建一个ajax对象
+            } else if (window.ActiveXObject) {
+                //IE内核,这里早期IE的版本写法不同,具体可以查询下
+                XHR = new ActiveXObject("Microsoft.XMLHTTP");
+            } else {
+                XHR = null;
+            }
+            xhr.open('POST', '{:U("index/ajax")}', true);   //
+            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded'); //设置请求头
             xhr.onreadystatechange = function () {
                 if (xhr.readyState == 4) {
                     if (xhr.status == 200) {
@@ -32,7 +40,7 @@
                     }
                 }
             };
-            xhr.send(data);
+            xhr.send(data);   //发送请求
         });
 
     });
