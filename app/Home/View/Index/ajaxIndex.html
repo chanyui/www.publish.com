@@ -14,6 +14,17 @@
     <img src="{:U('home/index/verifyCode')}" alt="验证码" title="点击刷新" style="cursor: pointer" onclick="this.src+='';">
 </p>
 
+<div class="form-group">
+    <label class="red-tip col-xs-12">验证码</label>
+    <div class="col-xs-7">
+        <input type="text" name="checkCode" class="form-control" placeholder="旧号码所获验证码">
+    </div>
+    <div class="col-xs-5" style="text-align: left;">
+        <button class="btn btn-default" type="button" id="get-auth-code">获取</button>
+    </div>
+    <p class='col-xs-12' style="display: none;" id="check-code-msg"></p>
+</div>
+
 </body>
 <script type="text/javascript" src="__PUBLIC__/common/js/jquery-1.9.0.min.js"></script>
 <script type="text/javascript" src="__PUBLIC__/common/echarts/echarts.min.js"></script>
@@ -42,6 +53,29 @@
             };
             xhr.send(data);   //发送请求
         });
+
+        $('#get-auth-code').click(function () {
+            timeInterval();
+        });
+
+        //js倒计时
+        function timeInterval() {
+            var code_button = document.getElementById('get-auth-code');
+            var time_out = 60;
+            var timeText;
+            var interval = setInterval(function () {
+                code_button.disabled = true;
+                timeText = time_out + 'S';
+                code_button.innerHTML = timeText;
+                time_out--;
+                if (time_out == -1) {
+                    code_button.innerHTML = '重新发送';
+                    clearInterval(interval);
+                    code_button.disabled = false;
+                    time_out = 60;
+                }
+            }, 1000);
+        }
 
     });
 </script>
