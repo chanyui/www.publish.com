@@ -198,4 +198,5 @@ class IndexController extends ActionController
         $verify = new \Think\Verify($config);
         $verify->entry();
     }
+
 }
