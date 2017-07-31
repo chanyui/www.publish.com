@@ -161,6 +161,20 @@ class ToolsController extends ActionController
     }
 
     /**
+     * 配置header执行简单的导出Excel
+     * +-----------------------------------------------------------
+     * @functionName : exportExcel1
+     * +-----------------------------------------------------------
+     * @author yc
+     * +-----------------------------------------------------------
+     */
+    public function exportExcel1()
+    {
+        header("Content-type:application/vnd.ms-excel");
+        header("Content-Disposition:filename=" . str_replace(' ', '', "yc.xls"));
+    }
+
+    /**
      * 导出Excel
      * +------------------------------------------------------------------
      * @functionName : exportExcel

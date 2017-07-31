@@ -81,6 +81,8 @@ class IndexController extends Controller
      */
     public function login()
     {
+        $db = D('Test');
+        dump($db);die;
         if (IS_POST) {
             $name = I('post.name');
             $pwd = I('post.password');

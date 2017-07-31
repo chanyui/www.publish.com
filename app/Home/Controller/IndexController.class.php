@@ -122,7 +122,7 @@ class IndexController extends ActionController
     public function authimg()
     {
         header("Content-Type:text/html; charset=utf-8");
-        $this->createCode(80, 42, 15, 30, 50, 4, "createCode", "255,255,113", '92,189,170');
+        $this->createCode(80, 42, 20, 5, 50, 4, "createCode", "255,255,113", '92,189,170');
     }
 
     /**
@@ -132,8 +132,8 @@ class IndexController extends ActionController
      * +-----------------------------------------------------------
      * @param int $width 图像宽度
      * @param int $height 图像高度
-     * @param int $leftX 距离图像X坐标
-     * @param int $fontSize 字体大小
+     * @param int $leftX 字符串距离图像X坐标
+     * @param int $font 字体
      * @param int $pointNum 像素点数量
      * @param int $length 字符串长度
      * @param string $sname 名称
@@ -143,7 +143,7 @@ class IndexController extends ActionController
      * @author yc
      * +-----------------------------------------------------------
      */
-    private function createCode($width, $height, $leftX, $fontSize, $pointNum, $length, $sname = "", $fontColor = "255,255,255", $bgColor = "255,255,255")
+    private function createCode($width, $height, $leftX, $font, $pointNum, $length, $sname = "", $fontColor = "255,255,255", $bgColor = "255,255,255")
     {
         $left = 3;
         $move = 2;
@@ -162,8 +162,8 @@ class IndexController extends ActionController
         $bgColor = imagecolorallocate($image, $bgColor[0], $bgColor[1], $bgColor[2]);
         imagefill($image, 0, 0, $bgColor);
         for ($i = 0; $i < strlen($authStr); $i++) {
-            $y = ($height - imagefontheight($fontSize)) / 2 - $move + rand(0, $move * 2);
-            imagestring($image, $fontSize, $leftX * $i + $left, $y, substr($authStr, $i, 1), $fontColor);
+            $y = ($height - imagefontheight($font)) / 2 - $move + rand(0, $move * 2);
+            imagestring($image, $font, $leftX * $i + $left, $y, substr($authStr, $i, 1), $fontColor);
         }
         for ($i = 1; $i <= $pointNum; $i++) {
             imagesetpixel($image, rand(0, $width), rand(0, $height), $bgColor);
