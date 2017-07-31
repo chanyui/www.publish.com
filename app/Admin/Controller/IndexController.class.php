@@ -133,7 +133,7 @@ class IndexController extends Controller
 
     /**
      * 用户名唯一性
-     * @param $name 参数组装条件
+     * @param string $name 参数组装条件
      * @return bool true表示不存在相同的用户
      */
     private function unique($name)
