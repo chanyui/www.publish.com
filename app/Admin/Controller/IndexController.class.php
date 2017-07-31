@@ -84,10 +84,16 @@ class IndexController extends Controller
         if (IS_POST) {
             $name = I('post.name');
             $pwd = I('post.password');
-            $pwd = md5($pwd);
+            $code = strtoupper(I('post.verifyCode'));
             if (!$name || !$pwd) {
                 $this->error('用户名或密码不能为空');
-                exit;
+                exit();
+            }
+            $pwd = md5($pwd);
+
+            if (session('authimg') != $code) {
+                $this->error('验证码不正确');
+                exit();
             }
             $data['create_time'] = time();
             $data['update_time'] = $data['create_time'];
@@ -98,7 +104,7 @@ class IndexController extends Controller
             if ($user) {
                 if ($pwd == $user['password']) {
                     /*session('name', $user['name']);
-                    session('pwd', $user['pwd']);*/
+                    session('password', $user['pwd']);*/
                     $_SESSION['name'] = $name;
                     $_SESSION['password'] = $pwd;
                     $_SESSION['last_time'] = $data['create_time'];
