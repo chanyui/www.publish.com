@@ -49,9 +49,9 @@ class ToolsController extends ActionController
 
         //方式二、图片文件输出
         $data = 'http://www.useryx.com';
-        $filename = 'qrcode/useryc.png'; //生成的文件名
-        $errorCorrectionLevel = 'L';     //纠错级别：L、M、Q、H
-        $matrixPointSize = 4;            //点的大小：1到10
+        $filename = 'qrcode/useryc1.png'; //生成的文件及路径
+        $errorCorrectionLevel = 'L';      //纠错级别：L、M、Q、H
+        $matrixPointSize = 4;             //点的大小：1到10
         $qrcode::png($data, $filename, $errorCorrectionLevel, $matrixPointSize, 2);
 
         //方式三、生成中间带logo的二维码
@@ -80,7 +80,7 @@ class ToolsController extends ActionController
             $from_width = ($QR_width - $logo_qr_width) / 2;
             imagecopyresampled($QR, $logo, $from_width, $from_width, 0, 0, $logo_qr_width, $logo_qr_height, $logo_width, $logo_height);
         }
-        imagepng($QR, $last); // 生成最终的文件
+        imagepng($QR, $last); //生成最终的文件
     }
 
     /**

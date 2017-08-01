@@ -1,8 +1,6 @@
 <?php
 namespace Admin\Controller;
 
-use Think\Controller;
-
 class NewsController extends ActionController
 {
     protected $db;
@@ -20,7 +18,7 @@ class NewsController extends ActionController
 
     /**
      * 查找数据库中的数据并显示在首页上，设置分页
-     * @param $show 在页面显示分页
+     * @param string $show 在页面显示分页
      * @param 
      */
     public function index()
@@ -32,22 +30,15 @@ class NewsController extends ActionController
             $page = new \Think\Page1($count, $limit);
             $show = $page->show();
             $list = $this->db->order('id asc')->limit($page->firstRow . ',' . $page->listRows)->select();
-            /*
-            $res = $this->db->getField('id',true);
-            var_dump($res);
-            */  //返回数组，其中value就是id的值
+            foreach ($list as $key => $value) {
+                if (!$value['codeimg']) {
+                    $qrCode = $this->createQrCode($value['id'],$value['title'], $value['content']);
+                    $this->db->where(array('id' => $value['id']))->setField('codeimg', $qrCode);
+                }
+            }
 
-            /*
-            $res = $this->db->getBytitle('iOS 10');
-            var_dump($res);die;
-            */   //根据title=iOS 10 找出这一条数据，相当于find()
-
-            /*
-            $res = $this->db->getFieldBytitle('iOS 10','content');
-            var_dump($res);die;
-            */   //根据title=iOS 10，找出这条数据所对应content字段的内容
         }
-        $name = $_SESSION['name'];
+        $name = session('name');
         $this->assign('param',I(''));
         $this->assign('count', $count);
         $this->assign('page', $show);
@@ -108,6 +99,37 @@ class NewsController extends ActionController
         }
     }
 
+    /**
+     * 详情
+     * +-----------------------------------------------------------
+     * @functionName : detail
+     * +-----------------------------------------------------------
+     * @author yc
+     * +-----------------------------------------------------------
+     */
+    public function detail()
+    {
+        $id = I('get.id');
+        $info = $this->db->where(array('id' => $id))->find();
+        $this->assign('info', $info);
+        $this->display();
+    }
+
+    /**
+     * 二维码分享页
+     * +-----------------------------------------------------------
+     * @functionName : share
+     * +-----------------------------------------------------------
+     * @author yc
+     * +-----------------------------------------------------------
+     */
+    public function share()
+    {
+        $id = I('get.id');
+        $info = $this->db->where(array('id' => $id))->find();
+        $this->assign('info', $info);
+        $this->display();
+    }
 
     /**
      * 删除所选的数据
@@ -172,7 +194,7 @@ class NewsController extends ActionController
 
     /**
      * 判断用户名是否已存在
-     * @param $id 获取过来的id
+     * @param int $id 获取过来的id
      * @param return false id已存在
      */
     private function uniqe($id)
@@ -184,5 +206,42 @@ class NewsController extends ActionController
         } else {
             return true;
         }
+    }
+
+    /**
+     * 生成二维码
+     * +-----------------------------------------------------------
+     * @functionName : createQrCode
+     * +-----------------------------------------------------------
+     * @param string $title 标题
+     * @param string $content 内容
+     * +-----------------------------------------------------------
+     * @author yc
+     * +-----------------------------------------------------------
+     */
+    private function createQrCode($id,$title, $content)
+    {
+        vendor('phpQrCode.phpqrcode');                  //引入phpqrcode类
+        $qrcode = new \QRcode();
+
+        $data = array(
+            'title' => $title,
+            'content' => $content
+        );
+        $data = '192.168.13.203/github_project/www.yc.com/admin/news/share?id='.$id;
+        //本地需要这些代码，保存在服务器本地
+        $logo = ROOT_PATH . "/Public/css/img/logo1.png"; //中间的logo
+        if (!is_dir(C('QRCODE_DIR'))) {
+            if (!mkdir(C('QRCODE_DIR'), 0755)) {
+                E("路径'" . C('QRCODE_DIR') . "'创建失败！");
+            }
+        }
+        $name = uniqid();
+        $fileName = 'qrcode/' . $name . '.png';
+        $errorCorrectionLevel = 'L';        //纠错级别：L、M、Q、H
+        $matrixPointSize = 4;               //点的大小：1到10
+
+        $qrcode::png($data, $fileName, $errorCorrectionLevel, $matrixPointSize, 2);
+        return $fileName;
     }
 }

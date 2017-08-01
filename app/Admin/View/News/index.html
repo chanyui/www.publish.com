@@ -18,7 +18,7 @@
         <!--<img src="/chinapost/Public/assets/img/top.png">-->
     </div>
 
-    <div class="dl-log">欢迎您，<span class="dl-log-user">{$_SESSION['name']}</span><a href="{:U('admin/index/logout')}" title="退出系统" class="dl-log-quit">[退出]</a>
+    <div class="dl-log">欢迎您，<span class="dl-log-user">{$name}</span><a href="{:U('admin/index/logout')}" title="退出系统" class="dl-log-quit">[退出]</a>
     </div>
 </div>
 
@@ -82,6 +82,10 @@
                     <td>{$vo['update_time']|date='Y-m-d H:i:s',###}</td>
                     <td>
                         <div class="hidden-sm hidden-xs btn-group">
+                            <a href="{:U('admin/news/detail',array('id'=>$vo['id']))}" class="btn btn-xs btn-primary"
+                               title="详情">
+                                详情
+                            </a>
                             <a href="{:U('admin/news/edit',array('id'=>$vo['id']))}" class="btn btn-xs btn-info"
                                title="编辑">
                                 编辑
@@ -90,6 +94,10 @@
                                title="删除">
                                 删除
                             </a>
+                            <!--<a href="{:U('admin/news/share',array('id'=>$vo['id']))}" class="btn btn-xs btn-default"
+                               title="分享页面">
+                                分享页面
+                            </a>-->
                         </div>
                     </td>
                 </tr>
