@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>{$info.title}</title>
+    <style>
+        body, html {
+            margin: 0;
+        }
+        .message-container {
+            padding: 0 15px;
+        }
+        .message-header {
+            font-size: 18px;
+            color: #222;
+            line-height: 1.4em;
+            margin-bottom: 0;
+        }
+        .message-time {
+            font-size: 12px;
+            line-height: 1em;
+            color: #999;
+            margin-bottom: 0;
+        }
+        .message-header-container{
+            padding:0 0 15px 0;
+            border-bottom:1px solid #E3E3E3;
+        }
+        .message-body{
+            padding-left:0;
+            list-style: none;
+            margin:0;
+        }
+        .message-block{
+            line-height:1em;
+            font-size:14px;
+            color:#666;
+        }
+        .message-title{
+            width:5em;
+            text-align:right;
+        }
+        li{
+            margin-top:15px;
+        }
+        .message-content{
+            margin-left:5em;
+            margin-top:-1em;
+        }
+        .see-btn{
+            padding:3px 10px;
+            background-color:#1abc9c;
+            border-radius:3px;
+            margin-top:10px;
+            display: block;
+            width:50px;
+            height:30px;
+            line-height:30px;
+            text-align:center;
+            text-decoration: none;
+            color:#fff;
+        }
+    </style>
+</head>
+<body>
+<div class="message-container">
+    <div class="message-header-container">
+        <p class="message-header">
+            {$info.title}
+        </p>
+        <p class="message-time">
+            {$info.create_time|date='Y-m-d H:i:s',###}
+        </p>
+    </div>
+    <ul class="message-body">
+        <li>
+            <div class="message-title message-block">标题：</div>
+            <div class="message-content message-block">{$info.title}</div>
+        </li>
+        <if condition="$info['content']">
+        <li>
+            <div class="message-title message-block">内容：</div>
+            <div class="message-content message-block">{$info.content}</div>
+        </li>
+        </if>
+
+        <if condition="$info['category'] == 1 and $info['otherContent']">
+        <li>
+            <div class="message-title message-block">附件：</div>
+            <div class="message-content message-block">
+                <div>{$info.otherContent.fileName}</div>
+                <a href="{$info.otherContent.filePath}" class="see-btn">预览</a>
+            </div>
+        </li>
+        </if>
+    </ul>
+</div>
+</body>
+<script type="text/javascript"></script>
+</html>

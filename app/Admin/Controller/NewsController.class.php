@@ -1,4 +1,5 @@
 <?php
+
 namespace Admin\Controller;
 
 class NewsController extends ActionController
@@ -7,7 +8,7 @@ class NewsController extends ActionController
 
     function _initialize()
     {
-        if (!method_exists($this,strtolower(ACTION_NAME))) {
+        if (!method_exists($this, strtolower(ACTION_NAME))) {
             $this->redirect('index/index');
         } else {
             parent::_initialize();
@@ -19,7 +20,7 @@ class NewsController extends ActionController
     /**
      * 查找数据库中的数据并显示在首页上，设置分页
      * @param string $show 在页面显示分页
-     * @param 
+     * @param
      */
     public function index()
     {
@@ -32,14 +33,13 @@ class NewsController extends ActionController
             $list = $this->db->order('id asc')->limit($page->firstRow . ',' . $page->listRows)->select();
             foreach ($list as $key => $value) {
                 if (!$value['codeimg']) {
-                    $qrCode = $this->createQrCode($value['id'],$value['title'], $value['content']);
+                    $qrCode = $this->createQrCode($value['id']);
                     $this->db->where(array('id' => $value['id']))->setField('codeimg', $qrCode);
                 }
             }
-
         }
         $name = session('name');
-        $this->assign('param',I(''));
+        $this->assign('param', I(''));
         $this->assign('count', $count);
         $this->assign('page', $show);
         $this->assign('list', $list);
@@ -116,22 +116,6 @@ class NewsController extends ActionController
     }
 
     /**
-     * 二维码分享页
-     * +-----------------------------------------------------------
-     * @functionName : share
-     * +-----------------------------------------------------------
-     * @author yc
-     * +-----------------------------------------------------------
-     */
-    public function share()
-    {
-        $id = I('get.id');
-        $info = $this->db->where(array('id' => $id))->find();
-        $this->assign('info', $info);
-        $this->display();
-    }
-
-    /**
      * 删除所选的数据
      * @para $id 利用id来选择所对应的信息
      */
@@ -178,17 +162,18 @@ class NewsController extends ActionController
      * @param $id
      * @param $result
      */
-    public function status(){
+    public function status()
+    {
         $id = I('get.id');
         $statusvalue = I('get.statusvalue');
         $where = array();
         $where['id'] = $id;
         $data['status'] = $statusvalue;
         $result = $this->db->where($where)->save($data);
-        if($result){
-            $this->redirect(strtolower(CONTROLLER_NAME).'/index');
-        }else{
-            $this->redirect(strtolower(CONTROLLER_NAME).'/index');
+        if ($result) {
+            $this->redirect(strtolower(CONTROLLER_NAME) . '/index');
+        } else {
+            $this->redirect(strtolower(CONTROLLER_NAME) . '/index');
         }
     }
 
@@ -213,22 +198,18 @@ class NewsController extends ActionController
      * +-----------------------------------------------------------
      * @functionName : createQrCode
      * +-----------------------------------------------------------
-     * @param string $title 标题
-     * @param string $content 内容
+     * @param int $id 内容id
      * +-----------------------------------------------------------
      * @author yc
      * +-----------------------------------------------------------
      */
-    private function createQrCode($id,$title, $content)
+    private function createQrCode($id)
     {
         vendor('phpQrCode.phpqrcode');                  //引入phpqrcode类
         $qrcode = new \QRcode();
 
-        $data = array(
-            'title' => $title,
-            'content' => $content
-        );
-        $data = '192.168.13.203/github_project/www.yc.com/admin/news/share?id='.$id;
+        //本地测试分享的地址，线上需另行配置
+        $data = '192.168.13.203/github_project/www.yc.com/share/index?id=' . $id;
         //本地需要这些代码，保存在服务器本地
         $logo = ROOT_PATH . "/Public/css/img/logo1.png"; //中间的logo
         if (!is_dir(C('QRCODE_DIR'))) {
