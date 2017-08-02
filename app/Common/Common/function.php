@@ -1007,3 +1007,34 @@ function getVideoInfo($file) {
     return $data;
 }
 
+/**
+ * 将秒格式化为 00:00:00格式
+ * +-----------------------------------------------------------
+ * @functionName : formatSec
+ * +-----------------------------------------------------------
+ * @param int $seconds 秒数
+ * +-----------------------------------------------------------
+ * @author yc
+ * +-----------------------------------------------------------
+ * @return string
+ */
+function formatSec($seconds)
+{
+    if (!$seconds || $seconds <= 0) {
+        return '未知';
+    }
+    $hour = floor($seconds / 3600);
+    $min = floor(($seconds % 3600) / 60);
+    $sec = $seconds % 60;
+    if ($hour < 10) {
+        $hour = '0' . $hour;
+    }
+    if ($min < 10) {
+        $min = '0' . $min;
+    }
+    if ($sec < 10) {
+        $sec = '0' . $sec;
+    }
+    return $hour . ':' . $min . ':' . $sec;
+}
+
