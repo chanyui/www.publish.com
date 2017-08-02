@@ -1,4 +1,5 @@
 <?php
+
 namespace Admin\Controller;
 
 use Think\Controller;
@@ -14,6 +15,7 @@ class ServerController extends Controller
 
     public function index()
     {
+        //处理跨域问题
         header("Access-Control-Allow-Origin: *");
         header('Access-Control-Allow-Methods: GET, POST, OPTIONS, DELETE, PUT');
         header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
