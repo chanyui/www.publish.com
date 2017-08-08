@@ -12,7 +12,7 @@ class UploadController extends Controller
     }
 
     /**
-     * 上传文件
+     * 上传文件(未保存到库)
      * +-----------------------------------------------------------
      * @functionName : image
      * +-----------------------------------------------------------
@@ -71,7 +71,7 @@ class UploadController extends Controller
     }
 
     /**
-     * 使用uploadify插件上传文件
+     * 使用uploadify插件上传文件(未保存到库)
      * +-----------------------------------------------------------
      * @functionName : upload
      * +-----------------------------------------------------------
@@ -121,5 +121,34 @@ class UploadController extends Controller
             }
         }
         $this->ajaxReturn($res);
+    }
+
+    /**
+     * 上传多个文件
+     * +-----------------------------------------------------------
+     * @functionName : uploadMore
+     * +-----------------------------------------------------------
+     * @author yc
+     * +-----------------------------------------------------------
+     */
+    public function uploadMore()
+    {
+        $config = array(
+            'maxSize' => 3145728,
+            'rootPath' => './Uploads/',
+            'savePath' => '',
+            'saveName' => array('uniqid', ''),
+            'exts' => array('jpg', 'gif', 'png', 'jpeg'),
+            'autoSub' => true,
+            'subName' => array('date', 'Y-m-d'),
+        );
+        $upload = new \Think\Upload($config);
+        $info = $upload->upload();
+        if (!$info) {
+            $ret = array('code' => 100, 'data' => $upload->getError());
+        } else {
+            $ret = array('code' => 0, 'data' => $info['Filedata']['savepath'] . $info['Filedata']['savename']);
+        }
+        $this->ajaxReturn($ret);
     }
 }

@@ -20,7 +20,7 @@ class ToolsController extends ActionController
      * +------------------------------------------------------------------
      * @functionName : deskQrcode
      * +------------------------------------------------------------------
-     * @author yucheng
+     * @author yc
      * +------------------------------------------------------------------
      */
     public function deskQrcode()
@@ -273,6 +273,19 @@ class ToolsController extends ActionController
      * +-----------------------------------------------------------
      */
     public function echarts()
+    {
+        $this->display();
+    }
+
+    /**
+     * 百度富文本编辑器
+     * +-----------------------------------------------------------
+     * @functionName : uedit
+     * +-----------------------------------------------------------
+     * @author yc
+     * +-----------------------------------------------------------
+     */
+    public function ueditor()
     {
         $this->display();
     }

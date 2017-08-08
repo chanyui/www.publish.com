@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>echarts</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="stylesheet" href="__PUBLIC__/css/bootstrap.min.css">
+</head>
+<body>
+
+<form class="form-horizontal">
+    <div class="form-group">
+        <label for="content" class="col-sm-2 control-label">编辑框</label>
+        <div class="col-sm-6">
+            <script id="content" name="content"></script>
+        </div>
+    </div>
+
+</form>
+
+<script type="text/javascript" src="__PUBLIC__/common/js/jquery-1.9.0.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/common/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" src="__PUBLIC__/common/ueditor/ueditor.all.min.js"></script>
+
+<script type="text/javascript">
+    jQuery(function () {
+        var ue = UE.getEditor('content');
+    });
+</script>
+</body>
+</html>
