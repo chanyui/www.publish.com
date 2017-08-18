@@ -10,4 +10,7 @@ return array(
     'DB_PREFIX' => 'pb_',// 数据表前缀
 
     'QRCODE_DIR' => ROOT_PATH.'/qrcode',
+
+    //ffmpeg路径配置
+    'FFMPEG_PATH' => '/usr/local/bin/ffmpeg -i "%s" 2>&1',
 );

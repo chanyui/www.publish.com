@@ -976,7 +976,7 @@ function generateQRCode($url){
  */
 function getVideoInfo($file) {
 
-    $command = sprintf(FFMPEG_PATH, $file);
+    $command = sprintf(C('FFMPEG_PATH'), $file);
 
     ob_start();
     passthru($command);
