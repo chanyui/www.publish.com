@@ -814,12 +814,15 @@ function get_user_uid()
  * +----------------------------------------------------------
  * @param array $arr 要排序的数组
  * +----------------------------------------------------------
- * @return array
+ * @return array|boolean
  * +----------------------------------------------------------
  */
 function bubble_sort($arr)
 {
     $len = count($arr);
+    if ($len <= 0) {
+        return false;
+    }
     for ($i = 0; $i < $len; $i++) {
         for ($j = 0; $j < $len - 1 - $i; $j++) {
             if ($arr[$j] < $arr[$j + 1]) {
