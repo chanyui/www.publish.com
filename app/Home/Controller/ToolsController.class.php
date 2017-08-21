@@ -287,6 +287,9 @@ class ToolsController extends ActionController
      */
     public function ueditor()
     {
+        if (IS_POST) {
+            dump(I(''));die;
+        }
         $this->display();
     }
 
