@@ -1041,3 +1041,54 @@ function formatSec($seconds)
     return $hour . ':' . $min . ':' . $sec;
 }
 
+/**
+ * 获取红包（1个分100有问题）
+ * +-----------------------------------------------------------
+ * @functionName : get_redEnvelope
+ * +-----------------------------------------------------------
+ * @param int $total 红包总金额
+ * @param int $num 红包数量
+ * +-----------------------------------------------------------
+ * @author yc
+ * +-----------------------------------------------------------
+ */
+function get_redEnvelope($total, $num)
+{
+    static $current = array();
+    if ($num == 1) {
+        $current[] = $total;
+        return $current;
+    } else {
+        $min = 0.01;
+        $max = round(($total / $min) / $num);
+        $rand_money = rand($min * 100, $max * 2);
+        $money = $rand_money * $min;
+        $current[] = $money;
+        $lava_money = $total - $money;
+        return get_redEnvelope($lava_money, $num - 1);
+    }
+}
+
+/**
+ * 拆分红包算法（1个分100有问题）
+ * +-----------------------------------------------------------
+ * @functionName : get_split
+ * +-----------------------------------------------------------
+ * @param int $total 红包总金额
+ * @param int $num 红包总个数
+ * +-----------------------------------------------------------
+ * @author yc
+ * +-----------------------------------------------------------
+ */
+function get_split($total, $num)
+{
+    $min = 0.01;        //每个人最少能收到0.01元
+    for ($i = 1; $i < $num; $i++) {
+        $safe_total = ($total - ($num - $i) * $min) / ($num - $i);//随机安全上限
+        $money = mt_rand($min * 100, $safe_total * 100) / 100;
+        $total = $total - $money;
+        echo '第' . $i . '个红包：' . $money . ' 元，余额：' . $total . ' 元 <br/>';
+    }
+    echo '第' . $num . '个红包：' . $total . ' 元，余额：0 元';
+}
+
