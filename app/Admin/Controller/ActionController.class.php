@@ -1,4 +1,5 @@
 <?php
+
 namespace Admin\Controller;
 
 use Think\Controller;
@@ -19,9 +20,12 @@ class ActionController extends Controller
         */
 
         //登录超时为一小时
-        if(time() - $_SESSION['last_time'] > 3600){
+        if (time() - $_SESSION['last_time'] > 3600) {
             session(null);
-            $this->error('登录超时...',U('admin/index/index'));
+            $this->error('登录超时...', U('admin/index/index'));
+        } else {
+            //没有超过就更新登录时间
+            session('last_time', time());
         }
 
     }
