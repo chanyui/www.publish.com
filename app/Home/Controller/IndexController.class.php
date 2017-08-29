@@ -58,7 +58,7 @@ class IndexController extends ActionController
         $show = $page->show();
         $list = D('News')->where($where)->order('id asc')->limit($page->firstRow . ',' . $page->listRows)->select();
         $this->assign('count', $count);
-        $this->assign('page', $page);
+        $this->assign('page', $show);
         $this->assign('title', $keyword);
         $this->assign('list', $list);
         $this->display('index');
