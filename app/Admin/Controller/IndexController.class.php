@@ -1,4 +1,5 @@
 <?php
+
 namespace Admin\Controller;
 
 use Think\Controller;
@@ -91,7 +92,7 @@ class IndexController extends Controller
             }
             $pwd = md5($pwd);
 
-            if (session('authimg') != $code) {
+            if (session('authimg') !== $code) {
                 $this->error('验证码不正确');
                 exit();
             }
@@ -103,8 +104,11 @@ class IndexController extends Controller
             $user = $this->db->where($where)->find();
             if ($user) {
                 if ($pwd == $user['password']) {
-                    session('name', $user['name']);
-                    session('last_time', $data['create_time']);
+                    $online = array(
+                        'name' => $user['name'],
+                        'last_time' => $data['create_time']
+                    );
+                    session('online', $online);
                     $this->success('登录成功', U('Admin/news/index'));
                 } else {
                     $this->error('密码错误', U('index'));

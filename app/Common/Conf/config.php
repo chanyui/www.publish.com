@@ -19,7 +19,7 @@ return array(
     'SESSION_CACHE_TIME'    =>  '',
     'SESSION_PERSISTENT'    =>  '',
     'SESSION_REDIS_AUTH'    =>  '',
-    'SESSION_EXPIRY'        =>  60*60,
+    'SESSION_EXPIRE'        =>  60*60,
 
     'QRCODE_DIR' => ROOT_PATH.'/qrcode',
 
