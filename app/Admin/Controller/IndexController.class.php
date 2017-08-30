@@ -103,11 +103,8 @@ class IndexController extends Controller
             $user = $this->db->where($where)->find();
             if ($user) {
                 if ($pwd == $user['password']) {
-                    /*session('name', $user['name']);
-                    session('password', $user['pwd']);*/
-                    $_SESSION['name'] = $name;
-                    $_SESSION['password'] = $pwd;
-                    $_SESSION['last_time'] = $data['create_time'];
+                    session('name', $user['name']);
+                    session('last_time', $data['create_time']);
                     $this->success('登录成功', U('Admin/news/index'));
                 } else {
                     $this->error('密码错误', U('index'));
