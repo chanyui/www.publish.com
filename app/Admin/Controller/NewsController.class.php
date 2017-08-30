@@ -24,26 +24,25 @@ class NewsController extends ActionController
      */
     public function index()
     {
-        $count = $this->db->count();
         $where['status'] = 1;
-        if ($count > 0) {
-            $limit = 20;
-            $page = new \Think\Page1($count, $limit);
-            $show = $page->show();
-            $list = $this->db->order('id asc')->limit($page->firstRow . ',' . $page->listRows)->select();
-            foreach ($list as $key => $value) {
-                if (!$value['codeimg']) {
-                    $qrCode = $this->createQrCode($value['id']);
-                    $this->db->where(array('id' => $value['id']))->setField('codeimg', $qrCode);
-                }
+        $count = $this->db->where($where)->count();
+        $limit = 20;
+        $page = new \Think\Page1($count, $limit);
+        $show = $page->show();
+        $list = $this->db->where($where)->limit($page->firstRow . ',' . $page->listRows)->order('id asc')->select();
+        foreach ($list as $key => $value) {
+            if (!$value['codeimg']) {
+                $qrCode = $this->createQrCode($value['id']);
+                $this->db->where(array('id' => $value['id']))->setField('codeimg', $qrCode);
             }
         }
-        $name = session('name');
+
+        $online = session('online');
         $this->assign('param', I(''));
         $this->assign('count', $count);
         $this->assign('page', $show);
         $this->assign('list', $list);
-        $this->assign('name', $name);
+        $this->assign('name', $online['name']);
         $this->display();
     }
 
