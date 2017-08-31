@@ -106,7 +106,7 @@ class IndexController extends Controller
                 if ($pwd == $user['password']) {
                     $online = array(
                         'name' => $user['name'],
-                        'last_time' => $data['create_time']
+                        'expire' => $data['create_time']
                     );
                     session('online', $online);
                     $this->success('登录成功', U('Admin/news/index'));

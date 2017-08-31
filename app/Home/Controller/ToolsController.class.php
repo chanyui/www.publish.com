@@ -4,10 +4,6 @@ namespace Home\Controller;
 
 use Home\Controller\ActionController;
 
-import('Vendor.tcpdf.tcpdf'); //引入pdf类
-import('Vendor.PHPExcel.PHPExcel'); //引入PHPExcel类
-vendor('phpQrCode.phpqrcode'); //引入phpqrcode类
-
 class ToolsController extends ActionController
 {
     public function _initialize()
@@ -40,6 +36,7 @@ class ToolsController extends ActionController
      */
     public function qrcode()
     {
+        vendor('phpQrCode.phpqrcode'); //引入phpqrcode类
         $qrcode = new \QRcode();
         //方式一、直接输出
         $url = 'https://github.com/chanyui/jquery-qrcode';
@@ -95,6 +92,7 @@ class ToolsController extends ActionController
      */
     public function exportPdf()
     {
+        import('Vendor.tcpdf.tcpdf'); //引入pdf类
         //实例化
         $pdf = new \tcpdf('P', 'mm', 'A4', true, 'UTF-8', false);
         // 设置文档信息
@@ -186,6 +184,7 @@ class ToolsController extends ActionController
      */
     public function exportExcel()
     {
+        import('Vendor.PHPExcel.PHPExcel'); //引入PHPExcel类
         $data = array(
             0 => array(
                 'id' => 1001,
@@ -265,16 +264,20 @@ class ToolsController extends ActionController
     }
 
     /**
-     * 百度图表
+     * 导入excel
      * +-----------------------------------------------------------
-     * @functionName : echarts
+     * @functionName : import
      * +-----------------------------------------------------------
      * @author yc
      * +-----------------------------------------------------------
      */
-    public function echarts()
+    public function import()
     {
-        $this->display();
+        if (IS_POST) {
+
+        } else {
+            $this->display();
+        }
     }
 
     /**
@@ -290,6 +293,19 @@ class ToolsController extends ActionController
         if (IS_POST) {
             dump(I(''));die;
         }
+        $this->display();
+    }
+
+    /**
+     * 百度图表
+     * +-----------------------------------------------------------
+     * @functionName : echarts
+     * +-----------------------------------------------------------
+     * @author yc
+     * +-----------------------------------------------------------
+     */
+    public function echarts()
+    {
         $this->display();
     }
 

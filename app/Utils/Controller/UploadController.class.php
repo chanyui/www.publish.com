@@ -16,7 +16,7 @@ class UploadController extends Controller
      * +-----------------------------------------------------------
      * @functionName : image
      * +-----------------------------------------------------------
-     * @param string local:上传服务器本地 qiuniu:上传七牛云
+     * @param local:上传服务器本地 qiuniu:上传七牛云
      * +-----------------------------------------------------------
      * @author yc
      * +-----------------------------------------------------------
@@ -75,7 +75,7 @@ class UploadController extends Controller
      * +-----------------------------------------------------------
      * @functionName : upload
      * +-----------------------------------------------------------
-     * @param string local:上传服务器本地 qiuniu:上传七牛云
+     * @param local:上传服务器本地 qiuniu:上传七牛云
      * +-----------------------------------------------------------
      * @author yc
      * +-----------------------------------------------------------
@@ -149,6 +149,44 @@ class UploadController extends Controller
         } else {
             $ret = array('code' => 0, 'data' => $info['Filedata']['savepath'] . $info['Filedata']['savename']);
         }
+        $this->ajaxReturn($ret);
+    }
+
+    /**
+     * ajax上传Excel
+     * +-----------------------------------------------------------
+     * @functionName : excel
+     * +-----------------------------------------------------------
+     * @author yc
+     * +-----------------------------------------------------------
+     */
+    public function excel()
+    {
+        $fielffix = strtolower(end(explode('.', $_FILES['excel']['name'])));
+        $allowffix = array('xls', 'xlsx');
+        do {
+            if (!IS_AJAX) {
+                $ret = array('code' => 100, 'msg' => '非法请求', 'data' => array());
+                break;
+            }
+            if (!in_array($fielffix, $allowffix)) {
+                $ret = array('code' => 300, 'msg' => '上传失败，只支持Excel文件格式', 'data' => array());
+                break;
+            }
+            if ($_FILES['excel']['size'] > 2 * 1024 * 1024) {
+                $ret = array('code' => 400, 'msg' => '上传失败，文件超过2M', 'data' => array());
+                break;
+            }
+            $upload = new \Think\Upload();              // 实例化上传类
+            $upload->rootPath = './data/';         // 设置附件上传根目录
+            $upload->savePath = 'user-' . uniqid() . '/'; // 设置附件上传（子）目录
+            $info = $upload->upload();
+            if (!$info) {
+                $ret = array("code" => 500, "msg" => "上传失败," . $upload->getError(), "data" => array());
+            } else {
+                $ret = array("code" => 0, "msg" => "上传成功", "data" => array('filePath' => $upload->rootPath . $info['excel']['savepath'] . $info['excel']['savename']));
+            }
+        } while (0);
         $this->ajaxReturn($ret);
     }
 }
