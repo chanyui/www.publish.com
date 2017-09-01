@@ -970,6 +970,30 @@ function formatSec($seconds)
 }
 
 /**
+ * 读取Excel数据
+ * +-----------------------------------------------------------
+ * @functionName : readExcel
+ * +-----------------------------------------------------------
+ * @param string $file Excel文件路径
+ * +-----------------------------------------------------------
+ * @author yc
+ * +-----------------------------------------------------------
+ */
+function readExcel($file)
+{
+    import('Vendor.PHPExcel.PHPExcel');
+    $PHPReader = new PHPExcel_Reader_Excel2007();
+    $objPHPExcel = $PHPReader->load($file);
+    /*$objPHPExcel = \PHPExcel_IOFactory::load($file);*/
+    /*$objPHPExcel->setActiveSheetIndex(0);*/
+    $currentSheet = $objPHPExcel->getSheet(0);
+    $allColumn = $currentSheet->getHighestColumn(); //Excel所有列数
+    $allRow = $currentSheet->getHighestRow();       //Excel总行数
+    $content = $currentSheet->toArray();
+    return array('total' => $allRow, 'data' => $content);
+}
+
+/**
  * 冒泡排序算法
  * +----------------------------------------------------------
  * @param array $arr 要排序的数组

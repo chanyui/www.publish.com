@@ -177,9 +177,9 @@ class UploadController extends Controller
                 $ret = array('code' => 400, 'msg' => '上传失败，文件超过2M', 'data' => array());
                 break;
             }
-            $upload = new \Think\Upload();              // 实例化上传类
-            $upload->rootPath = './data/';         // 设置附件上传根目录
-            $upload->savePath = 'user-' . uniqid() . '/'; // 设置附件上传（子）目录
+            $upload = new \Think\Upload();                //实例化上传类
+            $upload->rootPath = './data/';                //设置附件上传根目录
+            //$upload->savePath = 'user-' . uniqid() . '/'; //设置附件上传（子）目录
             $info = $upload->upload();
             if (!$info) {
                 $ret = array("code" => 500, "msg" => "上传失败," . $upload->getError(), "data" => array());

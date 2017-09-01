@@ -273,8 +273,10 @@ class ToolsController extends ActionController
      */
     public function import()
     {
-        if (IS_POST) {
-
+        $file = I('post.excel');
+        if (IS_POST && $file) {
+            $res = readExcel($file);
+            var_dump($res);
         } else {
             $this->display();
         }
