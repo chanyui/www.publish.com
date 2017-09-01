@@ -982,15 +982,15 @@ function formatSec($seconds)
 function readExcel($file)
 {
     import('Vendor.PHPExcel.PHPExcel');
-    $PHPReader = new PHPExcel_Reader_Excel2007();
-    $objPHPExcel = $PHPReader->load($file);
-    /*$objPHPExcel = \PHPExcel_IOFactory::load($file);*/
-    /*$objPHPExcel->setActiveSheetIndex(0);*/
-    $currentSheet = $objPHPExcel->getSheet(0);
-    $allColumn = $currentSheet->getHighestColumn(); //Excel所有列数
+    $fileType = \PHPExcel_IOFactory::identify($file);
+    $PHPReader = PHPExcel_IOFactory::createReader($fileType);
+    $PHPReader->setReadDataOnly(true);              //只读取数据，去除其他格式
+    $objPHPExcel = $PHPReader->load($file);         //读取Excel文件
+    $currentSheet = $objPHPExcel->getSheet(0);      //获取第一个工作表
+    $allColumn = $currentSheet->getHighestColumn(); //Excel所有列数最大值
     $allRow = $currentSheet->getHighestRow();       //Excel总行数
     $content = $currentSheet->toArray();
-    return array('total' => $allRow, 'data' => $content);
+    return array('row' => $allRow, 'col' => $allColumn, 'data' => $content);
 }
 
 /**

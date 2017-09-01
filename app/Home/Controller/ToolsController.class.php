@@ -2,8 +2,6 @@
 
 namespace Home\Controller;
 
-use Home\Controller\ActionController;
-
 class ToolsController extends ActionController
 {
     public function _initialize()
@@ -276,7 +274,34 @@ class ToolsController extends ActionController
         $file = I('post.excel');
         if (IS_POST && $file) {
             $res = readExcel($file);
-            var_dump($res);
+            $tableHeader = array('姓名', '性别', '手机号', '固定电话', '地址');
+            if ($res['row'] > 101) {
+                $this->error('最多能导入100条数据');
+                exit();
+            }
+            if ($res['data'][0] !== $tableHeader) {
+                $this->error('请勿修改模板表头');
+                exit();
+            }
+            if ($res['data']) {
+                unset($res['data'][0]);
+                $data = array();
+                foreach ($res['data'] as $key => $value) {
+                    if($value[0] === null){
+                        unset($res['data'][$key]);
+                    }
+                    $data[] = array(
+                        'name' => $value[0],
+                        'sex' => $value[1] == '男' ? 1 : 0,
+                        'telephone' => $value[2],
+                        'fixedphone' => $value[3],
+                        'address' => $value[4]
+                    );
+                }
+            }
+            M('user_profile')->addAll($data);
+            unlink($file);
+            $this->success('导入成功');
         } else {
             $this->display();
         }
