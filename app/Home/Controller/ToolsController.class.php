@@ -283,20 +283,21 @@ class ToolsController extends ActionController
                 $this->error('请勿修改模板表头');
                 exit();
             }
+            unset($res['data'][0]);
             if ($res['data']) {
-                unset($res['data'][0]);
                 $data = array();
                 foreach ($res['data'] as $key => $value) {
-                    if($value[0] === null){
+                    if (!$value[0] || $value[0] === null && !$value[1] || $value[1] === null && !$value[2] || $value[2] === null) {
                         unset($res['data'][$key]);
+                    } else {
+                        $data[] = array(
+                            'name' => $value[0],
+                            'sex' => $value[1] == '男' ? 1 : 0,
+                            'telephone' => $value[2],
+                            'fixedphone' => $value[3],
+                            'address' => $value[4]
+                        );
                     }
-                    $data[] = array(
-                        'name' => $value[0],
-                        'sex' => $value[1] == '男' ? 1 : 0,
-                        'telephone' => $value[2],
-                        'fixedphone' => $value[3],
-                        'address' => $value[4]
-                    );
                 }
             }
             M('user_profile')->addAll($data);
