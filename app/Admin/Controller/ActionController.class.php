@@ -20,11 +20,12 @@ class ActionController extends Controller
         }*/
 
         //使用redis保存session
-        if (!$online) {
+        if (!$online || time() - $online['expire'] > 3600) {
             session(null);
             $this->error('登录失效', U('admin/index/index'));
             exit();
+        } else {
+            session('online.expire', time());
         }
-
     }
 }
