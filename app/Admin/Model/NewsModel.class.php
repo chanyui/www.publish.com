@@ -5,5 +5,5 @@ use Think\Model;
 
 class NewsModel extends Model
 {
-     protected $tableName = 'news'; 
+     protected $tableName = 'news';
 }
