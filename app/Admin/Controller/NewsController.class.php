@@ -24,7 +24,7 @@ class NewsController extends ActionController
      */
     public function index()
     {
-        $where['status'] = 1;
+        $where = array();
         $count = $this->db->where($where)->count();
         $limit = 20;
         $page = new \Think\Page1($count, $limit);
@@ -164,15 +164,17 @@ class NewsController extends ActionController
     public function status()
     {
         $id = I('get.id');
-        $statusvalue = I('get.statusvalue');
-        $where = array();
-        $where['id'] = $id;
-        $data['status'] = $statusvalue;
-        $result = $this->db->where($where)->save($data);
-        if ($result) {
-            $this->redirect(strtolower(CONTROLLER_NAME) . '/index');
+
+        $info = $this->db->where(array('id' => $id))->find();
+
+        $this->db->id = $info['id'];
+        $this->db->status = $info['status'] == 0 ? 9 : 0;
+        $msg = $info['status'] == 0 ? '禁用' : '启用';
+
+        if ($this->db->save()) {
+            $this->success($msg . '成功', U(strtolower(CONTROLLER_NAME) . '/index'));
         } else {
-            $this->redirect(strtolower(CONTROLLER_NAME) . '/index');
+            $this->error($msg . '失败', U(strtolower(CONTROLLER_NAME) . '/index'));
         }
     }
 

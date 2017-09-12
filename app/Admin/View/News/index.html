@@ -64,18 +64,17 @@
                     <td>{$vo['content']}</td>
                     <td>
                         <div class="hidden-sm hidden-xs btn-group">
-                            <if condition="$vo[status] eq 1">
-                                <a href="{:U(strtolower(CONTROLLER_NAME).'/status',array('id'=>$vo['id'],'statusvalue'=>0))}"
+                            <{eq name="vo.status" value="0"}>
+                                <a href="{:U(strtolower(CONTROLLER_NAME).'/status',array('id'=>$vo['id']))}"
                                    class="btn btn-xs btn-success" title="点击禁用">
                                     <i class="glyphicon glyphicon-ok-circle fa fa-check bigger-120"></i>
                                 </a>
-                            </if>
-                            <if condition="$vo[status] eq 0">
-                                <a href="{:U(strtolower(CONTROLLER_NAME).'/status',array('id'=>$vo['id'],'statusvalue'=>1))}"
+                            <{else /}>
+                                <a href="{:U(strtolower(CONTROLLER_NAME).'/status',array('id'=>$vo['id']))}"
                                    class="btn btn-xs btn-danger" title="点击启用">
                                     <i class="glyphicon glyphicon-remove-circle fa  fa-ban bigger-120"></i>
                                 </a>
-                            </if>
+                            <{/eq}>
                         </div>
                     </td>
                     <td>{$vo['create_time']|date='Y-m-d H:i:s',###}</td>

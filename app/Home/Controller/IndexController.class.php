@@ -23,7 +23,7 @@ class IndexController extends ActionController
     {
         $news = D('News');
         $where = array();
-        $where['status'] = 1;
+        $where['status'] = 0;
         $limit = 20;
         $count = $news->where($where)->count();
         $page = new \Think\Page1($count, $limit);
