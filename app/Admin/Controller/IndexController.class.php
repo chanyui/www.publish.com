@@ -139,6 +139,7 @@ class IndexController extends Controller
      */
     private function unique($name)
     {
+        $map = array();
         $map['name'] = trim($name);
         $where = $this->db->where($map)->find();
         if ($where) {

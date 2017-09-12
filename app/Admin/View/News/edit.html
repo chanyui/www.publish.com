@@ -28,10 +28,8 @@
         <tr>
             <td class="tableleft">状态</td>
             <td>
-                <input type="radio" name="status" value="0"
-                <eq name="user.status" value='0'>checked</eq> /> 启用
-                <input type="radio" name="status" value="1"
-                <eq name="user.status" value='1'>checked</eq> /> 禁用
+                <input type="radio" name="status" value="0" <{eq name="result.status" value="0"}>checked<{/eq}> /> 启用
+                <input type="radio" name="status" value="9" <{eq name="result.status" value="9"}>checked<{/eq}> /> 禁用
             </td>
         </tr>
         <tr>

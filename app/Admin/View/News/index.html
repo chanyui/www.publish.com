@@ -31,9 +31,9 @@
     </div>
 
     <div class="con">
-        <form class="form-inline definewidth m20" action="{:U('admin/news/search')}" method="get">
+        <form class="form-inline definewidth m20" action="{:U('admin/news/index')}" method="get">
             <span>标题名称：</span>
-            <input type="text" name="title" class="abc input-default" placeholder="搜索关键字" value="">&nbsp;&nbsp;
+            <input type="text" name="keyword" class="abc input-default" placeholder="搜索关键字" value="{$keyword}">&nbsp;&nbsp;
             <button type="submit" class="btn btn-primary">查询</button>
             &nbsp;&nbsp;
         </form>

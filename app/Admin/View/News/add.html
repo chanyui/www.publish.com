@@ -14,7 +14,6 @@
 </head>
 <body>
 <form action="{:U('news/add')}" method="post" class="definewidth m20">
-    <input type="hidden" name="id" value="{$result['id']}" />
     <table class="table table-bordered table-striped table-hover definewidth m5">
         <tr>
             <td width="10%" class="tableleft">标题</td>
@@ -22,16 +21,14 @@
         </tr>
         <tr>
             <td class="tableleft">内容</td>
-            <td><textarea name="content"cols="80" rows="10">{$result['content']}</textarea></td>
+            <td><textarea name="content" cols="80" rows="10">{$result['content']}</textarea></td>
         </tr>
 
         <tr>
             <td class="tableleft">状态</td>
             <td>
-                <input type="radio" name="status" value="0"
-                <eq name="user.status" value='0'>checked</eq> /> 启用
-                <input type="radio" name="status" value="1"
-                <eq name="user.status" value='1'>checked</eq> /> 禁用
+                <input type="radio" name="status" value="0" checked/> 启用
+                <input type="radio" name="status" value="9" /> 禁用
             </td>
         </tr>
         <tr>

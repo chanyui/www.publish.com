@@ -18,13 +18,23 @@ class NewsController extends ActionController
 
 
     /**
-     * 查找数据库中的数据并显示在首页上，设置分页
-     * @param string $show 在页面显示分页
-     * @param
+     * 首页列表
+     * +-----------------------------------------------------------
+     * @functionName : index
+     * +-----------------------------------------------------------
+     * @author yc
+     * +-----------------------------------------------------------
      */
     public function index()
     {
+        $keyword = I('get.keyword');
         $where = array();
+
+        //搜索
+        if ($keyword) {
+            $where['title'] = array('like', '%' . $keyword . '%');
+        }
+
         $count = $this->db->where($where)->count();
         $limit = 20;
         $page = new \Think\Page1($count, $limit);
@@ -37,31 +47,36 @@ class NewsController extends ActionController
             }
         }
 
-        $online = session('online');
-        $this->assign('param', I(''));
+        $this->assign('keyword', $keyword);
         $this->assign('count', $count);
         $this->assign('page', $show);
         $this->assign('list', $list);
-        $this->assign('name', $online['name']);
         $this->display();
     }
 
 
     /**
-     * 表单的提交数据写入数据库
-     * @param
+     * 添加数据
+     * +-----------------------------------------------------------
+     * @functionName : add
+     * +-----------------------------------------------------------
+     * @author yc
+     * +-----------------------------------------------------------
      */
     public function add()
     {
         if (IS_POST) {
-            $data = I('post.');
+            $data = array();
+            $data['title'] = I('post.title');
+            $data['content'] = I('post.content');
+            $data['status'] = I('post.status');
             $data['create_time'] = time();
             $data['update_time'] = $data['create_time'];
-            $where = $this->uniqe($_POST['title']);
+            $where = $this->uniqe($data['title']);
             if ($where) {
-                $resu = $this->db->add($data);
-                if ($resu) {
-                    $this->success('成功', U('index'));
+                $result = $this->db->add($data);
+                if ($result) {
+                    $this->success('成功', U('news/index'));
                 } else {
                     $this->error('失败');
                 }
@@ -76,23 +91,31 @@ class NewsController extends ActionController
 
 
     /**
-     * 编辑功能 当没有提交表单时执行else语句块
-     * @param IS_POST表单提交的数据
+     * 编辑操作
+     * +-----------------------------------------------------------
+     * @functionName : edit
+     * +-----------------------------------------------------------
+     * @author yc
+     * +-----------------------------------------------------------
      */
     public function edit()
     {
         if (IS_POST) {
-            $data = I('post.');
+            $data = array();
+            $data['id'] = I('post.id');
+            $data['title'] = I('post.title');
+            $data['content'] = I('post.content');
+            $data['status'] = I('post.status');
             $data['update_time'] = time();
-            $updata = $this->db->save($data);
-            if ($updata) {
-                $this->success('修改成功', U('index'));
+            $update = $this->db->save($data);
+            if ($update) {
+                $this->success('修改成功', U('news/index'));
             } else {
                 $this->error('修改失败');
             }
         } else {
             $id = I('id');
-            $result = $this->db->where('id=' . $id)->find();
+            $result = $this->db->where(array('id=' => $id))->find();
             $this->assign('result', $result);
             $this->display();
         }
@@ -115,14 +138,18 @@ class NewsController extends ActionController
     }
 
     /**
-     * 删除所选的数据
-     * @para $id 利用id来选择所对应的信息
+     * 删除操作
+     * +-----------------------------------------------------------
+     * @functionName : del
+     * +-----------------------------------------------------------
+     * @author yc
+     * +-----------------------------------------------------------
      */
     public function del()
     {
         $id = trim(I('id'));
-        if ($this->db->where('id=' . $id)->delete()) {
-            $this->success('删除成功', U('index'));
+        if ($this->db->where(array('id=' => $id))->delete()) {
+            $this->success('删除成功', U('news/index'));
         } else {
             $this->error('删除失败');
         }
@@ -130,36 +157,43 @@ class NewsController extends ActionController
 
 
     /**
-     *利用like模糊查找
-     * @param
+     * 搜索(模糊查询)
+     * +-----------------------------------------------------------
+     * @functionName : search
+     * +-----------------------------------------------------------
+     * @author yc
+     * +-----------------------------------------------------------
      */
     public function search()
     {
-        $title = I("title");
-        if (!$title || $title == '') {
-            $this->error('请输入关键字', U('news/index'));
+        $keyword = I("keyword");
+        if (!$keyword || $keyword == '') {
+            $this->redirect('news/index');
             exit();
         } else {
-            $where['title'] = array('like', '%' . $title . '%');
-            $limit = 8;
+            $where = array();
+            $where['title'] = array('like', '%' . $keyword . '%');
+            $limit = 20;
             $count = $this->db->where($where)->count();
             $page = new \Think\Page1($count, $limit);
             $show = $page->show();
             $list = $this->db->where($where)->order('id desc')->limit($page->firstRow . ',' . $page->listRows)->select();
-            $name = $_SESSION['name'];
+
             $this->assign('count', $count);
             $this->assign('page', $show);
             $this->assign('list', $list);
-            $this->assign('key', $title);
-            $this->assign('name', $name);
+            $this->assign('keyword', $keyword);
             $this->display('index');
         }
     }
 
     /**
-     * 改变字段的状态
-     * @param $id
-     * @param $result
+     * 修改字段的状态
+     * +-----------------------------------------------------------
+     * @functionName : status
+     * +-----------------------------------------------------------
+     * @author yc
+     * +-----------------------------------------------------------
      */
     public function status()
     {
@@ -179,13 +213,20 @@ class NewsController extends ActionController
     }
 
     /**
-     * 判断用户名是否已存在
-     * @param int $id 获取过来的id
-     * @param return false id已存在
+     * 判断用户是否存在（不需要这样写个方法）
+     * +-----------------------------------------------------------
+     * @functionName : uniqe
+     * +-----------------------------------------------------------
+     * @param int $title 标题
+     * +-----------------------------------------------------------
+     * @author yc
+     * +-----------------------------------------------------------
+     * @return bool
      */
-    private function uniqe($id)
+    private function uniqe($title)
     {
-        $map['title'] = trim($id);
+        $map = array();
+        $map['title'] = trim($title);
         $result = $this->db->where($map)->find();
         if ($result) {
             return false;

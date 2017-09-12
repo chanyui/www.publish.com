@@ -6,6 +6,14 @@ use Think\Controller;
 
 class ActionController extends Controller
 {
+    /**
+     * 初始化(为过期就更新登录时间，过期就退出)
+     * +-----------------------------------------------------------
+     * @functionName : _initialize
+     * +-----------------------------------------------------------
+     * @author yc
+     * +-----------------------------------------------------------
+     */
     public function _initialize()
     {
         $online = session('online');
@@ -26,6 +34,7 @@ class ActionController extends Controller
             exit();
         } else {
             session('online.expire', time());
+            $this->assign('name', $online['name']);
         }
     }
 }
