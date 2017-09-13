@@ -337,4 +337,63 @@ class ToolsController extends ActionController
         $this->display();
     }
 
+    /**
+     * 验证事务操作
+     * +------------------------------------------------------------------
+     * @functionName : routine
+     * +------------------------------------------------------------------
+     * @author yucheng
+     * +------------------------------------------------------------------
+     */
+    public function routine()
+    {
+        $news = D('News');
+
+        //开启事务
+        $news->startTrans();
+
+        $data1 = array(
+            'title' => '新增1',
+            'content' => 'add new data1',
+            'status' => 0,
+            'create_time' => time(),
+            'update_time' => time(),
+        );
+        $data2 = array(
+            'title' => '新增2',
+            'content' => 'add new data2',
+            'status' => 0,
+            'create_time' => time(),
+            'update_time' => time(),
+        );
+        $res1 = $news->insert($data1);
+        $res2 = $news->insert($data2);
+
+        if ($res1 && $res2) {
+            //提交事务
+            $news->commit();
+        } else {
+            //回滚事务
+            $news->rollback();
+        }
+
+        /*try{
+            $data = array(
+                'title' => '新增1',
+                'content' => 'add new data1',
+                'status' => 0,
+                'create_time' => time(),
+                'update_time' => time(),
+            );
+            $res1 = $news->insert($data);
+            $res2 = $news->insert($data);
+
+            //提交事务
+            $news->commit();
+        } catch (\Exception $e) {
+            //回滚事务
+            $news->rollback();
+        }*/
+    }
+
 }
