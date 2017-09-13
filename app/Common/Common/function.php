@@ -983,7 +983,7 @@ function readExcel($file)
 {
     import('Vendor.PHPExcel.PHPExcel');
     $fileType = \PHPExcel_IOFactory::identify($file);
-    $PHPReader = PHPExcel_IOFactory::createReader($fileType);
+    $PHPReader = \PHPExcel_IOFactory::createReader($fileType);
     $PHPReader->setReadDataOnly(true);              //只读取数据，去除其他格式
     $objPHPExcel = $PHPReader->load($file);         //读取Excel文件
     $currentSheet = $objPHPExcel->getSheet(0);      //获取第一个工作表
