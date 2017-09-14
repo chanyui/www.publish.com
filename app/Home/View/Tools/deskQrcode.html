@@ -7,22 +7,35 @@
 </head>
 <body>
 
-<!-- <div class="header">
+<div id="myTime">
+    <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000"
+            codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0"
+            id="honehoneclock" width="200" height="80" align="middle">
+        <param name="allowScriptAccess" value="always">
+        <param name="movie" value="http://chabudai.sakura.ne.jp/blogparts/honehoneclock/honehone_clock_wh.swf">
+        <param name="quality" value="high">
+        <param name="bgcolor" value="#ffffff">
+        <param name="wmode" value="transparent">
+        <embed wmode="transparent" src="http://chabudai.sakura.ne.jp/blogparts/honehoneclock/honehone_clock_wh.swf"
+               quality="high" bgcolor="#ffffff" name="honehoneclock" allowscriptaccess="always"
+               type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer"
+               width="200" height="80" align="middle">
+    </object>
+</div>
 
-    <div class="dl-title">
-        <img src="/chinapost/Public/assets/img/top.png">
-    </div>
-
-    <div class="dl-log">欢迎您，<span class="dl-log-user">{$_SESSION['name']}</span><a href="{:U('admin/index/logout')}" title="退出系统" class="dl-log-quit">[退出]</a>
-    </div>
-</div> -->
+<div>
+    <object id="animation" type="application/x-shockwave-flash" style="outline:none;" data="http://cdn.abowman.com/widgets/hamster/hamster.swf?up_bodyColor=f0e9cc&amp;up_feetColor=D4C898&amp;up_eyeColor=000567&amp;up_wheelSpokeColor=DEDEDE&amp;up_wheelColor=FFFFFF&amp;up_waterColor=E0EFFF&amp;up_earColor=b0c4de&amp;up_wheelOuterColor=FF4D4D&amp;up_snoutColor=F7F4E9&amp;up_bgColor=F0E4E4&amp;up_foodColor=cba920&amp;up_wheelCenterColor=E4EB2F&amp;up_tailColor=E6DEBE&amp;" width="200" height="160">
+        <param name="movie" value="http://cdn.abowman.com/widgets/hamster/hamster.swf?up_bodyColor=f0e9cc&amp;up_feetColor=D4C898&amp;up_eyeColor=000567&amp;up_wheelSpokeColor=DEDEDE&amp;up_wheelColor=FFFFFF&amp;up_waterColor=E0EFFF&amp;up_earColor=b0c4de&amp;up_wheelOuterColor=FF4D4D&amp;up_snoutColor=F7F4E9&amp;up_bgColor=F0E4E4&amp;up_foodColor=cba920&amp;up_wheelCenterColor=E4EB2E&amp;up_tailColor=E6DEBE&amp;">
+        <param name="AllowScriptAccess" value="always">
+        <param name="wmode" value="opaque"></object>
+</div>
 
 <div class="content">
     <label for="qrcode">扫描查看内容</label>
     <div id="qrcode" title="使用jquery-qrcode生成的二维码"></div>
 </div>
 </body>
-<script type="text/javascript" src="__PUBLIC__/common/js/jquery-1.9.0.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/common/js/jquery.min.js"></script>
 <script type="text/javascript" src="__PUBLIC__/common/js/jquery-qrcode/src/qrcode.js"></script>
 <script type="text/javascript" src="__PUBLIC__/common/js/jquery-qrcode/jquery.qrcode.min.js"></script>
 

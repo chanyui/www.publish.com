@@ -10,7 +10,7 @@ class ToolsController extends ActionController
     }
 
     /**
-     * jquery-qrcode二维码
+     * jquery-qrcode二维码/时间动画flash
      * +------------------------------------------------------------------
      * @functionName : deskQrcode
      * +------------------------------------------------------------------
