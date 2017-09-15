@@ -44,14 +44,14 @@ class ToolsController extends ActionController
         $qrcode->png($url, false, $errorCorrectionLevel, $matrixPointSize); //$qrcode::png($url, false, $errorCorrectionLevel, $matrixPointSize);
 
         //方式二、图片文件输出
-        $data = 'http://www.useryx.com';
+        $data = 'http://blog.dzdress.com';
         $filename = 'qrcode/useryc1.png'; //生成的文件及路径
         $errorCorrectionLevel = 'L';      //纠错级别：L、M、Q、H
         $matrixPointSize = 4;             //点的大小：1到10
         $qrcode::png($data, $filename, $errorCorrectionLevel, $matrixPointSize, 2);
 
         //方式三、生成中间带logo的二维码
-        $value = 'http://www.useryx.com';
+        $value = 'http://blog.dzdress.com';
         $logo = ROOT_PATH . "/Public/css/img/logo1.png"; //中间的logo
         if (!is_dir(C('QRCODE_DIR'))) {
             if (!mkdir(C('QRCODE_DIR'), 0755)) {
