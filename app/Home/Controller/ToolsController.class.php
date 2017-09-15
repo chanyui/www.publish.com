@@ -36,6 +36,7 @@ class ToolsController extends ActionController
     {
         vendor('phpQrCode.phpqrcode'); //引入phpqrcode类
         $qrcode = new \QRcode();
+
         //方式一、直接输出
         $url = 'https://github.com/chanyui/jquery-qrcode';
         $errorCorrectionLevel = "L"; //纠错级别：L、M、Q、H
@@ -57,24 +58,25 @@ class ToolsController extends ActionController
                 E("路径'" . C('QRCODE_DIR') . "'创建失败！");
             }
         }
-        $QR = "qrcode/base.png";                       //自定义生成的。结束后可以删除
+        $QRpath = "qrcode/base.png";                       //自定义生成的。结束后可以删除
         $last = "qrcode/last.png";                     //最终生成的图片
         $errorCorrectionLevel = 'L';
         $matrixPointSize = 10;
-        $qrcode::png($value, $QR, $errorCorrectionLevel, $matrixPointSize, 2);
+        $qrcode::png($value, $QRpath, $errorCorrectionLevel, $matrixPointSize, 2);
         if ($logo !== FALSE) {
-            $QR = imagecreatefromstring(file_get_contents($QR));
+            $QR = imagecreatefromstring(file_get_contents($QRpath));
             $logo = imagecreatefromstring(file_get_contents($logo));
-            $QR_width = imagesx($QR);
-            $QR_height = imagesy($QR);
-            $logo_width = imagesx($logo);
-            $logo_height = imagesy($logo);
+            $QR_width = imagesx($QR);       //获取二维码图片宽度
+            $QR_height = imagesy($QR);      //获取二维码图片高度
+            $logo_width = imagesx($logo);   //获取logo图片宽度
+            $logo_height = imagesy($logo);  //获取logo图片高度
             $logo_qr_width = $QR_width / 5;
             $scale = $logo_width / $logo_qr_width;
             $logo_qr_height = $logo_height / $scale;
             $from_width = ($QR_width - $logo_qr_width) / 2;
             imagecopyresampled($QR, $logo, $from_width, $from_width, 0, 0, $logo_qr_width, $logo_qr_height, $logo_width, $logo_height);
         }
+        unlink($QRpath);
         imagepng($QR, $last); //生成最终的文件
     }
 
