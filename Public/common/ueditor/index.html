@@ -14,15 +14,12 @@
         div{
             width:100%;
         }
-        #editor {
-            width:1024px;height:500px;
-        }
     </style>
 </head>
 <body>
 <div>
     <h1>完整demo</h1>
-    <script id="editor" type="text/plain"></script>
+    <script style="width:1024px;height:500px;" id="editor" type="text/plain"></script>
 </div>
 <div id="btns">
     <div>
@@ -36,6 +33,7 @@
         <button onclick="setFocus()">使编辑器获得焦点</button>
         <button onmousedown="isFocus(event)">编辑器是否获得焦点</button>
         <button onmousedown="setblur(event)" >编辑器失去焦点</button>
+
     </div>
     <div>
         <button onclick="getText()">获得当前选中的文本</button>
@@ -51,6 +49,7 @@
         <button onclick="getLocalData()" >获取草稿箱内容</button>
         <button onclick="clearLocalData()" >清空草稿箱</button>
     </div>
+
 </div>
 <div>
     <button onclick="createEditor()">
