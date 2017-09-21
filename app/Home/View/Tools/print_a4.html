@@ -1,0 +1,99 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>juqery-qrcode</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+</head>
+<body>
+
+<div class="content">
+    <label for="print">使用LodopFuncs打印插件</label>
+
+    <div class="card-content">
+        <div class="card-body">
+            <button id="print" class="btn btn-app btn-default">
+                打印
+            </button>
+
+            <form id="form1" style="width: 40%">
+                <table border="1" style="margin-bottom: 20px;max-width: 100%;width: 100%;background-color: transparent;border-collapse: collapse;border-spacing: 0;" class="table table-bordered">
+                    <thead style="margin-bottom: 10px;">
+                    <tr><th class="text-center" colspan="6">档案</th></tr>
+                    </thead>
+                    <tbody>
+                    <tr ><td>姓名</td><td>yyyuuu</td><td>性别</td>
+                        <td>
+                            男
+                        </td><td>学号</td><td>2017115689</td></tr>
+                    <tr><td>身份证号</td><td colspan="3">333128201601016522</td><td>联系方式</td><td>18888888888</td></tr>
+                    <tr><td>培训机构</td><td colspan="5">杭州培训机构</td></tr>
+                    <tr><td>培训地点</td><td colspan="5">杭州西湖区</td></tr>
+                    <tr><td>培训时间</td><td colspan="2">2017-7</td><td>至</td><td colspan="2">2017-9</td></tr>
+                    <tr><td>培训课程</td><td colspan="5">PHP</td></tr>
+                    <tr><td>培训班级</td><td colspan="5">培训1班</td></tr>
+                    <tr><td>在线学习课程</td><td colspan="5">面向对象编程</td></tr>
+                    <tr><td>出勤成绩</td><td>合格</td><td>理论成绩</td><td>合格</td><td>实践成绩</td><td>合格</td></tr>
+                    <tr><td>培训结果</td><td colspan="5">合格</td></tr>
+                    </tbody>
+                </table>
+            </form>
+        </div>
+    </div>
+
+</div>
+</body>
+<script type="text/javascript" src="__PUBLIC__/common/js/lodopfuncs/LodopFuncs.js"></script>
+<script type="text/javascript">
+    window.onload = function () {
+        var btn = document.getElementById('print');
+        /*function1*/
+        btn.addEventListener('click',function () {
+            prn1_preview();
+        });
+
+        /*function2*/
+        /*btn.onclick = function () {
+            prn1_preview();
+        }*/
+    };
+
+    //打印插件设置
+    var LODOP; //声明为全局变量
+    function prn1_preview() {
+        CreateOneFormPage();
+        LODOP.PREVIEW();
+    }
+    function CreateOneFormPage(){
+        LODOP=getLodop();
+        LODOP.PRINT_INIT("打印");
+        LODOP.SET_PRINT_STYLE("FontSize",10);
+        LODOP.SET_PRINT_PAGESIZE(2,0,0,"A4");
+        LODOP.SET_SHOW_MODE("LANDSCAPE_DEFROTATED",1);//横向时的正向显示
+        //LODOP.SET_PRINT_STYLE("Bold",1);
+        //需要打印的内容范围
+        LODOP.ADD_PRINT_HTM(0,0,"100%","100%",document.getElementById("form1").innerHTML);
+    }
+
+    //转换中文
+    function toUtf8(str) {
+        var out, i, len, c;
+        out = "";
+        len = str.length;
+        for (i = 0; i < len; i++) {
+            c = str.charCodeAt(i);
+            if ((c >= 0x0001) && (c <= 0x007F)) {
+                out += str.charAt(i);
+            } else if (c > 0x07FF) {
+                out += String.fromCharCode(0xE0 | ((c >> 12) & 0x0F));
+                out += String.fromCharCode(0x80 | ((c >> 6) & 0x3F));
+                out += String.fromCharCode(0x80 | ((c >> 0) & 0x3F));
+            } else {
+                out += String.fromCharCode(0xC0 | ((c >> 6) & 0x1F));
+                out += String.fromCharCode(0x80 | ((c >> 0) & 0x3F));
+            }
+        }
+        return out;
+    }
+</script>
+</html>
