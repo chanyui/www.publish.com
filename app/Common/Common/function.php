@@ -1027,7 +1027,7 @@ function bubble_sort($arr)
  * @return string
  * +----------------------------------------------------------
  */
-function getDateStr($del1 = '年', $del2 = '月', $del3 = '日', $time)
+function getDateStr($time, $del1 = '年', $del2 = '月', $del3 = '日')
 {
     $dayArr = array('日', '一', '二', '三', '四', '五', '六');
     $day = date('w', $time); //一周中的第几天 0~6
