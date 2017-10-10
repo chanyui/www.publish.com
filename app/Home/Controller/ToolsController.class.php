@@ -353,6 +353,25 @@ class ToolsController extends ActionController
     }
 
     /**
+     * 获取拼音的首字母(支持utf-8, gb2312)默认utf-8
+     * +-----------------------------------------------------------
+     * @functionName : pychar
+     * +-----------------------------------------------------------
+     * @author yc
+     * +-----------------------------------------------------------
+     */
+    public function pychar()
+    {
+        /*vendor('PinyinChar.PinyinChar');   //引入拼音首字母类
+        $pinyin = new \PinyinChar();*/       //没有引入命名空间时需要手动引入类库(文件名为 .php而不是 .class.php)
+        $pinyin = new \Vendor\PinyinChar\PinyinChar();
+        $str = '这个是测试';
+        $res = $pinyin->getInitials($str);
+        echo '输入为：'.$str."<br/>";
+        echo '输出为：'.$res;
+    }
+
+    /**
      * 验证事务操作
      * +------------------------------------------------------------------
      * @functionName : routine
