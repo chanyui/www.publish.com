@@ -353,14 +353,14 @@ class ToolsController extends ActionController
     }
 
     /**
-     * 获取拼音的首字母(支持utf-8, gb2312)默认utf-8
+     * 获取拼音的首字母字符串(支持utf-8, gb2312)默认utf-8
      * +-----------------------------------------------------------
-     * @functionName : pychar
+     * @functionName : pinyinchar
      * +-----------------------------------------------------------
      * @author yc
      * +-----------------------------------------------------------
      */
-    public function pychar()
+    public function pinyinchar()
     {
         /*vendor('PinyinChar.PinyinChar');   //引入拼音首字母类
         $pinyin = new \PinyinChar();*/       //没有引入命名空间时需要手动引入类库(文件名为 .php而不是 .class.php)
@@ -369,6 +369,75 @@ class ToolsController extends ActionController
         $res = $pinyin->getInitials($str);
         echo '输入为：'.$str."<br/>";
         echo '输出为：'.$res;
+    }
+
+    /**
+     * 获取中文的全拼、带声标的全拼、首拼字符串、首字母
+     * +-----------------------------------------------------------
+     * @functionName : pinyin
+     * +-----------------------------------------------------------
+     * @author yc
+     * +-----------------------------------------------------------
+     */
+    public function pinyin()
+    {
+        vendor('Pinyin.vendor.autoload');
+        $pinyin = new \Overtrue\Pinyin\Pinyin();
+
+        $str1 = '带着希望去旅行，比到达终点更美好!';
+        $name = '单某某';
+
+        $a = $pinyin->convert($str1);
+        // ["dai", "zhe", "xi", "wang", "qu", "lu", "xing", "bi", "dao", "da", "zhong", "dian", "geng", "mei", "hao"]
+
+        $b = $pinyin->convert($str1, PINYIN_UNICODE);
+        // ["dài","zhe","xī","wàng","qù","lǚ","xíng","bǐ","dào","dá","zhōng","diǎn","gèng","měi","hǎo"]
+
+        $c = $pinyin->convert($str1, PINYIN_ASCII);
+        //["dai4","zhe","xi1","wang4","qu4","lv3","xing2","bi3","dao4","da2","zhong1","dian3","geng4","mei3","hao3"]
+
+        $d = $pinyin->permalink($str1); //dai-zhe-xi-wang-qu-lv-xing-bi-dao-da-zhong-dian-geng-mei-hao
+
+        $e = $pinyin->permalink($str1, '.'); //dai.zhe.xi.wang.qu.lv.xing.bi.dao.da.zhong.dian.geng.mei.hao
+
+        $f = $pinyin->abbr($str1); //dzxwqlxbddzdgmh
+
+        $g = $pinyin->abbr($str1, '-'); //d-z-x-w-q-l-x-b-d-d-z-d-g-m-h
+
+        $h = $pinyin->sentence($str1);
+        // dai zhe xi wang qu lv xing, bi dao da zhong dian geng mei hao!
+
+        $i = $pinyin->sentence($str1, true);
+        // dài zhe xī wàng qù lǚ xíng, bǐ dào dá zhōng diǎn gèng měi hǎo!
+
+        $name1 = $pinyin->name($name); // ['shan', 'mou', 'mou']
+
+        $name2 = $pinyin->name($name, PINYIN_UNICODE); // ["shàn","mǒu","mǒu"]
+
+
+        echo '输入中文为：' . $str1 . "<br/><br/>";
+
+        echo '输出拼音为(不带音调输出):' . implode($a, ' ') . "<br/><br/>";
+
+        echo '输出拼音为(UNICODE式音调):' . implode($b, ' ') . "<br/><br/>";
+
+        echo '输出拼音为(带数字式音调):' . implode($c, ' ') . "<br/><br/>";
+
+        echo '带链接的拼音字符串为:' . $d . "<br/><br/>";
+
+        echo '带链接的拼音字符串为:' . $e . "<br/><br/>";
+
+        echo '输出首字符串为:' . $f . "<br/><br/>";
+
+        echo '输出首字符串为:' . $g . "<br/><br/>";
+
+        echo '保留中文字符:' . $h . "<br/><br/>";
+
+        echo '保留中文字符带音标:' . $i . "<br/><br/>";
+
+        echo '输出翻译姓名为：' . implode($name1, ' ') . "<br/><br/>";
+
+        echo '输出翻译姓名为：' . implode($name2, ' ') . "<br/><br/>";
     }
 
     /**
