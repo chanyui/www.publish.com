@@ -39,7 +39,7 @@ class NewsController extends ActionController
         $limit = 20;
         $page = new \Think\Page1($count, $limit);
         $show = $page->show();
-        $list = $this->db->where($where)->limit($page->firstRow . ',' . $page->listRows)->order('id asc')->select();
+        $list = $this->db->where($where)->limit($page->firstRow . ',' . $page->listRows)->order('update_time desc')->select();
         foreach ($list as $key => $value) {
             if (!$value['codeimg']) {
                 $qrCode = $this->createQrCode($value['id']);
@@ -66,7 +66,17 @@ class NewsController extends ActionController
     public function add()
     {
         if (IS_POST) {
-            $data = array();
+            if (!$this->db->create()) {
+                $this->error($this->db->getError());
+                exit();
+            } else {
+                if ($this->db->add()) {
+                    $this->success('添加成功', U('news/index'));
+                } else {
+                    $this->error('添加失败');
+                }
+            }
+            /*$data = array();
             $data['title'] = I('post.title');
             $data['content'] = I('post.content');
             $data['status'] = I('post.status');
@@ -82,7 +92,7 @@ class NewsController extends ActionController
                 }
             } else {
                 $this->error('信息已存在', U('news/add'));
-            }
+            }*/
         } else {
             $this->display();
         }
@@ -101,17 +111,15 @@ class NewsController extends ActionController
     public function edit()
     {
         if (IS_POST) {
-            $data = array();
-            $data['id'] = I('post.id');
-            $data['title'] = I('post.title');
-            $data['content'] = I('post.content');
-            $data['status'] = I('post.status');
-            $data['update_time'] = time();
-            $update = $this->db->save($data);
-            if ($update) {
-                $this->success('修改成功', U('news/index'));
+            if (!$this->db->create()) {
+                $this->error($this->db->getError());
+                exit();
             } else {
-                $this->error('修改失败');
+                if ($this->db->save()) {
+                    $this->success('添加成功', U('news/index'));
+                } else {
+                    $this->error('添加失败');
+                }
             }
         } else {
             $id = I('id');
@@ -209,29 +217,6 @@ class NewsController extends ActionController
             $this->success($msg . '成功', U(strtolower(CONTROLLER_NAME) . '/index'));
         } else {
             $this->error($msg . '失败', U(strtolower(CONTROLLER_NAME) . '/index'));
-        }
-    }
-
-    /**
-     * 判断用户是否存在（不需要这样写个方法）
-     * +-----------------------------------------------------------
-     * @functionName : uniqe
-     * +-----------------------------------------------------------
-     * @param int $title 标题
-     * +-----------------------------------------------------------
-     * @author yc
-     * +-----------------------------------------------------------
-     * @return bool
-     */
-    private function uniqe($title)
-    {
-        $map = array();
-        $map['title'] = trim($title);
-        $result = $this->db->where($map)->find();
-        if ($result) {
-            return false;
-        } else {
-            return true;
         }
     }
 
