@@ -123,7 +123,7 @@ class NewsController extends ActionController
             }
         } else {
             $id = I('id');
-            $result = $this->db->where(array('id=' => $id))->find();
+            $result = $this->db->where(array('id'=>$id))->find();
             $this->assign('result', $result);
             $this->display();
         }

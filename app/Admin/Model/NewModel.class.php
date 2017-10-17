@@ -4,7 +4,7 @@ namespace Admin\Model;
 
 use Think\Model;
 
-class NewsModel extends Model
+class NewModel extends Model
 {
     protected $tableName = 'news';
 
