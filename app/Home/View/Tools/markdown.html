@@ -1,0 +1,65 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>markdown-html</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <script type="text/javascript" src="__PUBLIC__/common/js/jquery.min.js"></script>
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/import/css/profile.css">
+</head>
+<body>
+
+<div class="profile-container">
+    <div class="container">
+        <p>
+            <textarea name="" id="area" cols="50" rows="20"></textarea>
+        </p>
+        <p>
+            <button data-toggle="modal" id="area-btn" data-target=".import-modal" class="btn btn-large btn-primary">预览</button>
+        </p>
+
+        <!--model-->
+        <div id="model" tabindex="-1" role="dialog" class="modal fade import-modal">
+            <div role="document" class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span>&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    jQuery(function () {
+        $('#area-btn').click(function () {
+            var content = $('#area').val();
+            $.ajax({
+                url: '{:U("tools/markdown")}',
+                type: 'POST',
+                data: {
+                    'content':content
+                },
+                success: function (res) {
+                    var o = res;
+                    if (o.code == 0) {
+                        $('.modal-body').html(o.data);
+                    }
+                },
+                error: function () {
+
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>

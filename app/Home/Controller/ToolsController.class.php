@@ -499,4 +499,17 @@ class ToolsController extends ActionController
         }*/
     }
 
+    public function markdown()
+    {
+        vendor('HyperDown.Parser');
+        if (IS_AJAX) {
+            $post = I('post.content');
+            $parser = new \HyperDown\Parser();
+            $html = $parser->makeHtml($post);
+            $this->ajaxReturn(array('code' => 0, 'data' => $html));
+        } else {
+            $this->display();
+        }
+    }
+
 }
