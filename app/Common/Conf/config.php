@@ -25,4 +25,14 @@ return array(
 
     //ffmpeg路径配置
     'FFMPEG_PATH' => '/usr/local/bin/ffmpeg -i "%s" 2>&1',
+
+    'SENDMAIL' => [
+        'mail_type' => 'smtp',
+        'mail_auth' => true,
+        'mail_host' => 'smtp.163.com',
+        'mail_port' => '587',
+        'mail_user' => 'yuriychan@163.com',
+        'mail_pwd' => 'yucheng199284',
+        'send_name' => '一封来自网易的传书'
+    ]
 );

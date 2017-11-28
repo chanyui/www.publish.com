@@ -311,6 +311,38 @@ class ToolsController extends ActionController
     }
 
     /**
+     * 发送邮件(PHPmailer)
+     * +-----------------------------------------------------------
+     * @functionName : phpmailer
+     * +-----------------------------------------------------------
+     * @author yc
+     * +-----------------------------------------------------------
+     */
+    public function phpmailer()
+    {
+        $mailCofig = C('SENDMAIL');
+        $tomail = '718653142@qq.com';
+        $title = '愿得一人心，白首不相离。';
+        $content = <<<EOF
+            <p align="center">
+                皑如山上雪，皎若云间月。<br>
+                闻君有两意，故来相决绝。<br>
+                今日斗酒会，明旦沟水头。<br>
+                躞蹀御沟上，沟水东西流。<br>
+                凄凄复凄凄，嫁娶不须啼。<br>
+                愿得一人心，白首不相离。<br>
+                竹竿何袅袅，鱼尾何簁簁！<br>
+                男儿重意气，何用钱刀为！</p>
+EOF;
+        $res = sendMail($tomail,$title,$content,$mailCofig);
+        if ($res) {
+            echo '发送成功';
+        } else {
+            echo '发送失败';
+        }
+    }
+
+    /**
      * 百度富文本编辑器
      * +-----------------------------------------------------------
      * @functionName : uedit
