@@ -9,33 +9,32 @@
  * @param string $ua
  * @param bool|false $print
  */
-function xcurl($url,$ref=null,$post=array(),$ua="Mozilla/5.0 (X11; Linux x86_64; rv:2.2a1pre) Gecko/20110324 Firefox/4.2a1pre",$print=false)
+function xcurl($url, $ref = null, $post = array(), $ua = "Mozilla/5.0 (X11; Linux x86_64; rv:2.2a1pre) Gecko/20110324 Firefox/4.2a1pre", $print = false)
 {
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_AUTOREFERER, true);
-    if(!empty($ref)) {
+    if (!empty($ref)) {
         curl_setopt($ch, CURLOPT_REFERER, $ref);
     }
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_HEADER, 0);
     curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    if(!empty($ua)) {
+    if (!empty($ua)) {
         curl_setopt($ch, CURLOPT_USERAGENT, $ua);
     }
-    if(count($post) > 0){
+    if (count($post) > 0) {
         $o = "";
-        foreach ($post as $k=>$v)
-        {
-            $o .= "$k=".urlencode($v)."&";
+        foreach ($post as $k => $v) {
+            $o .= "$k=" . urlencode($v) . "&";
         }
-        $post = substr($o,0,-1);
+        $post = substr($o, 0, -1);
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
     }
     $output = curl_exec($ch);
     curl_close($ch);
-    if($print) {
+    if ($print) {
         print($output);
     } else {
         return $output;
@@ -52,32 +51,31 @@ function xcurl($url,$ref=null,$post=array(),$ua="Mozilla/5.0 (X11; Linux x86_64;
  * @param string $ua
  * @param bool|false $print
  */
-function gcurl($url,$header=array(),$get=array(),$ua="Mozilla/5.0 (X11; Linux x86_64; rv:2.2a1pre) Gecko/20110324 Firefox/4.2a1pre",$print=false)
+function gcurl($url, $header = array(), $get = array(), $ua = "Mozilla/5.0 (X11; Linux x86_64; rv:2.2a1pre) Gecko/20110324 Firefox/4.2a1pre", $print = false)
 {
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_AUTOREFERER, true);
-    if(!empty($header)) {
+    if (!empty($header)) {
         curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
     }
-    if(count($get) > 0){
+    if (count($get) > 0) {
         $o = "";
-        foreach ($get as $k=>$v)
-        {
-            $o .= "$k=".urlencode($v)."&";
+        foreach ($get as $k => $v) {
+            $o .= "$k=" . urlencode($v) . "&";
         }
-        $get = substr($o,0,-1);
-        $url = $url.'?'.$get;
+        $get = substr($o, 0, -1);
+        $url = $url . '?' . $get;
     }
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_HEADER, 0);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    if(!empty($ua)) {
+    if (!empty($ua)) {
         curl_setopt($ch, CURLOPT_USERAGENT, $ua);
     }
 
     $output = curl_exec($ch);
     curl_close($ch);
-    if($print) {
+    if ($print) {
         print($output);
     } else {
         return $output;
@@ -91,13 +89,14 @@ function gcurl($url,$header=array(),$get=array(),$ua="Mozilla/5.0 (X11; Linux x8
  * @param int $length 随机码的长度
  * @param int $numeric 0是字母和数字混合码，不为0是数字码
  */
-function random($length, $numeric = 0) {
+function random($length, $numeric = 0)
+{
     PHP_VERSION < '4.2.0' ? mt_srand((double)microtime() * 1000000) : mt_srand();
-    $seed = base_convert(md5(print_r($_SERVER, 1).microtime()), 16, $numeric ? 10 : 35);
-    $seed = $numeric ? (str_replace('0', '', $seed).'012340567890') : ($seed.'zZ'.strtoupper($seed));
+    $seed = base_convert(md5(print_r($_SERVER, 1) . microtime()), 16, $numeric ? 10 : 35);
+    $seed = $numeric ? (str_replace('0', '', $seed) . '012340567890') : ($seed . 'zZ' . strtoupper($seed));
     $hash = '';
     $max = strlen($seed) - 1;
-    for($i = 0; $i < $length; $i++) {
+    for ($i = 0; $i < $length; $i++) {
         $hash .= $seed[mt_rand(0, $max)];
     }
     return $hash;
@@ -109,7 +108,7 @@ function random($length, $numeric = 0) {
  * @return string
  * @param string $string 加密的字符串
  * @param string $operation DECODE表示解密,其它表示加密
- * @param string $key  密钥
+ * @param string $key 密钥
  * @param int $expiry 密文有效期
  */
 function authcode($string, $operation = 'DECODE', $key = '', $expiry = 0)
@@ -118,30 +117,30 @@ function authcode($string, $operation = 'DECODE', $key = '', $expiry = 0)
     $key = md5($key ? $key : "da7b4db15be94a4c597a34f9cf902b01");
     $keya = md5(substr($key, 0, 16));
     $keyb = md5(substr($key, 16, 16));
-    $keyc = $ckey_length ? ($operation == 'DECODE' ? substr($string, 0, $ckey_length): substr(md5(microtime()), -$ckey_length)) : '';
+    $keyc = $ckey_length ? ($operation == 'DECODE' ? substr($string, 0, $ckey_length) : substr(md5(microtime()), -$ckey_length)) : '';
 
-    $cryptkey = $keya.md5($keya.$keyc);
+    $cryptkey = $keya . md5($keya . $keyc);
     $key_length = strlen($cryptkey);
 
-    $string = $operation == 'DECODE' ? base64_decode(substr($string, $ckey_length)) : sprintf('%010d', $expiry ? $expiry + time() : 0).substr(md5($string.$keyb), 0, 16).$string;
+    $string = $operation == 'DECODE' ? base64_decode(substr($string, $ckey_length)) : sprintf('%010d', $expiry ? $expiry + time() : 0) . substr(md5($string . $keyb), 0, 16) . $string;
     $string_length = strlen($string);
 
     $result = '';
     $box = range(0, 255);
 
     $rndkey = array();
-    for($i = 0; $i <= 255; $i++) {
+    for ($i = 0; $i <= 255; $i++) {
         $rndkey[$i] = ord($cryptkey[$i % $key_length]);
     }
 
-    for($j = $i = 0; $i < 256; $i++) {
+    for ($j = $i = 0; $i < 256; $i++) {
         $j = ($j + $box[$i] + $rndkey[$i]) % 256;
         $tmp = $box[$i];
         $box[$i] = $box[$j];
         $box[$j] = $tmp;
     }
 
-    for($a = $j = $i = 0; $i < $string_length; $i++) {
+    for ($a = $j = $i = 0; $i < $string_length; $i++) {
         $a = ($a + 1) % 256;
         $j = ($j + $box[$a]) % 256;
         $tmp = $box[$a];
@@ -150,14 +149,14 @@ function authcode($string, $operation = 'DECODE', $key = '', $expiry = 0)
         $result .= chr(ord($string[$i]) ^ ($box[($box[$a] + $box[$j]) % 256]));
     }
 
-    if($operation == 'DECODE') {
-        if((substr($result, 0, 10) == 0 || substr($result, 0, 10) - time() > 0) && substr($result, 10, 16) == substr(md5(substr($result, 26).$keyb), 0, 16)) {
+    if ($operation == 'DECODE') {
+        if ((substr($result, 0, 10) == 0 || substr($result, 0, 10) - time() > 0) && substr($result, 10, 16) == substr(md5(substr($result, 26) . $keyb), 0, 16)) {
             return substr($result, 26);
         } else {
             return '';
         }
     } else {
-        return $keyc.str_replace('=', '', base64_encode($result));
+        return $keyc . str_replace('=', '', base64_encode($result));
     }
 
 }
@@ -169,18 +168,18 @@ function authcode($string, $operation = 'DECODE', $key = '', $expiry = 0)
  * @param string $password 原始密码
  * @param string $salt 密钥
  */
-function encrypt($password,$salt)
+function encrypt($password, $salt)
 {
-    $slt = $password.'{'.$salt."}";
+    $slt = $password . '{' . $salt . "}";
     $h = 'sha256';
 
-    $digest = hash($h , $slt , true);
+    $digest = hash($h, $slt, true);
 
-    for($i=1; $i<5000;$i++){
-        $digest = hash($h ,$digest.$slt , true);
+    for ($i = 1; $i < 5000; $i++) {
+        $digest = hash($h, $digest . $slt, true);
     }
 
-    return  base64_encode($digest);
+    return base64_encode($digest);
 }
 
 /**
@@ -188,19 +187,20 @@ function encrypt($password,$salt)
  * Function:wotu_crypt
  * @return string
  */
-function wotu_crypt($str, $op='enc' , $key='wotu') {
-    $from = array('/' , '=' , '+');
-    $to   = array('-' , '_' , '.');
-    if($op == 'enc'){
+function wotu_crypt($str, $op = 'enc', $key = 'wotu')
+{
+    $from = array('/', '=', '+');
+    $to = array('-', '_', '.');
+    if ($op == 'enc') {
         $prep_code = serialize($str);
         $block = mcrypt_get_block_size('des', 'ecb');
         if (($pad = $block - (strlen($prep_code) % $block)) < $block) {
             $prep_code .= str_repeat(chr($pad), $pad);
         }
         $encrypt = mcrypt_encrypt(MCRYPT_DES, $key, $prep_code, MCRYPT_MODE_ECB);
-        return str_replace( $from , $to , base64_encode($encrypt));
-    }else if($op == 'dec'){
-        $str = str_replace( $to , $from , $str);
+        return str_replace($from, $to, base64_encode($encrypt));
+    } else if ($op == 'dec') {
+        $str = str_replace($to, $from, $str);
         $str = base64_decode($str);
         $str = mcrypt_decrypt(MCRYPT_DES, $key, $str, MCRYPT_MODE_ECB);
         $block = mcrypt_get_block_size('des', 'ecb');
@@ -219,9 +219,9 @@ function wotu_crypt($str, $op='enc' , $key='wotu') {
  * @param string $password 原始密码
  * @param string $salt 密钥
  */
-function get_password($password,$salt)
+function get_password($password, $salt)
 {
-    return encrypt($password,$salt);
+    return encrypt($password, $salt);
 }
 
 /**
@@ -232,11 +232,11 @@ function get_password($password,$salt)
  * @param string $salt 密钥
  * @param string $pwd 加密后密码
  */
-function check_password($password,$salt,$pwd)
+function check_password($password, $salt, $pwd)
 {
-    if(get_password($password,$salt) == $pwd){
+    if (get_password($password, $salt) == $pwd) {
         return true;
-    }else{
+    } else {
         return false;
     }
 }
@@ -249,9 +249,9 @@ function check_password($password,$salt,$pwd)
  * @param string $message 模板id为0是发送信息，模板id不为0是者模板值
  * @param int $tpl_id 模板id
  */
-function send_by_phone($phone,$message,$tpl_id=0)
+function send_by_phone($phone, $message, $tpl_id = 0)
 {
-    if(!$phone || !$message){
+    if (!$phone || !$message) {
         return false;
         exit;
     }
@@ -260,17 +260,17 @@ function send_by_phone($phone,$message,$tpl_id=0)
     $mobile = $phone;
 
     $sendSms = new \Org\sendSms();
-    if($tpl_id){
+    if ($tpl_id) {
         $tpl_value = $message;
         $output = $sendSms->tpl_send_sms($apikey, $tpl_id, $tpl_value, $mobile);
-    }else{
-        $text   = $message;
-        $output = $sendSms->send_sms($apikey,$text,$mobile);
+    } else {
+        $text = $message;
+        $output = $sendSms->send_sms($apikey, $text, $mobile);
     }
-    $output = json_decode($output,true);
-    if($output['code'] != 0){
+    $output = json_decode($output, true);
+    if ($output['code'] != 0) {
         return false;
-    }else{
+    } else {
         return true;
     }
 }
@@ -283,14 +283,14 @@ function send_by_phone($phone,$message,$tpl_id=0)
  * @param array $session session的数组
  * @param string $name session存储的名称
  */
-function set_session($session,$name)
+function set_session($session, $name)
 {
-    if(is_array($session)){
+    if (is_array($session)) {
         $session = json_encode($session);
     }
     $key = C('secret_key');
-    $session = authcode($session,'ENCODE',$key);
-    session($name,$session);
+    $session = authcode($session, 'ENCODE', $key);
+    session($name, $session);
 }
 
 /**
@@ -304,14 +304,14 @@ function get_session($name)
     $key = C('secret_key');
     $auth = session($name);
 
-    if($auth){
-        $session = authcode($auth,'DECODE',$key);
-        $ary = json_decode($session,true);
-        if(!$ary){
+    if ($auth) {
+        $session = authcode($auth, 'DECODE', $key);
+        $ary = json_decode($session, true);
+        if (!$ary) {
             $ary = $session;
         }
         return $ary;
-    }else{
+    } else {
         return false;
     }
 }
@@ -337,10 +337,10 @@ function set_online($uid)
         'expiry' => $liveTime,
         'sessionId' => session_id()
     );
-    $isOn = $db->where('uid = "'.$uid.'"')->find();
-    if($isOn){
+    $isOn = $db->where('uid = "' . $uid . '"')->find();
+    if ($isOn) {
         $db->save($expriy);
-    }else{
+    } else {
         $db->add($expriy);
     }
 }
@@ -355,8 +355,8 @@ function check_online($uid)
 {
     $db = M('session_online');
     $conditions['uid'] = $uid;
-    $conditions['expiry'] = array('gt',time());
-    $conditions['sessionId'] = array('neq',session_id());
+    $conditions['expiry'] = array('gt', time());
+    $conditions['sessionId'] = array('neq', session_id());
     $res = $db->where($conditions)->find();
     return $res ? true : false;
 }
@@ -366,35 +366,35 @@ function check_online($uid)
  * @param int $uid 要操作的用户id
  * @param string $act 操作选项 KILL 删除在线表里的uid记录 LIVE更新存活时间
  */
-function change_session_table($uid,$act = 'LIVE')
+function change_session_table($uid, $act = 'LIVE')
 {
     $db = M('session_online');
-    if($act === 'KILL'){
+    if ($act === 'KILL') {
         $db->delete($uid);
-    }else{
+    } else {
         $liveTime = time() + C('SESSION_EXPIRY');
-        $db->where('uid = "'.$uid.'"')->setField("expiry",$liveTime);
+        $db->where('uid = "' . $uid . '"')->setField("expiry", $liveTime);
     }
 }
 
 /**
- +----------------------------------------------------------
+ * +----------------------------------------------------------
  * 添加系统日志
- +----------------------------------------------------------
+ * +----------------------------------------------------------
  * @param  string $module_name 项目名称
- +----------------------------------------------------------
+ * +----------------------------------------------------------
  * @param  string $controller_name 控制器名
- +----------------------------------------------------------
+ * +----------------------------------------------------------
  * @param  string $action_name 操作名
- +----------------------------------------------------------
+ * +----------------------------------------------------------
  * @param  int $mid 数据ID
- +----------------------------------------------------------
+ * +----------------------------------------------------------
  */
-function add_sys_logs($module_name,$controller_name,$action_name,$mid=0)
+function add_sys_logs($module_name, $controller_name, $action_name, $mid = 0)
 {
-    if(!$module_name || !$controller_name || !$action_name){
+    if (!$module_name || !$controller_name || !$action_name) {
         return;
-    }else{
+    } else {
         $module_name = strtolower($module_name);
         $controller_name = strtolower($controller_name);
         $action_name = strtolower($action_name);
@@ -411,7 +411,7 @@ function add_sys_logs($module_name,$controller_name,$action_name,$mid=0)
  * @param string $module_name
  * @param $condition
  */
-function get_sys_logs($module_name='',$condition)
+function get_sys_logs($module_name = '', $condition)
 {
 
 }
@@ -423,7 +423,7 @@ function get_sys_logs($module_name='',$condition)
  * @param array $file 为要上传的文件
  * @param array $data 裁切参数 $data['x'] 起点x轴  $data['y'] 起点y轴 $data['w'] $data['h'] 图片预裁切宽高 $data['targetW'] $data['targetH']图片尺寸
  */
-function QiNiuUpload($file,$data)
+function QiNiuUpload($file, $data)
 {
     $setting = C('UPLOAD_SITEIMG_QINIU');
     $Upload = new \Think\Upload($setting);
@@ -432,10 +432,10 @@ function QiNiuUpload($file,$data)
     /*裁切*/
     $img = $info[0]['url'];
     $data['copy'] = basename($img);
-    $crop = $Upload->uploader->imgCrop($img,$data);
-    foreach($crop as $k => $v){
+    $crop = $Upload->uploader->imgCrop($img, $data);
+    foreach ($crop as $k => $v) {
         $imgArr = json_decode($v);
-        $imgR[$k] = "http://".$domain."/".$imgArr->key;
+        $imgR[$k] = "http://" . $domain . "/" . $imgArr->key;
     }
     return $imgR;
 }
@@ -463,8 +463,8 @@ function QiNiuUploadFile($file)
  */
 function subtext($text, $length)
 {
-    if(mb_strlen($text, 'utf8') > $length)
-        return mb_substr($text, 0, $length, 'utf8').'...';
+    if (mb_strlen($text, 'utf8') > $length)
+        return mb_substr($text, 0, $length, 'utf8') . '...';
     return $text;
 }
 
@@ -478,15 +478,15 @@ function subtext($text, $length)
  */
 function formatTime($time)
 {
-    $ago = time()-$time;
-    if($ago < 60){
-        return $ago.' sec';
-    }elseif($ago >= 60 && $ago < 3600){
-        return round($ago/60).' min';
-    }elseif($ago >= 3600 && $ago < 3600*24){
-        return round($ago/3600).' hour';
-    }else{
-        return round($ago/(3600*24)).' day';
+    $ago = time() - $time;
+    if ($ago < 60) {
+        return $ago . ' sec';
+    } elseif ($ago >= 60 && $ago < 3600) {
+        return round($ago / 60) . ' min';
+    } elseif ($ago >= 3600 && $ago < 3600 * 24) {
+        return round($ago / 3600) . ' hour';
+    } else {
+        return round($ago / (3600 * 24)) . ' day';
     }
 }
 
@@ -500,10 +500,10 @@ function formatTime($time)
  */
 function getSexStr($sex)
 {
-    if($sex === null){
+    if ($sex === null) {
         return L('_SEX_UNKNOW_');
     }
-    switch($sex){
+    switch ($sex) {
         case 0:
             $str = L('_SEX_MAN_');
             break;
@@ -526,8 +526,8 @@ function getSexStr($sex)
  */
 function getRoleStr($rid)
 {
-    do{
-        if(empty($rid)){
+    do {
+        if (empty($rid)) {
             $roleStr[] = array(
                 'name' => L('_DEFAULT_USER_LEVEL_'),
                 'description' => null,
@@ -535,14 +535,14 @@ function getRoleStr($rid)
             break;
         }
         $roles = M('roles')->select();
-        foreach($roles as $v){
+        foreach ($roles as $v) {
             $role[$v['id']]['name'] = $v['name'];
             $role[$v['id']]['description'] = $v['description'];
         }
-        foreach($rid as $v){
+        foreach ($rid as $v) {
             $roleStr[$v] = $role[$v];
         }
-    }while(0);
+    } while (0);
     return $roleStr;
 }
 
@@ -556,10 +556,10 @@ function getRoleStr($rid)
  */
 function getStatusStr($locked)
 {
-    if($locked == 1){
-        return '<font color="red">'.L('_OFF_').'</font>';
-    }else{
-        return '<font color="green">'.L('_ON_').'</font>';
+    if ($locked == 1) {
+        return '<font color="red">' . L('_OFF_') . '</font>';
+    } else {
+        return '<font color="green">' . L('_ON_') . '</font>';
     }
 }
 
@@ -594,9 +594,9 @@ function getUserInfoByUid($uid)
  */
 function userLogin($data)
 {
-    do{
+    do {
         if (!$data['username'] || !$data['password']) {
-            $ret = array('status' => 'error','msg' => L('_NULL_INPUT_'));
+            $ret = array('status' => 'error', 'msg' => L('_NULL_INPUT_'));
             break;
         }
         $db = M('user');
@@ -612,44 +612,44 @@ function userLogin($data)
             ->join("left join wt_user_info u on i.uid = u.uid")
             ->where($conditions)
             ->find();
-        if($res){
-            if($res['locked'] == 1){
-                $ret = array('status' => 'error','msg' => L('_BAN_'));
+        if ($res) {
+            if ($res['locked'] == 1) {
+                $ret = array('status' => 'error', 'msg' => L('_BAN_'));
                 break;
             }
-            $pwd = check_password($data['password'],$res['salt'],$res['password']);
-            if($pwd){
-                if(check_online($res['uid'])){
-                    $ret = array('status' => 'error','msg' => L('_LOGIN_',array('time' => date('Y-m-d H:i',$res['lastTime']) , 'ip' => $res['lastIp'])));
+            $pwd = check_password($data['password'], $res['salt'], $res['password']);
+            if ($pwd) {
+                if (check_online($res['uid'])) {
+                    $ret = array('status' => 'error', 'msg' => L('_LOGIN_', array('time' => date('Y-m-d H:i', $res['lastTime']), 'ip' => $res['lastIp'])));
                     break;
                 }
                 unset($res['password']);
                 unset($res['salt']);
                 $res['sessionTime'] = time();
                 $profile = M('user_info')->where('uid', $res['uid'])->find();
-                if($profile){
-                    set_session($profile,'profile');
+                if ($profile) {
+                    set_session($profile, 'profile');
                 }
-                set_session($res,'online');
+                set_session($res, 'online');
                 set_online($res['uid']);
 
                 $userPowers = get_power_by_uid($res['uid']);
-                if(!$userPowers || !is_array($userPowers['menu']) || !array_key_exists(strtolower(MODULE_NAME),$userPowers['menu'])){
-                    $ret = array('status' => 'error','msg' => L('_NO_PERMISSION_'));
+                if (!$userPowers || !is_array($userPowers['menu']) || !array_key_exists(strtolower(MODULE_NAME), $userPowers['menu'])) {
+                    $ret = array('status' => 'error', 'msg' => L('_NO_PERMISSION_'));
                     killSession();
                     break;
                 }
-                $ret = array('status' => 'success','msg' => L('_LOGIN_SUCCESS_'));
+                $ret = array('status' => 'success', 'msg' => L('_LOGIN_SUCCESS_'));
                 break;
-            }else{
-                $ret = array('status' => 'error','msg' => L('_PASSWORD_ERROR_'));
+            } else {
+                $ret = array('status' => 'error', 'msg' => L('_PASSWORD_ERROR_'));
                 break;
             }
-        }else{
-            $ret = array('status' => 'error','msg' => L('_PASSPORT_ERROR_'));
+        } else {
+            $ret = array('status' => 'error', 'msg' => L('_PASSPORT_ERROR_'));
             break;
         }
-    }while(0);
+    } while (0);
     return $ret;
 }
 
@@ -663,16 +663,16 @@ function userLogin($data)
  */
 function get_power_by_uid($uid)
 {
-    $condition['rid'] = array('in',get_roles_by_uid($uid));
+    $condition['rid'] = array('in', get_roles_by_uid($uid));
     $myPowers = M('role_power_relation')->where($condition)->select();
-    foreach($myPowers as $v){
+    foreach ($myPowers as $v) {
         $myPowersList[] = $v['power'];
     }
     $where['status'] = 0;
     $field = "a.id,a.code,p.id as powerId,p.name,p.icon,p.url,p.fid,p.HideInMenu";
     $apps = M('apps')->alias("a")->field($field)->join('left join wt_powers as p on a.id = p.appId')->where($where)->select();
-    foreach($apps as $v){
-        if(in_array($v['powerId'],$myPowersList)){
+    foreach ($apps as $v) {
+        if (in_array($v['powerId'], $myPowersList)) {
             $appPowers[$v['code']][] = $v;
         }
     }
@@ -682,7 +682,7 @@ function get_power_by_uid($uid)
         'ids' => $myPowersList,
         'menu' => $powerList
     );
-    session('userPowers',$userPowers);
+    session('userPowers', $userPowers);
     return $userPowers;
 }
 
@@ -693,19 +693,19 @@ function get_power_by_uid($uid)
  */
 function sort_power_by_fid($data)
 {
-    foreach ($data as $k => $v){
-        foreach($v as $a => $b){
-            if($b['fid'] == 0){
+    foreach ($data as $k => $v) {
+        foreach ($v as $a => $b) {
+            if ($b['fid'] == 0) {
                 $power[$k][] = $b;
-            }else{
+            } else {
                 $sub[] = $b;
             }
 
         }
     }
-    foreach($power as $k => $v){
-        foreach($v as $b){
-            $powers[$k][] = get_sub_power($b,$sub);
+    foreach ($power as $k => $v) {
+        foreach ($v as $b) {
+            $powers[$k][] = get_sub_power($b, $sub);
         }
     }
     return $powers;
@@ -718,15 +718,16 @@ function sort_power_by_fid($data)
  * @param $data
  * @param $sub
  */
-function get_sub_power($data,$sub)
+function get_sub_power($data, $sub)
 {
-    foreach($sub as $v){
-        if($v['fid'] == $data['powerId']){
+    foreach ($sub as $v) {
+        if ($v['fid'] == $data['powerId']) {
             $data['sub'][] = $v;
         }
     }
     return $data;
 }
+
 /**
  * @Name:get_roles_by_uid
  * @Description:根据用id取用户的角色
@@ -738,7 +739,7 @@ function get_roles_by_uid($uid)
 {
     $condition['uid'] = $uid;
     $userRoles = M('user_role_relation')->where($condition)->select();
-    foreach($userRoles as $v){
+    foreach ($userRoles as $v) {
         $roles[] = $v['rid'];
     }
     return $roles;
@@ -752,22 +753,22 @@ function get_roles_by_uid($uid)
  * @param $appId
  * @return $newPower
  */
-function filter_powers($powers,$appId)
+function filter_powers($powers, $appId)
 {
     $condition['appId'] = $appId;
     $condition['HideInMenu'] = 1;
     $hideMenu = M('powers')->field('id')->where($condition)->select();
-    foreach($hideMenu as $v){
+    foreach ($hideMenu as $v) {
         $hideIds[] = $v['id'];
     }
-    foreach($powers as $k => $v){
-        if($v['HideInMenu'] == 0){
+    foreach ($powers as $k => $v) {
+        if ($v['HideInMenu'] == 0) {
             $newPower[$k] = $v;
             unset($newPower[$k]['sub']);
         }
-        if(is_array($v['sub'])){
-            foreach($v['sub'] as $a => $b){
-                if($b['HideInMenu'] == 0){
+        if (is_array($v['sub'])) {
+            foreach ($v['sub'] as $a => $b) {
+                if ($b['HideInMenu'] == 0) {
                     $newPower[$k]['sub'][] = $b;
                 }
             }
@@ -787,52 +788,53 @@ function killSession()
     session(null);
     session_destroy();
     $uid = $online['uid'];
-    if($uid){
-        change_session_table($uid,'KILL');
+    if ($uid) {
+        change_session_table($uid, 'KILL');
     }
 }
 
 /**
- +----------------------------------------------------------
+ * +----------------------------------------------------------
  *  获取用户uid
- +----------------------------------------------------------
- *  @author:chenfeng
- +----------------------------------------------------------
+ * +----------------------------------------------------------
+ * @author:chenfeng
+ * +----------------------------------------------------------
  */
 function get_user_uid()
 {
     $user = get_session('online');
-    if($user){
+    if ($user) {
         return $user['uid'];
-    }else{
+    } else {
         return 0;
     }
 }
 
 /**
-+----------------------------------------------------------
+ * +----------------------------------------------------------
  * 二维数组根据某个字段排序
-+----------------------------------------------------------
+ * +----------------------------------------------------------
  * @param  array $multi_array 排序数组
-+----------------------------------------------------------
+ * +----------------------------------------------------------
  * @param  string $sort_key 排序字段
-+----------------------------------------------------------
+ * +----------------------------------------------------------
  * @param  string $sort 排序顺序标志 SORT_DESC 降序；SORT_ASC 升序
-+----------------------------------------------------------
+ * +----------------------------------------------------------
  */
-function multi_array_sort($multi_array,$sort_key,$sort=SORT_ASC){
-    if(is_array($multi_array)){
-        foreach ($multi_array as $row_array){
-            if(is_array($row_array)){
+function multi_array_sort($multi_array, $sort_key, $sort = SORT_ASC)
+{
+    if (is_array($multi_array)) {
+        foreach ($multi_array as $row_array) {
+            if (is_array($row_array)) {
                 $key_array[] = $row_array[$sort_key];
-            }else{
+            } else {
                 return false;
             }
         }
-    }else{
+    } else {
         return false;
     }
-    array_multisort($key_array,$sort,$multi_array);
+    array_multisort($key_array, $sort, $multi_array);
     return $multi_array;
 }
 
@@ -850,9 +852,9 @@ function getFirstCharter($str)
     if (empty($str)) {
         return '';
     }
-    $encode = mb_detect_encoding($str, array('ASCII','UTF-8','GB2312','GBK','BIG5'));
-    if($encode != 'GB2312'){
-        $str = iconv($encode, 'GB2312',trim($str));
+    $encode = mb_detect_encoding($str, array('ASCII', 'UTF-8', 'GB2312', 'GBK', 'BIG5'));
+    if ($encode != 'GB2312') {
+        $str = iconv($encode, 'GB2312', trim($str));
     }
     $fchar = ord($str{0});
     if ($fchar >= ord('A') && $fchar <= ord('Z')) return strtoupper($str{0});
@@ -887,11 +889,12 @@ function getFirstCharter($str)
  * 生成二维码
  * @param $url
  */
-function generateQRCode($url){
+function generateQRCode($url)
+{
     vendor('phpQrCode.phpqrcode'); //引入phpqrcode类
     $QRcode = new \QRcode();
     ob_start();
-    $QRcode->png($url,false,'L',4);
+    $QRcode->png($url, false, 'L', 4);
     $imageString = base64_encode(ob_get_contents());
     ob_end_clean();
     return $imageString;
@@ -902,7 +905,8 @@ function generateQRCode($url){
  * @param $file string 视频文件
  * @return array 视频信息
  */
-function getVideoInfo($file) {
+function getVideoInfo($file)
+{
 
     $command = sprintf(C('FFMPEG_PATH'), $file);
 
@@ -996,9 +1000,9 @@ function readExcel($file)
 /**
  * PHPMailer发送邮件
  * +-----------------------------------------------------------
- * @functionName : sendMail
+ * @functionName : sendPHPMail
  * +-----------------------------------------------------------
- * @param string $tomail 要发送邮件给那个人
+ * @param array $tomail 要发送邮件给那个人
  * @param string $title 邮件的标题
  * @param string $body 邮件的内容
  * @param array $config 邮件的配置文件
@@ -1006,54 +1010,64 @@ function readExcel($file)
  * @author yc
  * +-----------------------------------------------------------
  */
-function sendMail($tomail, $title, $body, $config = [])
+function sendPHPMail($tomail, $title, $body, $config = [])
 {
     vendor('PHPMailer.phpmailer.PHPMailer');
     vendor('PHPMailer.phpmailer.SMTP');
     $mail = new PHPMailer();  // 实例化PHPMailer核心类
-    try {
-        //Server settings
-        // 是否启用smtp的debug进行调试 开发环境建议开启 生产环境注释掉即可 默认关闭debug调试模式
-        $mail->SMTPDebug = 0;
+
+    //Server settings
+    // 是否启用smtp的debug进行调试 开发环境建议开启 生产环境注释掉即可 默认关闭debug调试模式
+    $mail->SMTPDebug = 0;
+    if ($config['mail_type'] == 'smtp') {
         // 使用smtp鉴权方式发送邮件
         $mail->isSMTP();
         // smtp需要鉴权 这个必须是true
         $mail->SMTPAuth = true;
-        // 链接qq域名邮箱的服务器地址
-        $mail->Host = $config['mail_host'];
-        // smtp登录的账号 QQ邮箱即可
-        $mail->Username = $config['mail_user'];
-        // smtp登录的密码 使用生成的授权码
-        $mail->Password = $config['mail_pwd'];
-        // 设置使用ssl加密方式登录鉴权
-        $mail->SMTPSecure = 'ssl';
-        // 设置ssl连接smtp服务器的远程服务器端口号
-        $mail->Port = $config['mail_port'];
+    }
+    // 链接smtp.163.com域名服务器地址
+    $mail->Host = $config['mail_host'];
+    // smtp登录的账号 QQ邮箱即可
+    $mail->Username = $config['mail_user'];
+    // smtp登录的密码 使用生成的授权码
+    $mail->Password = $config['mail_pwd'];
+    // 设置使用ssl加密方式登录鉴权
+    $mail->SMTPSecure = 'ssl';
+    // 设置ssl连接smtp服务器的远程服务器端口号
+    $mail->Port = $config['mail_port'];
 
+    // 添加多个收件人 则多次调用方法即可
+    //$mail->addAddress('87654321@163.com');
+    if (is_array($tomail)) {
+        foreach ($tomail as $key => $value) {
+            $mail->addAddress($value);
+        }
+    } else {
         //Recipients(收件人)
         // 设置收件人邮箱地址
         $mail->addAddress($tomail);
-        // 添加多个收件人 则多次调用方法即可
-        //$mail->addAddress('87654321@163.com');
+    }
 
-        //Attachments
-        // 为该邮件添加附件
-        //$mail->addAttachment('./example.pdf');
+    //Attachments
+    // 为该邮件添加附件
+    //$mail->addAttachment('./example.pdf');
 
-        //Content
-        // 设置发送的邮件的编码
-        $mail->CharSet = 'UTF-8';
-        // 邮件正文是否为html编码 注意此处是一个方法
-        $mail->isHTML(true);
-        // 设置发件人昵称 显示在收件人邮件的发件人邮箱地址前的发件人姓名
-        $mail->FromName = $config['send_name'];
-        // 设置发件人邮箱地址 同登录账号
-        $mail->From = $config['mail_user'];
-        // 添加该邮件的主题
-        $mail->Subject = $title;
-        // 添加邮件正文
-        $mail->Body = $body;
+    //Content
+    // 设置发送的邮件的编码
+    $mail->CharSet = 'UTF-8';
+    //$mail->Encoding = "base64"; //编码方式
+    // 邮件正文是否为html编码 注意此处是一个方法
+    $mail->isHTML(true);
+    // 设置发件人昵称 显示在收件人邮件的发件人邮箱地址前的发件人姓名
+    $mail->FromName = $config['send_name'];
+    // 设置发件人邮箱地址 同登录账号
+    $mail->From = $config['mail_user'];
+    // 添加该邮件的主题
+    $mail->Subject = $title;
+    // 添加邮件正文
+    $mail->Body = $body;
 
+    try {
         // 发送邮件 返回状态
         $status = $mail->send();
         if ($status) {
@@ -1064,6 +1078,76 @@ function sendMail($tomail, $title, $body, $config = [])
     } catch (Exception $exception) {
         echo 'Message could not be sent.';
         echo 'Mailer Error: ' . $mail->ErrorInfo;
+    }
+}
+
+/**
+ * PHPMailer发送邮件
+ * +-----------------------------------------------------------
+ * @functionName : sendSwiftMailer
+ * +-----------------------------------------------------------
+ * @param array $tomail 要发送邮件给那个人
+ * @param string $subject 邮件的标题
+ * @param string $body 邮件的内容
+ * @param array $config 邮件的配置文件
+ * +-----------------------------------------------------------
+ * @author yc
+ * +-----------------------------------------------------------
+ */
+function sendSwiftMailer($tomail, $subject, $body, $config = [])
+{
+    vendor('SwiftMailer.swift_required');
+
+    // 创建Transport对象，设置邮件服务器和端口号，并设置用户名和密码以供验证
+    $transport = Swift_SmtpTransport::newInstance($config['mail_host'], $config['mail_port'], 'ssl')
+        ->setUsername($config['mail_user'])
+        ->setPassword($config['mail_pwd']);
+
+    // 创建mailer对象
+    $mailer = Swift_Mailer::newInstance($transport);
+    $mailer->protocol = $config['mail_type'];
+
+    // 创建message对象
+    $message = Swift_Message::newInstance()
+        ->setSubject($subject)
+        ->setFrom(array($config['mail_user'] => $config['send_name']))
+        ->setTo(array($tomail))
+        ->setContentType('text/html')
+        ->setBody($body);
+
+    // 创建attachment对象，content-type这个参数可以省略
+    /*$attachment = Swift_Attachment::fromPath('image.jpg', 'image/jpeg')
+    ->setFilename('cool.jpg');*/
+
+    // 添加附件
+    /*$message->attach($attachment);*/
+
+    // 用关联数组设置收件人地址，可以设置多个收件人
+    /*$message->setTo(array('to@qq.com' => 'toName'));*/
+
+    // 用关联数组设置发件人地址，可以设置多个发件人
+    /*$message->setFrom(array(
+        'from@163.com' => 'fromName',
+    ));*/
+
+    // 添加抄送人
+    /*$message->setCc(array(
+        'Cc@qq.com' => 'Cc'
+    ));*/
+
+    // 添加密送人
+    /*$message->setBcc(array(
+        'Bcc@qq.com' => 'Bcc'
+    ));*/
+
+    try {
+        if ($mailer->send($message)) {
+            return true;
+        } else {
+            return false;
+        }
+    } catch (Exception $e) {
+        echo 'There was a problem communicating with SMTP: ' . $e->getMessage();
     }
 }
 

@@ -321,9 +321,9 @@ class ToolsController extends ActionController
     public function phpmailer()
     {
         $mailCofig = C('SENDMAIL');
-        $tomail = '718653142@qq.com';
-        $title = '愿得一人心，白首不相离。';
-        $content = <<<EOF
+        if (IS_POST) {
+            $defaulttitle = '愿得一人心，白首不相离。';
+            $body = <<<EOF
             <p align="center">
                 皑如山上雪，皎若云间月。<br>
                 闻君有两意，故来相决绝。<br>
@@ -334,11 +334,56 @@ class ToolsController extends ActionController
                 竹竿何袅袅，鱼尾何簁簁！<br>
                 男儿重意气，何用钱刀为！</p>
 EOF;
-        $res = sendMail($tomail,$title,$content,$mailCofig);
-        if ($res) {
-            echo '发送成功';
+            $toemail = I('post.toemail');
+            $title = I('post.title') ?: $defaulttitle;
+            $content = I('post.content') ? htmlspecialchars_decode(I('post.content')) : $body;
+            $res = sendPHPMail($toemail, $title, $content, $mailCofig);
+            if ($res) {
+                $this->success('发送成功', U('tools/phpmailer'));
+            } else {
+                $this->error('发送失败');
+            }
         } else {
-            echo '发送失败';
+            $this->display();
+        }
+    }
+
+    /**
+     * 发送邮件(swiftMailer)
+     * +-----------------------------------------------------------
+     * @functionName : swiftMailer
+     * +-----------------------------------------------------------
+     * @author yc
+     * +-----------------------------------------------------------
+     */
+    public function swiftMailer()
+    {
+        echo 2;
+        $mailCofig = C('SENDMAIL');
+        if (IS_POST) {
+            $defaulsubject = '愿得一人心，白首不相离。';
+            $body = <<<EOF
+            <p align="center">
+                皑如山上雪，皎若云间月。<br>
+                闻君有两意，故来相决绝。<br>
+                今日斗酒会，明旦沟水头。<br>
+                躞蹀御沟上，沟水东西流。<br>
+                凄凄复凄凄，嫁娶不须啼。<br>
+                愿得一人心，白首不相离。<br>
+                竹竿何袅袅，鱼尾何簁簁！<br>
+                男儿重意气，何用钱刀为！</p>
+EOF;
+            $toemail = I('post.toemail');
+            $subject = I('post.title') ?: $defaulsubject;
+            $content = I('post.content') ? htmlspecialchars_decode(I('post.content')) : $body;
+            $res = sendSwiftMailer($toemail, $subject, $content, $mailCofig);
+            if ($res) {
+                $this->success('发送成功', U('tools/phpmailer'));
+            } else {
+                $this->error('发送失败');
+            }
+        } else {
+            $this->display('phpmailer');
         }
     }
 
@@ -353,7 +398,8 @@ EOF;
     public function ueditor()
     {
         if (IS_POST) {
-            dump(I(''));die;
+            dump(I(''));
+            die;
         }
         $this->display();
     }
@@ -399,8 +445,8 @@ EOF;
         $pinyin = new \Vendor\PinyinChar\PinyinChar();
         $str = '这个是测试';
         $res = $pinyin->getInitials($str);
-        echo '输入为：'.$str."<br/>";
-        echo '输出为：'.$res;
+        echo '输入为：' . $str . "<br/>";
+        echo '输出为：' . $res;
     }
 
     /**
