@@ -1006,11 +1006,12 @@ function readExcel($file)
  * @param string $title 邮件的标题
  * @param string $body 邮件的内容
  * @param array $config 邮件的配置文件
+ * @param string $filePath 文件路径
  * +-----------------------------------------------------------
  * @author yc
  * +-----------------------------------------------------------
  */
-function sendPHPMail($tomail, $title, $body, $config = [])
+function sendPHPMail($tomail, $title, $body, $config = [], $filePath = '')
 {
     vendor('PHPMailer.phpmailer.PHPMailer');
     vendor('PHPMailer.phpmailer.SMTP');
@@ -1050,6 +1051,10 @@ function sendPHPMail($tomail, $title, $body, $config = [])
 
     //Attachments
     // 为该邮件添加附件
+    if ($filePath) {
+        $name = basename($filePath) ?: '';
+        $mail->addAttachment($filePath, $name);
+    }
     //$mail->addAttachment('./example.pdf');
 
     //Content
@@ -1090,11 +1095,12 @@ function sendPHPMail($tomail, $title, $body, $config = [])
  * @param string $subject 邮件的标题
  * @param string $body 邮件的内容
  * @param array $config 邮件的配置文件
+ * @param string $filePath 文件路径
  * +-----------------------------------------------------------
  * @author yc
  * +-----------------------------------------------------------
  */
-function sendSwiftMailer($tomail, $subject, $body, $config = [])
+function sendSwiftMailer($tomail, $subject, $body, $config = [], $filePath = '')
 {
     vendor('SwiftMailer.swift_required');
 
@@ -1115,12 +1121,14 @@ function sendSwiftMailer($tomail, $subject, $body, $config = [])
         ->setContentType('text/html')
         ->setBody($body);
 
-    // 创建attachment对象，content-type这个参数可以省略
-    /*$attachment = Swift_Attachment::fromPath('image.jpg', 'image/jpeg')
-    ->setFilename('cool.jpg');*/
+    if ($filePath) {
+        // 创建attachment对象，content-type这个参数可以省略
+        $attachment = Swift_Attachment::fromPath($filePath)
+            ->setFilename(basename($filePath));
 
-    // 添加附件
-    /*$message->attach($attachment);*/
+        // 添加附件
+        $message->attach($attachment);
+    }
 
     // 用关联数组设置收件人地址，可以设置多个收件人
     /*$message->setTo(array('to@qq.com' => 'toName'));*/

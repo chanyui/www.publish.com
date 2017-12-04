@@ -334,10 +334,32 @@ class ToolsController extends ActionController
                 竹竿何袅袅，鱼尾何簁簁！<br>
                 男儿重意气，何用钱刀为！</p>
 EOF;
+            if ($_FILES['uploadfile']['tmp_name']) {
+                $config = array(
+                    'maxSize' => 3145728,
+                    'rootPath' => './Uploads/',
+                    'savePath' => '',
+                    'saveName' => array(),
+                    'exts' => array('jpg', 'gif', 'png', 'jpeg', 'xls', 'xlsx', 'pdf', 'doc', 'docx'),
+                    'autoSub' => true,
+                    'subName' => array('date', 'Y-m-d'),
+                );
+                $upload = new \Think\Upload($config);
+                $info = $upload->upload();
+                if (!$info) {
+                    $this->error($upload->getError(), U('tools/phpmailer'));
+                } else {
+                    $filePath = $upload->rootPath . $info['uploadfile']['savepath'] . $info['uploadfile']['savename'];
+                }
+            }
+
             $toemail = I('post.toemail');
             $title = I('post.title') ?: $defaulttitle;
             $content = I('post.content') ? htmlspecialchars_decode(I('post.content')) : $body;
-            $res = sendPHPMail($toemail, $title, $content, $mailCofig);
+            $res = sendPHPMail($toemail, $title, $content, $mailCofig, $filePath);
+            if ($filePath) {
+                unlink($filePath);
+            }
             if ($res) {
                 $this->success('发送成功', U('tools/phpmailer'));
             } else {
@@ -358,7 +380,6 @@ EOF;
      */
     public function swiftMailer()
     {
-        echo 2;
         $mailCofig = C('SENDMAIL');
         if (IS_POST) {
             $defaulsubject = '愿得一人心，白首不相离。';
@@ -373,10 +394,32 @@ EOF;
                 竹竿何袅袅，鱼尾何簁簁！<br>
                 男儿重意气，何用钱刀为！</p>
 EOF;
+            if ($_FILES['uploadfile']['tmp_name']) {
+                $config = array(
+                    'maxSize' => 3145728,
+                    'rootPath' => './Uploads/',
+                    'savePath' => '',
+                    'saveName' => array(),
+                    'exts' => array('jpg', 'gif', 'png', 'jpeg', 'xls', 'xlsx', 'pdf', 'doc', 'docx'),
+                    'autoSub' => true,
+                    'subName' => array('date', 'Y-m-d'),
+                );
+                $upload = new \Think\Upload($config);
+                $info = $upload->upload();
+                if (!$info) {
+                    $this->error($upload->getError(), U('tools/phpmailer'));
+                } else {
+                    $filePath = $upload->rootPath . $info['uploadfile']['savepath'] . $info['uploadfile']['savename'];
+                }
+            }
+
             $toemail = I('post.toemail');
             $subject = I('post.title') ?: $defaulsubject;
             $content = I('post.content') ? htmlspecialchars_decode(I('post.content')) : $body;
-            $res = sendSwiftMailer($toemail, $subject, $content, $mailCofig);
+            $res = sendSwiftMailer($toemail, $subject, $content, $mailCofig, $filePath);
+            if ($filePath) {
+                unlink($filePath);
+            }
             if ($res) {
                 $this->success('发送成功', U('tools/phpmailer'));
             } else {
