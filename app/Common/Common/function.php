@@ -42,15 +42,55 @@ function xcurl($url, $ref = null, $post = array(), $ua = "Mozilla/5.0 (X11; Linu
 }
 
 /**
-+----------------------------------------------------------
+ * cURL功能（get）
+ * Function:gcurl
+ * @return mixed
+ * @param string $url 地址
+ * @param array $header 请求头
+ * @param array $get
+ * @param string $ua
+ * @param bool|false $print
+ */
+function gcurl($url, $header = array(), $get = array(), $ua = "Mozilla/5.0 (X11; Linux x86_64; rv:2.2a1pre) Gecko/20110324 Firefox/4.2a1pre", $print = false)
+{
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_AUTOREFERER, true);
+    if (!empty($header)) {
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+    }
+    if (count($get) > 0) {
+        $o = "";
+        foreach ($get as $k => $v) {
+            $o .= "$k=" . urlencode($v) . "&";
+        }
+        $get = substr($o, 0, -1);
+        $url = $url . '?' . $get;
+    }
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_HEADER, 0);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    if (!empty($ua)) {
+        curl_setopt($ch, CURLOPT_USERAGENT, $ua);
+    }
+
+    $output = curl_exec($ch);
+    curl_close($ch);
+    if ($print) {
+        print($output);
+    } else {
+        return $output;
+    }
+}
+
+/**
  * 导出 Excel
-+----------------------------------------------------------
- * @param string $expTitle     导出文件的名称
-+----------------------------------------------------------
- * @param array  $expCellName   导出字段的名称
-+----------------------------------------------------------
- * @param array  $expTableData  导出的数据
-+----------------------------------------------------------
+ * +-----------------------------------------------------------
+ * @param $expTitle string 导出文件的名称
+ * +-----------------------------------------------------------
+ * @param $expCellName array 导出字段的名称
+ * +-----------------------------------------------------------
+ * @param $expTableData array  导出的数据
+ * +-----------------------------------------------------------
  */
 function exportExcel($expTitle,$expCellName,$expTableData)
 {
@@ -83,13 +123,12 @@ function exportExcel($expTitle,$expCellName,$expTableData)
 }
 
 /**
-+----------------------------------------------------------
  * 导入 Excel
-+----------------------------------------------------------
- * @param  $file   upload file $_FILES
-+----------------------------------------------------------
- * @return array   array("error","message")
-+----------------------------------------------------------
+ * +-----------------------------------------------------------
+ * @param $file $_FILES['file']['tmp_name']
+ * +-----------------------------------------------------------
+ * @return array
+ * +-----------------------------------------------------------
  */
 function importExecl($file)
 {
@@ -104,7 +143,7 @@ function importExecl($file)
         $objReader->setReadDataOnly(true);              //只读取数据，去除其他格式
         $PHPReader = $objReader->load($file);
     }catch(Exception $e){}
-    if(!isset($PHPReader)) return array("error"=>0,'message'=>'read error!');
+    if (!isset($PHPReader)) return array("error" => 1, 'message' => 'read error!');
     $allWorksheets = $PHPReader->getAllSheets();
     $i = 0;
     foreach($allWorksheets as $objWorksheet){
@@ -163,56 +202,15 @@ function importExecl($file)
     unset($PHPReader);
     unset($PHPExcel);
     unlink($file);
-    return array("error"=>1,"data"=>$array);
-}
-
-/**
- * cURL功能（get）
- * Function:gcurl
- * @return mixed
- * @param string $url 地址
- * @param array $header 请求头
- * @param array $get
- * @param string $ua
- * @param bool|false $print
- */
-function gcurl($url, $header = array(), $get = array(), $ua = "Mozilla/5.0 (X11; Linux x86_64; rv:2.2a1pre) Gecko/20110324 Firefox/4.2a1pre", $print = false)
-{
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_AUTOREFERER, true);
-    if (!empty($header)) {
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-    }
-    if (count($get) > 0) {
-        $o = "";
-        foreach ($get as $k => $v) {
-            $o .= "$k=" . urlencode($v) . "&";
-        }
-        $get = substr($o, 0, -1);
-        $url = $url . '?' . $get;
-    }
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_HEADER, 0);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    if (!empty($ua)) {
-        curl_setopt($ch, CURLOPT_USERAGENT, $ua);
-    }
-
-    $output = curl_exec($ch);
-    curl_close($ch);
-    if ($print) {
-        print($output);
-    } else {
-        return $output;
-    }
+    return array("error" => 0, "data" => $array);
 }
 
 /**
  * 获取随机码
  * Function:random
- * @return string
  * @param int $length 随机码的长度
  * @param int $numeric 0是字母和数字混合码，不为0是数字码
+ * @return string
  */
 function random($length, $numeric = 0)
 {
@@ -230,11 +228,11 @@ function random($length, $numeric = 0)
 /**
  * 加密解密（可逆）
  * Function:authcode
- * @return string
  * @param string $string 加密的字符串
  * @param string $operation DECODE表示解密,其它表示加密
  * @param string $key 密钥
  * @param int $expiry 密文有效期
+ * @return string
  */
 function authcode($string, $operation = 'DECODE', $key = '', $expiry = 0)
 {
@@ -289,9 +287,9 @@ function authcode($string, $operation = 'DECODE', $key = '', $expiry = 0)
 /**
  * 加密（不可逆）
  * Function:encrypt
- * @return string
  * @param string $password 原始密码
  * @param string $salt 密钥
+ * @return string
  */
 function encrypt($password, $salt)
 {
@@ -340,9 +338,9 @@ function wotu_crypt($str, $op = 'enc', $key = 'wotu')
 /**
  * 生成密码
  * Function:get_password
- * @return string
  * @param string $password 原始密码
  * @param string $salt 密钥
+ * @return string
  */
 function get_password($password, $salt)
 {
@@ -352,10 +350,10 @@ function get_password($password, $salt)
 /**
  * 验证密码
  * Function:check_password
- * @return bool
  * @param string $password 原始密码
  * @param string $salt 密钥
  * @param string $pwd 加密后密码
+ * @return bool
  */
 function check_password($password, $salt, $pwd)
 {
@@ -369,10 +367,10 @@ function check_password($password, $salt, $pwd)
 /**
  * 手机发送验证码
  * Function:send_by_phone
- * @return bool
  * @param int $phone 手机号码
  * @param string $message 模板id为0是发送信息，模板id不为0是者模板值
  * @param int $tpl_id 模板id
+ * @return bool
  */
 function send_by_phone($phone, $message, $tpl_id = 0)
 {
@@ -404,9 +402,9 @@ function send_by_phone($phone, $message, $tpl_id = 0)
 /**
  * 创建session
  * Function:set_session
- * @return bool
  * @param array $session session的数组
  * @param string $name session存储的名称
+ * @return bool
  */
 function set_session($session, $name)
 {
@@ -421,8 +419,8 @@ function set_session($session, $name)
 /**
  * 获得session
  * Function:get_session
- * @return array|bool
  * @param string $name session存储的名称
+ * @return array|bool
  */
 function get_session($name)
 {
@@ -473,8 +471,8 @@ function set_online($uid)
 /**
  * 检测用户是否在线
  * Function:check_online
- * @return bool
  * @param $uid
+ * @return bool
  */
 function check_online($uid)
 {
@@ -532,9 +530,9 @@ function add_sys_logs($module_name, $controller_name, $action_name, $mid = 0)
 /**
  * 获取系统日志
  * Function:get_sys_logs
- * @return array
  * @param string $module_name
  * @param $condition
+ * @return array
  */
 function get_sys_logs($module_name = '', $condition)
 {
@@ -544,9 +542,9 @@ function get_sys_logs($module_name = '', $condition)
 /**
  * 七牛上传图片加裁切缩放
  * Function:QiNiuUpload
- * @return mixed
  * @param array $file 为要上传的文件
  * @param array $data 裁切参数 $data['x'] 起点x轴  $data['y'] 起点y轴 $data['w'] $data['h'] 图片预裁切宽高 $data['targetW'] $data['targetH']图片尺寸
+ * @return mixed
  */
 function QiNiuUpload($file, $data)
 {
@@ -568,8 +566,8 @@ function QiNiuUpload($file, $data)
 /**
  * 七牛上传附件
  * Function:QiNiuUploadFile
- * @return array|bool
  * @param array $file 为要上传的文件
+ * @return array|bool
  */
 function QiNiuUploadFile($file)
 {
@@ -582,9 +580,9 @@ function QiNiuUploadFile($file)
 /**
  * 字符串截取
  * Function:subtext
- * @return string
  * @param string $text 需要截取的字符串
  * @param int $length 截取长度
+ * @return string
  */
 function subtext($text, $length)
 {
@@ -1012,7 +1010,7 @@ function getFirstCharter($str)
 
 /**
  * 生成二维码
- * @param $url
+ * @param $url string 地址
  */
 function generateQRCode($url)
 {
@@ -1326,7 +1324,7 @@ function getDateStr($time, $del1 = '年', $del2 = '月', $del3 = '日')
 }
 
 /**
- * 菲波那切数列非递归版（没有使用静态变量，效率非常低）
+ * 菲波那切数列递归版（没有使用静态变量，效率非常低）
  * +-----------------------------------------------------------
  * @functionName : fibonacci
  * +-----------------------------------------------------------
@@ -1346,7 +1344,7 @@ function fibonacci($a)
 }
 
 /**
- * 菲波那切数列非递归版（使用静态变量，效率高）
+ * 菲波那切数列递归版（使用静态变量，效率高）
  * +-----------------------------------------------------------
  * @functionName : fibonacci_cache
  * +-----------------------------------------------------------
@@ -1359,7 +1357,6 @@ function fibonacci($a)
 function fibonacci_cache($a)
 {
     static $cache = array(); //静态变量
-
     if (isset($cache[$a])) {
         return $cache[$a];
     } else {
@@ -1372,7 +1369,7 @@ function fibonacci_cache($a)
 }
 
 /**
- * 波那切数列递归版（返回数组）
+ * 斐波那切数列非递归版（返回数组）
  * +-----------------------------------------------------------
  * @functionName : fibonac
  * +-----------------------------------------------------------
@@ -1385,7 +1382,6 @@ function fibonacci_cache($a)
 function fibonac($num)
 {
     $array = array();
-
     $array[0] = 0;
     $array[1] = 1;
     for ($i = 2; $i < $num; $i++) {
@@ -1403,6 +1399,8 @@ function fibonac($num)
  * @param int $num 红包数量
  * +-----------------------------------------------------------
  * @author yc
+ * +-----------------------------------------------------------
+ * @return int 随机红包的金额
  * +-----------------------------------------------------------
  */
 function get_redEnvelope($total, $num)
@@ -1439,8 +1437,8 @@ function get_split($total, $num)
     for ($i = 1; $i < $num; $i++) {
         $safe_total = ($total - ($num - $i) * $min) / ($num - $i);//随机安全上限 这个不对有误差
         $money = mt_rand($min * 100, $safe_total * 100) / 100;
-        $total = $total - $money;
-        echo '第' . $i . '个红包：' . $money . ' 元，余额：' . $total . ' 元 <br/>';
+        $getMoney = $total - $money;
+        echo '第' . $i . '个红包：' . $money . ' 元，余额：' . $getMoney . ' 元 <br/>';
     }
     echo '第' . $num . '个红包：' . $total . ' 元，余额：0 元';
 }
