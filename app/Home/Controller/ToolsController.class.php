@@ -184,7 +184,7 @@ class ToolsController extends ActionController
      */
     public function exportExcel()
     {
-        import('Vendor.PHPExcel.PHPExcel'); //引入PHPExcel类
+        Vendor('PHPExcel.PHPExcel'); //引入PHPExcel类
         $data = array(
             0 => array(
                 'id' => 1001,
