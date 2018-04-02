@@ -12,7 +12,9 @@
         }
     ],
     "require": {
-        "php": ">=5.3.0"
+        "php": ">=5.3.0",
+        "kitetail/zttp": "^0.2.0",
+        "aliyuncs/oss-sdk-php": "~2.0"
     },
     "minimum-stability": "dev"
 }

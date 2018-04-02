@@ -20,6 +20,9 @@ define('APP_DEBUG',True);
 // 定义应用目录
 define('APP_PATH','./app/');
 define('ROOT_PATH',dirname(__FILE__));
+if (version_compare(PHP_VERSION, '7.0', '>=')) {
+    require_once("./vendor/autoload.php");
+}
 
 // 引入ThinkPHP入口文件
 require './core/ThinkPHP.php';
