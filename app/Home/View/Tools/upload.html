@@ -1,0 +1,66 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>import</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <script type="text/javascript" src="__PUBLIC__/common/js/jquery.min.js"></script>
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/import/css/profile.css">
+</head>
+<body>
+
+<div class="profile-container">
+    <div class="container">
+        <table>
+            <div class="modal-dialog">
+                <div class="modal-content-title">
+                    上传文件图片显示进度条
+                </div>
+                <div class="btn-container text-center">
+                    <form id="upload-form" action="{:U('tools/upload')}" method="post" enctype="multipart/form-data">
+                        <input type="hidden" name="{$progress_name}" value="test">
+                        <input class="btn btn-full btn-primary" type="file" name="file" >
+                        <button type="submit">upload</button>
+                    </form>
+                </div>
+                <div id="progress" class="progress" style="margin-bottom:15px;">
+                    <div class="bar" style="width:0%;background-color: greenyellow;height: 20px"></div>
+                    <div class="label" style="width: auto">0%</div>
+                </div>
+            </div>
+        </table>
+    </div>
+</div>
+
+<script type="text/javascript">
+    jQuery(function () {
+        //ajax上传excel文件
+
+
+        // 上传图片并调用上传进度接口
+        $('#upload-form').submit(function(){
+            $('#progress').show();
+            setTimeout('fetch_progress()', 100);
+        });
+    });
+
+    function fetch_progress() {
+        $.get('{:U("tools/progress")}', {'{$progress_name}': 'test'}, function (data) {
+            var progress = parseInt(data);
+
+            $('#progress .label').html(progress + '%');
+            $('#progress .bar').css('width', progress + '%');
+
+            if (progress < 100) {
+                setTimeout('fetch_progress()', 1000);
+            } else {
+                $('#progress .label').html('完成!');
+            }
+        });
+    }
+</script>
+</body>
+</html>

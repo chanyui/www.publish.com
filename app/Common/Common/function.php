@@ -1155,3 +1155,17 @@ if (!function_exists('getIdArr')) {
         return $idArr;
     }
 }
+
+/**
+ * +----------------------------------------------------------
+ * 生成唯一订单号
+ * +----------------------------------------------------------
+ * @param  string $string 字符串
+ * +----------------------------------------------------------
+ */
+if (!function_exists('build_order_no')) {
+    function build_order_no()
+    {
+        return date('ymd') . substr(implode(NULL, array_map('ord', str_split(substr(uniqid(), 7, 13), 1))), 0, 8);
+    }
+}

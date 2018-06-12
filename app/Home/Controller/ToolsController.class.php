@@ -633,4 +633,66 @@ EOF;
         }
     }
 
+    /**
+     * 上传文件
+     * +------------------------------------------------------------------
+     * @functionName : upload
+     * +------------------------------------------------------------------
+     * @author yucheng
+     * +------------------------------------------------------------------
+     */
+    public function upload()
+    {
+        if ($_FILES['file']['tmp_name']) {
+            $config = array(
+                'maxSize' => 200*1024*1024,
+                'rootPath' => './Uploads/',
+                'savePath' => '',
+                'saveName' => array(),
+                'exts' => array('jpg', 'gif', 'png', 'jpeg', 'xls', 'xlsx', 'pdf', 'pptx', 'doc', 'docx','rmvb'),
+                'autoSub' => true,
+                'subName' => array('date', 'Y-m-d'),
+            );
+            $upload = new \Think\Upload($config);
+            $info = $upload->upload();
+            if (!$info) {
+                $this->error($upload->getError());
+            } else {
+                $filePath = $upload->rootPath . $info['uploadfile']['savepath'] . $info['uploadfile']['savename'];
+            }
+        }
+        $progressName = ini_get('session.upload_progress.name');
+        $this->assign('progress_name', $progressName);
+        $this->display();
+    }
+
+    /**
+     * 上传文件进度条
+     * +------------------------------------------------------------------
+     * @functionName : progress
+     * +------------------------------------------------------------------
+     * @author yucheng
+     * +------------------------------------------------------------------
+     */
+    public function progress()
+    {
+        // ini_get()获取php.ini中环境变量的值
+        $i = ini_get('session.upload_progress.name');
+
+        // ajax中我们使用的是get方法，变量名称为ini文件中定义的前缀 拼接 传过来的参数
+        $key = ini_get("session.upload_progress.prefix") . $_GET[$i];
+
+        // 判断 SESSION 中是否有上传文件的信息
+        if (!empty($_SESSION[$key])) {
+            //已上传大小
+            $current = $_SESSION[$key]["bytes_processed"];
+            //文件总大小
+            $total = $_SESSION[$key]["content_length"];
+            // 向 ajax 返回当前的上传进度百分比。
+            echo $current < $total ? ceil($current / $total * 100) : 100;
+        } else {
+            echo 100;
+        }
+    }
+
 }

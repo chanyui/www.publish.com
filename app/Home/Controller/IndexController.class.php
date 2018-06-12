@@ -28,7 +28,7 @@ class IndexController extends ActionController
         $count = $news->where($where)->count();
         $page = new \Think\Page1($count, $limit);
         $show = $page->show();
-        $list = $news->where($where)->order('id asc')->limit($page->firstRows . ',' . $page->listRows)->select();
+        $list = $news->where($where)->order('id asc')->limit($page->firstRow . ',' . $page->listRows)->select();
         $this->assign('list', $list);
         $this->assign('page', $show);
         $this->assign('count', $count);
