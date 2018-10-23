@@ -8,16 +8,20 @@ class ComposerStaticInitf0d3b528c59710b0f3215447e7bae0ee
 {
     public static $files = array (
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
-        '667aeda72477189d0494fecd327c3641' => __DIR__ . '/..' . '/symfony/var-dumper/Resources/functions/dump.php',
-        'a0edc8309cc5e1d60e3047b5df6b7052' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/functions_include.php',
         'c964ee0ededf28c96ebd9db5099ef910' => __DIR__ . '/..' . '/guzzlehttp/promises/src/functions_include.php',
+        'a0edc8309cc5e1d60e3047b5df6b7052' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/functions_include.php',
+        '667aeda72477189d0494fecd327c3641' => __DIR__ . '/..' . '/symfony/var-dumper/Resources/functions/dump.php',
+        '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
         'fe62ba7e10580d903cc46d808b5961a4' => __DIR__ . '/..' . '/tightenco/collect/src/Collect/Support/helpers.php',
         'caf31cc6ec7cf2241cb6f12c226c3846' => __DIR__ . '/..' . '/tightenco/collect/src/Collect/Support/alias.php',
-        '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
         '618aa3e081fc502871177c829f6a9c2a' => __DIR__ . '/..' . '/kitetail/zttp/src/Zttp.php',
     );
 
     public static $prefixLengthsPsr4 = array (
+        'h' => 
+        array (
+            'hightman\\xunsearch\\' => 19,
+        ),
         'T' => 
         array (
             'Tightenco\\Collect\\' => 18,
@@ -44,6 +48,10 @@ class ComposerStaticInitf0d3b528c59710b0f3215447e7bae0ee
     );
 
     public static $prefixDirsPsr4 = array (
+        'hightman\\xunsearch\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/hightman/xunsearch/wrapper/yii2-ext',
+        ),
         'Tightenco\\Collect\\' => 
         array (
             0 => __DIR__ . '/..' . '/tightenco/collect/src/Collect',
@@ -78,11 +86,34 @@ class ComposerStaticInitf0d3b528c59710b0f3215447e7bae0ee
         ),
     );
 
+    public static $classMap = array (
+        'EXunSearch' => __DIR__ . '/..' . '/hightman/xunsearch/wrapper/yii-ext/EXunSearch.php',
+        'XS' => __DIR__ . '/..' . '/hightman/xunsearch/lib/XS.class.php',
+        'XSCommand' => __DIR__ . '/..' . '/hightman/xunsearch/lib/XSServer.class.php',
+        'XSComponent' => __DIR__ . '/..' . '/hightman/xunsearch/lib/XS.class.php',
+        'XSDocument' => __DIR__ . '/..' . '/hightman/xunsearch/lib/XSDocument.class.php',
+        'XSErrorException' => __DIR__ . '/..' . '/hightman/xunsearch/lib/XS.class.php',
+        'XSException' => __DIR__ . '/..' . '/hightman/xunsearch/lib/XS.class.php',
+        'XSFieldMeta' => __DIR__ . '/..' . '/hightman/xunsearch/lib/XSFieldScheme.class.php',
+        'XSFieldScheme' => __DIR__ . '/..' . '/hightman/xunsearch/lib/XSFieldScheme.class.php',
+        'XSIndex' => __DIR__ . '/..' . '/hightman/xunsearch/lib/XSIndex.class.php',
+        'XSSearch' => __DIR__ . '/..' . '/hightman/xunsearch/lib/XSSearch.class.php',
+        'XSServer' => __DIR__ . '/..' . '/hightman/xunsearch/lib/XSServer.class.php',
+        'XSTokenizer' => __DIR__ . '/..' . '/hightman/xunsearch/lib/XSTokenizer.class.php',
+        'XSTokenizerFull' => __DIR__ . '/..' . '/hightman/xunsearch/lib/XSTokenizer.class.php',
+        'XSTokenizerNone' => __DIR__ . '/..' . '/hightman/xunsearch/lib/XSTokenizer.class.php',
+        'XSTokenizerScws' => __DIR__ . '/..' . '/hightman/xunsearch/lib/XSTokenizer.class.php',
+        'XSTokenizerSplit' => __DIR__ . '/..' . '/hightman/xunsearch/lib/XSTokenizer.class.php',
+        'XSTokenizerXlen' => __DIR__ . '/..' . '/hightman/xunsearch/lib/XSTokenizer.class.php',
+        'XSTokenizerXstep' => __DIR__ . '/..' . '/hightman/xunsearch/lib/XSTokenizer.class.php',
+    );
+
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInitf0d3b528c59710b0f3215447e7bae0ee::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInitf0d3b528c59710b0f3215447e7bae0ee::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInitf0d3b528c59710b0f3215447e7bae0ee::$classMap;
 
         }, null, ClassLoader::class);
     }

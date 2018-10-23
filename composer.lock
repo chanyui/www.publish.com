@@ -1,11 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "hash": "73892a6c10b31244e09b27fb905ae409",
-    "content-hash": "7d5a93cf4c2d2602ad156b67b457b679",
+    "content-hash": "46e56586b9cb2602875f4e9c64e05dc0",
     "packages": [
         {
             "name": "aliyuncs/oss-sdk-php",
@@ -46,7 +45,7 @@
             ],
             "description": "Aliyun OSS SDK for PHP",
             "homepage": "http://www.aliyun.com/product/oss/",
-            "time": "2018-01-08 06:59:35"
+            "time": "2018-01-08T06:59:35+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -58,7 +57,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://files.phpcomposer.com/files/guzzle/guzzle/c9615e7a872f18f63970b558f2555697f03e7803.zip",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/c9615e7a872f18f63970b558f2555697f03e7803",
                 "reference": "c9615e7a872f18f63970b558f2555697f03e7803",
                 "shasum": ""
             },
@@ -111,7 +110,7 @@
                 "rest",
                 "web service"
             ],
-            "time": "2018-03-29 07:29:08"
+            "time": "2018-03-29T07:29:08+00:00"
         },
         {
             "name": "guzzlehttp/promises",
@@ -123,7 +122,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://files.phpcomposer.com/files/guzzle/promises/136531aa4e42f9b1971a47fb0faf60da00d2fefa.zip",
+                "url": "https://api.github.com/repos/guzzle/promises/zipball/136531aa4e42f9b1971a47fb0faf60da00d2fefa",
                 "reference": "136531aa4e42f9b1971a47fb0faf60da00d2fefa",
                 "shasum": ""
             },
@@ -162,7 +161,7 @@
             "keywords": [
                 "promise"
             ],
-            "time": "2018-03-25 01:26:01"
+            "time": "2018-03-25T01:26:01+00:00"
         },
         {
             "name": "guzzlehttp/psr7",
@@ -174,7 +173,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://files.phpcomposer.com/files/guzzle/psr7/773750151c47189c24f9026620e43ddd55d453a2.zip",
+                "url": "https://api.github.com/repos/guzzle/psr7/zipball/773750151c47189c24f9026620e43ddd55d453a2",
                 "reference": "773750151c47189c24f9026620e43ddd55d453a2",
                 "shasum": ""
             },
@@ -227,7 +226,65 @@
                 "uri",
                 "url"
             ],
-            "time": "2018-03-29 00:18:34"
+            "time": "2018-03-29T00:18:34+00:00"
+        },
+        {
+            "name": "hightman/xunsearch",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/hightman/xs-sdk-php.git",
+                "reference": "d3eb5e1297146b447f9c72b83f5986b2411620e4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/hightman/xs-sdk-php/zipball/d3eb5e1297146b447f9c72b83f5986b2411620e4",
+                "reference": "d3eb5e1297146b447f9c72b83f5986b2411620e4",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*",
+                "lib-pcre": "*",
+                "php": ">=5.3.0"
+            },
+            "bin": [
+                "util/xs"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.4.x-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "lib/",
+                    "wrapper/yii-ext/"
+                ],
+                "psr-4": {
+                    "hightman\\xunsearch\\": "wrapper/yii2-ext/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "hightman",
+                    "email": "hightman@twomice.net",
+                    "role": "Founder and project leader"
+                }
+            ],
+            "description": "xunsearch php sdk, include yii, yii2 supports",
+            "homepage": "http://www.xunsearch.com/",
+            "keywords": [
+                "search engine",
+                "xunsearch",
+                "yii",
+                "yii2"
+            ],
+            "time": "2017-12-06T14:54:09+00:00"
         },
         {
             "name": "kitetail/zttp",
@@ -273,7 +330,7 @@
                 "Guzzle",
                 "http"
             ],
-            "time": "2017-07-20 14:16:37"
+            "time": "2017-07-20T14:16:37+00:00"
         },
         {
             "name": "psr/http-message",
@@ -285,7 +342,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://files.phpcomposer.com/files/php-fig/http-message/f6561bf28d520154e4b0ec72be95418abe6d9363.zip",
+                "url": "https://api.github.com/repos/php-fig/http-message/zipball/f6561bf28d520154e4b0ec72be95418abe6d9363",
                 "reference": "f6561bf28d520154e4b0ec72be95418abe6d9363",
                 "shasum": ""
             },
@@ -323,7 +380,7 @@
                 "request",
                 "response"
             ],
-            "time": "2016-08-06 14:39:51"
+            "time": "2016-08-06T14:39:51+00:00"
         },
         {
             "name": "symfony/polyfill-mbstring",
@@ -335,7 +392,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://files.phpcomposer.com/files/symfony/polyfill-mbstring/78be803ce01e55d3491c1397cf1c64beb9c1b63b.zip",
+                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/78be803ce01e55d3491c1397cf1c64beb9c1b63b",
                 "reference": "78be803ce01e55d3491c1397cf1c64beb9c1b63b",
                 "shasum": ""
             },
@@ -382,7 +439,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2018-01-30 19:27:44"
+            "time": "2018-01-30T19:27:44+00:00"
         },
         {
             "name": "symfony/var-dumper",
@@ -394,7 +451,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://files.phpcomposer.com/files/symfony/var-dumper/80964679d81da3d5618519e0e4be488c3d7ecd7d.zip",
+                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/80964679d81da3d5618519e0e4be488c3d7ecd7d",
                 "reference": "80964679d81da3d5618519e0e4be488c3d7ecd7d",
                 "shasum": ""
             },
@@ -451,7 +508,7 @@
                 "debug",
                 "dump"
             ],
-            "time": "2018-02-22 17:29:24"
+            "time": "2018-02-22T17:29:24+00:00"
         },
         {
             "name": "tightenco/collect",
@@ -463,7 +520,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://files.phpcomposer.com/files/tightenco/collect/a2a3ca1c56aa18948b4e08e90f38fcdee859cc4c.zip",
+                "url": "https://api.github.com/repos/tightenco/collect/zipball/a2a3ca1c56aa18948b4e08e90f38fcdee859cc4c",
                 "reference": "a2a3ca1c56aa18948b4e08e90f38fcdee859cc4c",
                 "shasum": ""
             },
@@ -500,13 +557,15 @@
                 "collection",
                 "laravel"
             ],
-            "time": "2018-02-09 02:05:17"
+            "time": "2018-02-09T02:05:17+00:00"
         }
     ],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "hightman/xunsearch": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
