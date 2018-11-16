@@ -792,9 +792,13 @@ if (!function_exists('formatSec')) {
 if (!function_exists('sendPHPMail')) {
     function sendPHPMail($tomail, $title, $body, $config = [], $filePath = '')
     {
+        //需要在 php.ini 里面配置
+        //openssl.cafile = /usr/local/openssl/cacert.pem
+        //openssl.capath = /usr/local/openssl/certs
+
         vendor('PHPMailer.phpmailer.PHPMailer');
         vendor('PHPMailer.phpmailer.SMTP');
-        $mail = new PHPMailer();  // 实例化PHPMailer核心类
+        $mail = new \PHPMailer();  // 实例化PHPMailer核心类
 
         //Server settings
         // 是否启用smtp的debug进行调试 开发环境建议开启 生产环境注释掉即可 默认关闭debug调试模式
@@ -883,6 +887,10 @@ if (!function_exists('sendPHPMail')) {
 if (!function_exists('sendSwiftMailer')) {
     function sendSwiftMailer($tomail, $subject, $body, $config = [], $filePath = '')
     {
+        //需要在 php.ini 里面配置
+        //openssl.cafile = /usr/local/openssl/cacert.pem
+        //openssl.capath = /usr/local/openssl/certs
+
         vendor('SwiftMailer.swift_required');
 
         // 创建Transport对象，设置邮件服务器和端口号，并设置用户名和密码以供验证
