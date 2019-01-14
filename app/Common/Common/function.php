@@ -25,13 +25,17 @@ if (!function_exists('xcurl')) {
             curl_setopt($ch, CURLOPT_USERAGENT, $ua);
         }
         if (count($post) > 0) {
-            $o = "";
+            /*$o = "";
             foreach ($post as $k => $v) {
                 $o .= "$k=" . urlencode($v) . "&";
             }
             $post = substr($o, 0, -1);
             curl_setopt($ch, CURLOPT_POST, 1);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $post);*/
+
+            //另外一种写法
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($post));
         }
         $output = curl_exec($ch);
         curl_close($ch);
@@ -62,12 +66,14 @@ if (!function_exists('gcurl')) {
             curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
         }
         if (count($get) > 0) {
-            $o = "";
+            /*$o = "";
             foreach ($get as $k => $v) {
                 $o .= "$k=" . urlencode($v) . "&";
             }
             $get = substr($o, 0, -1);
-            $url = $url . '?' . $get;
+            $url = $url . '?' . $get;*/
+            //另外一种写法
+            $url = $url . '?' . http_build_query($get);
         }
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_HEADER, 0);
