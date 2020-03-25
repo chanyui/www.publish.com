@@ -507,16 +507,16 @@ function set_online($uid)
 {
     $db = M('user');
     $tmp = array(
-        'uid' => $uid,
-        'lastIp' => $_SERVER['REMOTE_ADDR'],
+        'uid'      => $uid,
+        'lastIp'   => $_SERVER['REMOTE_ADDR'],
         'lastTime' => time()
     );
     $db->save($tmp);
     $db = M('session_online');
     $liveTime = time() + C('SESSION_EXPIRY');
     $expriy = array(
-        'uid' => $uid,
-        'expiry' => $liveTime,
+        'uid'       => $uid,
+        'expiry'    => $liveTime,
         'sessionId' => session_id()
     );
     $isOn = $db->where('uid = "' . $uid . '"')->find();
@@ -956,6 +956,33 @@ if (!function_exists('sendSwiftMailer')) {
 }
 
 /**
+ * 快速排序法
+ */
+if (!function_exists('quick_sort')) {
+    function quick_sort($arr)
+    {
+        $count = count($arr);
+        if ($count <= 1) return $arr;
+        $key = $arr[0];
+        $left = $right = [];
+        for ($i = 0; $i < $count; $i++) {
+            if ($arr[$i] < $key) {
+                $left[] = $arr[$i];
+            } else {
+                $right[] = $arr[$i];
+            }
+        }
+        if (count($left) > 1) {
+            $left = quick_sort($left);
+        }
+        if (count($right)) {
+            $right = quick_sort($right);
+        }
+        return array_merge($left, [$key], $right);
+    }
+}
+
+/**
  * 冒泡排序算法
  * +----------------------------------------------------------
  * @param array $arr 要排序的数组
@@ -1148,7 +1175,7 @@ if (!function_exists('getIdArr')) {
         $levelSet = 3;
         $db = M();
         $where = [
-            'if_show' => '1',
+            'if_show'  => '1',
             'store_id' => 0,
         ];
         //查看当前是否在最后一级分类
