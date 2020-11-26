@@ -1213,6 +1213,52 @@ if (!function_exists('build_order_no')) {
 
 
 /**
+ * 生成16位订单号（3万 0.4秒）
+ * 做了判断不会出现重复数据，可能会被猜出结构
+ *
+ * @author yc
+ * @return string
+ */
+if (!function_exists('makeOrderSn')) {
+    function makeOrderSn()
+    {
+        static $orderSn = [];                                        //静态变量
+        list($usec, $sec) = explode(' ', microtime());      //返回当前 Unix 时间戳和微秒数
+        //$ors = date('ymd') . substr($sec, -5) . substr($usec, 2, 5);     //生成16位数字基本号
+        $ors = date('ymd') . substr($sec, -3) . substr($usec, 2, 5);     //生成14位数字基本号
+        if (isset($orderSn[$ors])) {                                    //判断是否有基本订单号
+            $orderSn[$ors]++;                                           //如果存在,将值自增1
+        } else {
+            $orderSn[$ors] = mt_rand(1, 9);
+        }
+        return $ors . str_pad($orderSn[$ors], 2, '0', STR_PAD_LEFT);     //链接字符串
+    }
+}
+
+
+/**
+ * 生成13位订单号（3万 0.5秒）
+ * 做了判断不会出现重复数据，可能会被猜出结构
+ *
+ * @author yc
+ * @return string
+ */
+if (!function_exists('buildOrderSn')) {
+    function buildOrderSn()
+    {
+        static $orderSn = [];
+        $ors = date('ymd') . substr(microtime(), 2, 5);    //生成11位数字基本号
+        if (isset($orderSn[$ors])) {                                          //判断是否有基本订单号
+            $orderSn[$ors]++;                                                 //如果存在,将值自增1
+        } else {
+            $orderSn[$ors] = 1;
+        }
+        return $ors . str_pad($orderSn[$ors], 2, '0', STR_PAD_LEFT);   //链接字符串
+    }
+}
+
+
+/**
  * 对emoji表情转义
  * @param $str
  * @return string
